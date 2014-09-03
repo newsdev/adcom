@@ -147,20 +147,20 @@
   // For even more control, write your own .getCurrentItems function, which is
   // called to retrieve the list of items to render in the current view.
 
-  Index.prototype.setSort = function (attr, reverse) {
-    if (attr === null || attr === undefined) return this.sort = null
+  Index.prototype.setSort = function (field, reverse) {
+    if (field === null || field === undefined) return this.sort = null
 
     var factor = reverse ? -1 : 1
 
     // set a custom sort function
-    if (typeof attr === 'function') {
-      return this.sort = function (a, b) { return attr(a, b) * factor }
+    if (typeof field === 'function') {
+      return this.sort = function (a, b) { return field(a, b) * factor }
     }
 
     // default sort function based on single attribute and direction
     this.sort = function (a, b) {
-      var left  = (typeof a[attr] === 'function' ? a[attr]() : a[attr]) || ''
-      var right = (typeof b[attr] === 'function' ? b[attr]() : b[attr]) || ''
+      var left  = (typeof a[field] === 'function' ? a[field]() : a[field]) || ''
+      var right = (typeof b[field] === 'function' ? b[field]() : b[field]) || ''
 
       if (left < right) return factor * -1
       if (left > right) return factor * 1
@@ -168,13 +168,15 @@
     }
   }
 
-  Index.prototype.setFilter = function (attrs, value) {
+  Index.prototype.setFilter = function (fields, value) {
+    fields = $.isArray(fields) ? fields : [fields]
+
     this.filter = function (item) {
       var matches = false
-      var fields  = $.isArray(attrs) ? attrs : [attrs]
+      var match_all_fields = fields === null
 
       $.each(item, function (field, fieldValue) {
-        if (!matches && (attrs === null || fields.indexOf(field) > -1)) {
+        if (!matches && (match_all_fields || fields.indexOf(field) > -1)) {
           var itemValue = typeof item[field] === 'function' ? item[field]() : item[field]
           if (String(itemValue).toLowerCase().indexOf(value) > -1) matches = true
         }
@@ -286,7 +288,7 @@
   $(document).on('click.adcom.index.data-api', '[data-toggle="sort"]', function (e) {
     var target = $(e.target).data('target')
     var index  = $(target).data('adcom.index')
-    var attr   = $(e.target).data('attr')
+    var field  = $(e.target).data('field')
 
     // cycle between sorted, reversed, and not sorted
     // clear all other sorts
@@ -295,11 +297,11 @@
     switch (state) {
       case undefined:    // not sorted
         $(e.target).attr('data-state', 'ascending')
-        index.setSort(attr)
+        index.setSort(field)
         break
       case 'ascending':  // sorted
         $(e.target).attr('data-state', 'descending')
-        index.setSort(attr, true)
+        index.setSort(field, true)
         break
       case 'descending': // reverse sorted
         index.setSort(null)
