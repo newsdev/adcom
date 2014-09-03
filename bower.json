@@ -1,0 +1,16 @@
+{
+  "name": "adcom",
+  "version": "0.0.1",
+  "authors": [
+    "michael.strickland@nytimes.com"
+  ],
+  "description": "Front end components for use in NYT admins",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "underscore": "1.6.0"
+  },
+  "ignore": [
+    ".bowerrc"
+  ]
+}
