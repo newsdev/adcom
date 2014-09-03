@@ -285,28 +285,21 @@
     }, null)
   }
 
-  $(document).on('click.adcom.index.data-api', '[data-toggle="sort"]', function (e) {
+  $(document).on('click.adcom.index.data-api', '[data-sort]', function (e) {
     var target = $(e.target).data('target')
     var index  = $(target).data('adcom.index')
-    var field  = $(e.target).data('field')
+    var field  = $(e.target).data('sort')
+    var states = ($(e.target).data('states') || 'ascending,descending,off').split(/,\s*/)
 
     // cycle between sorted, reversed, and not sorted
     // clear all other sorts
-    var state = $(e.target).attr('data-state')
-    $('[data-toggle="sort"][data-target="' + target + '"]').removeAttr('data-state')
-    switch (state) {
-      case undefined:    // not sorted
-        $(e.target).attr('data-state', 'ascending')
-        index.setSort(field)
-        break
-      case 'ascending':  // sorted
-        $(e.target).attr('data-state', 'descending')
-        index.setSort(field, true)
-        break
-      case 'descending': // reverse sorted
-        index.setSort(null)
-        break
-    }
+    var state     = $(e.target).attr('data-state')
+    var stateIdx  = states.indexOf(state)
+    var nextState = states[(stateIdx + 1) % states.length]
+    $('[data-sort][data-target="' + target + '"]').removeAttr('data-state')
+
+    if (nextState !== 'off') $(e.target).attr('data-state', nextState)
+    index.setSort(field, {'ascending': false, 'descending': true, 'off': null}[nextState])
 
     index.show()
   })
