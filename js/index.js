@@ -316,6 +316,8 @@
     index.toggle(item)
   })
 
+  // data-api filters
+
   $(document).on(Index.EVENTS, '[data-search]', function (e) {
     var target   = $(e.target).closest('[data-search]')
     var triggers = (target.attr('data-trigger') || 'change').split(' ')

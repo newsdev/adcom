@@ -92,11 +92,22 @@
   // FORM DATA-API
   // =============
 
-  // $(document).on('click.adcom.form.data-api'), '[data-toggle="form"]', function (e) {
-  //   var $this = $(this)
+  function closestWithData (el, attr) {
+    return $.makeArray(el).concat($.makeArray(el.parents())).reduce(function (previous, current) {
+      if (previous) return previous
+      if ($(current).data(attr)) return $(current)
+    }, null)
+  }
 
-  //   Plugin.call($target, option, this)
-  // }
+  $(document).on('click.adcom.form.data-api'), '[data-toggle="form"]', function (e) {
+    var target     = $(e.target).data('target')
+    var serialized = $(e.target).data('serialized')
+
+    if (var indexItem = closestWithData(target, 'adcom.index.item').data('adcom.index.item'))
+      serialized = serialized || indexItem.data('adcom.index.item')
+
+    Plugin.call(target, show, serialized)
+  }
 
   $(document).on('submit', 'form[data-control="form"]', function (e) {
     e.preventDefault()
