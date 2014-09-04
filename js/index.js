@@ -279,7 +279,7 @@
   // ==============
 
   function closestWithData (el, attr) {
-    return $.makeArray(el).concat($.makeArray(el.parents())).reduce(function (previous, current) {
+    return $.makeArray(el).concat($.makeArray($(el).parents())).reduce(function (previous, current) {
       if (previous) return previous
       if ($(current).data(attr)) return $(current)
     }, null)

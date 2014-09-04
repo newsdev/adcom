@@ -93,21 +93,23 @@
   // =============
 
   function closestWithData (el, attr) {
-    return $.makeArray(el).concat($.makeArray(el.parents())).reduce(function (previous, current) {
+    return $.makeArray(el).concat($.makeArray($(el).parents())).reduce(function (previous, current) {
       if (previous) return previous
       if ($(current).data(attr)) return $(current)
     }, null)
   }
 
-  $(document).on('click.adcom.form.data-api'), '[data-toggle="form"]', function (e) {
-    var target     = $(e.target).data('target')
-    var serialized = $(e.target).data('serialized')
+  $(document).on('click', '[data-toggle="form"]', function (e) {
+    var target     = $($(e.target).closest('[data-toggle="form"]').data('target'))
+    var serialized = $(e.target).closest('[data-toggle="form"]').data('serialized')
 
-    if (var indexItem = closestWithData(target, 'adcom.index.item').data('adcom.index.item'))
+    // Default to item data provided to index.js items, if available
+    var indexItem = closestWithData($(e.target), 'adcom.index.item')
+    if (indexItem !== undefined)
       serialized = serialized || indexItem.data('adcom.index.item')
 
-    Plugin.call(target, show, serialized)
-  }
+    Plugin.call(target, 'show', serialized)
+  })
 
   $(document).on('submit', 'form[data-control="form"]', function (e) {
     e.preventDefault()
