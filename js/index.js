@@ -40,6 +40,8 @@
     this.sort    = null
     this.filters = {}
 
+    this.setInitialState()
+
     this.show()
   }
 
@@ -63,6 +65,10 @@
   Index.prototype.destroy = function () {
     this.$element.off('.adcom.index').removeData('adcom.index')
     this.$element.empty()
+
+    // $('[data-control="index"]').index('toggleFilter', $('.active[data-filter][data-target]'))
+    // $('[data-control="index"]').index('toggleSearch', $('[data-search][data-target][value]'))
+    // $('[data-control="index"]').index('toggleSort', $('.active[data-sort][data-target]'))
   }
 
   // Actions
@@ -108,6 +114,12 @@
       if ($this.states[idx] == 'selected') selected.push(item)
     })
     return selected
+  }
+
+  Index.prototype.setInitialState = function () {
+    this.toggleFilter($('.active[data-filter][data-target]'))
+    this.toggleSort($('.active[data-sort][data-target]'))
+    this.toggleSearch($('[data-search][data-target][value]'))
   }
 
   // Template
@@ -250,6 +262,61 @@
     return el
   }
 
+  // Trigger definitions
+
+  Index.prototype.toggleSort = function (el) {
+    var $this = this
+    el.each(function () {
+      var $el     = $(this)
+      var $target = $($el.data('target'))
+      if ($target[0] !== $this.$element[0]) return
+
+      var field   = $el.data('sort')
+      var states  = ($el.data('states') || 'ascending,descending,off').split(/,\s*/)
+
+      // cycle between sorted, reversed, and not sorted
+      // clear all other sorts
+      var state     = $el.attr('data-state')
+      var stateIdx  = states.indexOf(state)
+      var nextState = states[(stateIdx + 1) % states.length]
+      $('[data-sort][data-target="' + $target.selector + '"]').removeAttr('data-state')
+
+      if (nextState !== 'off') $el.attr('data-state', nextState)
+
+      $this.setSort(field, {'ascending': false, 'descending': true, 'off': null}[nextState])
+      $this.show()
+    })
+  }
+
+  Index.prototype.toggleSearch = function (el) {
+    var $this = this
+    el.each(function () {
+      var $el     = $(this)
+      var $target = $($el.data('target'))
+      if ($target[0] !== $this.$element[0]) return
+
+      var fields  = $el.data('search')
+      var value   = $el.val() == '' ? undefined : $el.val()
+
+      $this.setFilter(fields, value)
+      $this.show()
+    })
+  }
+
+  Index.prototype.toggleFilter = function (el) {
+    var $this = this
+    el.each(function () {
+      var $el     = $(this)
+      var $target = $($el.data('target'))
+      if ($target[0] !== $this.$element[0]) return
+
+      var fields  = $el.data('filter')
+      var value   = $el.data('match')
+
+      $this.setFilter(fields, value)
+      $this.show()
+    })
+  }
 
   // INDEX PLUGIN DEFINITION
   // =======================
@@ -294,65 +361,49 @@
     }, null)
   }
 
-  $(document).on('click.adcom.index.data-api', '[data-sort]', function (e) {
-    var target = $(e.target).data('target')
-    var index  = $(target).data('adcom.index')
-    var field  = $(e.target).data('sort')
-    var states = ($(e.target).data('states') || 'ascending,descending,off').split(/,\s*/)
-
-    // cycle between sorted, reversed, and not sorted
-    // clear all other sorts
-    var state     = $(e.target).attr('data-state')
-    var stateIdx  = states.indexOf(state)
-    var nextState = states[(stateIdx + 1) % states.length]
-    $('[data-sort][data-target="' + target + '"]').removeAttr('data-state')
-
-    if (nextState !== 'off') $(e.target).attr('data-state', nextState)
-    index.setSort(field, {'ascending': false, 'descending': true, 'off': null}[nextState])
-
-    index.show()
-  })
-
   $(document).on(Index.EVENTS, '[data-toggle="select"]', function (e) {
-    var target   = $(e.target).closest('[data-toggle]')
-    var triggers = (target.attr('data-trigger') || 'click').split(' ')
+    var $this    = $(this).closest('[data-toggle="select"]')
+    var triggers = ($this.attr('data-trigger') || 'click').split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
 
-    var item  = closestWithData(target, 'adcom.index.item')
-    var index = closestWithData(target, 'adcom.index').data('adcom.index')
+    var item    = closestWithData($this, 'adcom.index.item')
+    var $target = closestWithData($this, 'adcom.index')
 
-    index.toggle(item)
+    Plugin.call($target, 'toggle', item)
+  })
+
+  $(document).on('click.adcom.index.data-api', '[data-sort]', function (e) {
+    var $this   = $(this).closest('[data-sort]')
+    var $target  = $($this.data('target'))
+
+    Plugin.call($target, 'toggleSort', $this)
   })
 
   // data-api filters
 
   $(document).on(Index.EVENTS, '[data-search]', function (e) {
-    var $this   = $(this).closest('[data-search]')
-    var $target = $($this.attr('data-target'))
+    var $this    = $(this).closest('[data-search]')
+    var $target  = $($this.data('target'))
     var triggers = ($this.attr('data-trigger') || 'change').split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
 
-    var fields = $this.data('search')
-    var value  = $this.val() == '' ? undefined : $this.val()
-
-    Plugin.call($target, 'setFilter', fields, value)
-    Plugin.call($target, 'show')
+    Plugin.call($target, 'toggleSearch', $this)
   })
 
   $(document).on(Index.EVENTS, '[data-filter]', function (e) {
-    var $this   = $(this).closest('[data-filter]')
-    var $target = $($this.attr('data-target'))
+    var $this    = $(this).closest('[data-filter]')
+    var $target  = $($this.data('target'))
     var triggers = ($this.attr('data-trigger') || 'click').split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
 
-    var fields = $this.data('filter')
-    var value  = $this.data('match')
-
-    Plugin.call($target, 'setFilter', fields, value)
-    Plugin.call($target, 'show')
+    Plugin.call($target, 'toggleFilter', $this)
   })
+
+  // $('[data-control="index"]').index('toggleFilter', $('.active[data-filter][data-target]'))
+  // $('[data-control="index"]').index('toggleSearch', $('[data-search][data-target][value]'))
+  // $('[data-control="index"]').index('toggleSort', $('.active[data-sort][data-target]'))
 
 }(jQuery);
