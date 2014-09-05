@@ -36,8 +36,9 @@
     this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
     this.template = typeof this.options.template === 'string' ? this.compileTemplate(this.options.template) : (this.options.template || this.defaultTemplate())
 
-    this.states = []
-    this.sort   = null
+    this.states  = []
+    this.sort    = null
+    this.filters = {}
 
     this.show()
   }
@@ -169,9 +170,13 @@
   }
 
   Index.prototype.setFilter = function (fields, value) {
+    fields = typeof fields === 'string' ? fields.split(/,\s*/) : fields
     fields = $.isArray(fields) ? fields : [fields]
 
-    this.filter = function (item) {
+    // If value is undefined, remove this filter
+    if (value === undefined) return delete this.filters[fields]
+
+    this.filters[fields] = function (item) {
       var matches = false
       var match_all_fields = fields === null
 
@@ -192,10 +197,14 @@
     var visibleItems = this.$items.slice(0)
 
     // filter
-    if (this.filter) {
+    if (!$.isEmptyObject(this.filters)) {
       var filtered = []
       $.each(visibleItems, function (idx, item) {
-        if ($this.filter(item)) filtered.push(item)
+        var matches = true
+        $.each($this.filters, function (fields, filter) {
+          if (!matches || !filter(item)) matches = false
+        })
+        if (matches) filtered.push(item)
       })
       visibleItems = filtered
     }
@@ -319,21 +328,31 @@
   // data-api filters
 
   $(document).on(Index.EVENTS, '[data-search]', function (e) {
-    var target   = $(e.target).closest('[data-search]')
-    var triggers = (target.attr('data-trigger') || 'change').split(' ')
-    var action   = target.attr('data-trigger')
+    var $this   = $(this).closest('[data-search]')
+    var $target = $($this.attr('data-target'))
+    var triggers = ($this.attr('data-trigger') || 'change').split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
 
-    var index  = $($(e.target).data('target')).data('adcom.index')
+    var fields = $this.data('search')
+    var value  = $this.val() == '' ? undefined : $this.val()
 
-    var fields = $(e.target).data('search')
-    fields = typeof fields !== 'undefined' ? fields.split(/,\s*/) : null
-    var value  = $(e.target).val()
+    Plugin.call($target, 'setFilter', fields, value)
+    Plugin.call($target, 'show')
+  })
 
-    index.setFilter(fields, value)
+  $(document).on(Index.EVENTS, '[data-filter]', function (e) {
+    var $this   = $(this).closest('[data-filter]')
+    var $target = $($this.attr('data-target'))
+    var triggers = ($this.attr('data-trigger') || 'click').split(' ')
 
-    index.show()
+    if (triggers.indexOf(e.type) == -1) return
+
+    var fields = $this.data('filter')
+    var value  = $this.data('match')
+
+    Plugin.call($target, 'setFilter', fields, value)
+    Plugin.call($target, 'show')
   })
 
 }(jQuery);
