@@ -7,10 +7,9 @@
   var Form = function (element, options) {
     this.options  = options
     this.$element = $(element)
+    this.source   = null
 
-    this.serialized = typeof this.options.serialized === 'string' ? JSON.parse(this.options.serialized) : this.options.serialized
-
-    this.show(this.serialized)
+    this.show(typeof this.options.serialized === 'string' ? JSON.parse(this.options.serialized) : this.options.serialized)
   }
 
   Form.VERSION = '0.0.1'
@@ -20,6 +19,8 @@
   }
 
   Form.prototype.deserialize = function (data) {
+    this.source = data
+
     this.$element[0].reset()
     this.$element.deserialize(data)
   }
@@ -32,6 +33,9 @@
     // 'submit' event already exists for actually submitting the form
     // maybe we shouldn't use this name then?
     // this.$element.trigger($.Event('submit.adcom.form', { data: data }))
+
+    this.$element.trigger($.Event('update.adcom.index', { serialized: data }))
+    this.$element.trigger($.Event('updated.adcom.index', { serialized: data }))
 
     this.$element.trigger($.Event('submitted.adcom.form', { serialized: data }))
   }
@@ -100,26 +104,26 @@
   }
 
   $(document).on('click', '[data-toggle="form"]', function (e) {
-    var target     = $($(e.target).closest('[data-toggle="form"]').data('target'))
-    var serialized = $(e.target).closest('[data-toggle="form"]').data('serialized')
+    var $this      = $(this).closest('[data-toggle="form"]')
+    var $target    = $($this.data('target'))
+
+    var serialized = $this.closest('[data-toggle="form"]').data('serialized')
 
     // Default to item data provided to index.js items, if available
-    var indexItem = closestWithData($(e.target), 'adcom.index.item')
-    if (indexItem !== undefined)
-      serialized = serialized || indexItem.data('adcom.index.item')
+    var indexItem = closestWithData($this, 'adcom.index.item')
+    if (serialized === undefined && indexItem !== undefined) {
+      serialized = indexItem.data('adcom.index.item')
+      $target.off('update.adcom.index').on('update.adcom.index', function (e) {
+        indexItem.trigger($.Event('update.adcom.index', {item: e.serialized}))
+      })
+    }
 
-    Plugin.call(target, 'show', serialized)
+    Plugin.call($target, 'show', serialized)
   })
 
   $(document).on('submit', 'form[data-control="form"]', function (e) {
     e.preventDefault()
     $(e.target).form('submit')
-  })
-
-  $(document).on('click', '[data-event]', function (e) {
-    var form = $(e.target).closest('[data-control="form"]')
-    var ev   = $(e.target).data('event') + '.adcom.form'
-    form.trigger(ev)
   })
 
 }(jQuery);

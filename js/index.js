@@ -248,16 +248,21 @@
 
   Index.prototype.renderItem = function (item) {
     var $this    = this
-    var compiled = this.template(item)
+    var $item    = item
+    var compiled = this.template($item)
     var el       = $(compiled)
 
     el.find('[data-field]').each(function (idx, fieldContainer) {
       var field = $(fieldContainer).attr('data-field')
-      var value = typeof item[field] !== 'function' ? item[field] : item[field]()
+      var value = typeof $item[field] !== 'function' ? $item[field] : $item[field]()
       $(fieldContainer).html(value)
     })
 
-    el.data('adcom.index.item', item)
+    el.data('adcom.index.item', $item)
+    el.on('update.adcom.index', function (e) {
+      $.extend($item, e.item)
+      el.replaceWith($this.renderItem($item))
+    })
 
     return el
   }
