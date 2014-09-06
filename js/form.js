@@ -32,7 +32,7 @@
 
     // 'submit' event already exists for actually submitting the form
     // maybe we shouldn't use this name then?
-    // this.$element.trigger($.Event('submit.adcom.form', { data: data }))
+    // this.$element.trigger($.Event('submit.adcom.form', { serialized: data }))
 
     this.$element.trigger($.Event('update.adcom.index', { serialized: data }))
     this.$element.trigger($.Event('updated.adcom.index', { serialized: data }))

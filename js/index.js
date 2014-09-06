@@ -36,9 +36,11 @@
     this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
     this.template = typeof this.options.template === 'string' ? this.compileTemplate(this.options.template) : (this.options.template || this.defaultTemplate())
 
-    this.states  = []
-    this.sort    = null
-    this.filters = {}
+    this.states      = []
+    this.sort        = null
+    this.filters     = {}
+    this.currentPage = parseInt(this.options.currentPage || 1)
+    this.pageSize    = parseInt(this.options.pageSize || 1)
 
     this.setInitialState()
 
@@ -47,12 +49,15 @@
 
   Index.VERSION = '0.0.1'
 
-  Index.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.index" }).join(' ')
+  Index.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.index.data-api" }).join(' ')
 
   Index.DEFAULTS = {
     templateEngine: 'string',
     items: [],
-    fields: []
+    fields: [],
+    pagination: 'off',
+    currentPage: 1,
+    pageSize: 20
   }
 
   // Orchestration
@@ -65,10 +70,6 @@
   Index.prototype.destroy = function () {
     this.$element.off('.adcom.index').removeData('adcom.index')
     this.$element.empty()
-
-    // $('[data-control="index"]').index('toggleFilter', $('.active[data-filter][data-target]'))
-    // $('[data-control="index"]').index('toggleSearch', $('[data-search][data-target][value]'))
-    // $('[data-control="index"]').index('toggleSort', $('.active[data-sort][data-target]'))
   }
 
   // Actions
@@ -179,6 +180,7 @@
       if (left > right) return factor * 1
       return 0
     }
+    this.currentPage = 1
   }
 
   Index.prototype.setFilter = function (fields, value) {
@@ -200,6 +202,7 @@
       })
       return matches
     }
+    this.currentPage = 1
   }
 
   // Modeled after PourOver's .getCurrentItems. Should return the items in a
@@ -224,10 +227,31 @@
     // sort
     if (this.sort) visibleItems = visibleItems.sort(this.sort)
 
-    // [paginate]
-    // tktk
+    // paginate
+    if (this.options.pagination == 'on') {
+      visibleItems = this.getCurrentPage(visibleItems)
+    }
 
     return visibleItems
+  }
+
+  Index.prototype.getCurrentPage = function (items) {
+    var count = items.length
+    var pages = Math.ceil(count / this.pageSize)
+    this.$element.trigger($.Event('paginate.adcom.index', { page: this.currentPage, pages: pages, count: count }))
+
+    var startIdx = (this.currentPage - 1) * this.pageSize
+    var endIdx   = startIdx + this.pageSize
+
+    items = items.slice(startIdx, endIdx)
+
+    this.$element.trigger($.Event('paginated.adcom.index', { page: this.currentPage, pages: pages, count: count }))
+    return items
+  }
+
+  Index.prototype.page = function (page) {
+    this.currentPage = parseInt(page)
+    this.show()
   }
 
   // Rendering
@@ -380,12 +404,10 @@
 
   $(document).on('click.adcom.index.data-api', '[data-sort]', function (e) {
     var $this   = $(this).closest('[data-sort]')
-    var $target  = $($this.data('target'))
+    var $target = $($this.data('target'))
 
     Plugin.call($target, 'toggleSort', $this)
   })
-
-  // data-api filters
 
   $(document).on(Index.EVENTS, '[data-search]', function (e) {
     var $this    = $(this).closest('[data-search]')
@@ -407,8 +429,11 @@
     Plugin.call($target, 'toggleFilter', $this)
   })
 
-  // $('[data-control="index"]').index('toggleFilter', $('.active[data-filter][data-target]'))
-  // $('[data-control="index"]').index('toggleSearch', $('[data-search][data-target][value]'))
-  // $('[data-control="index"]').index('toggleSort', $('.active[data-sort][data-target]'))
+  $(document).on('click.adcom.index.data-api', '[data-page]', function (e) {
+    var $this    = $(this).closest('[data-page]')
+    var $target  = $($this.data('target'))
+
+    Plugin.call($target, 'page', $this.data('page'))
+  })
 
 }(jQuery);
