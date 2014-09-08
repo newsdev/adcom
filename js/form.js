@@ -18,14 +18,18 @@
     serialized: {}
   }
 
-  Form.prototype.deserialize = function (data) {
+  Form.prototype.show = function (data) {
     this.source = data
+
+    this.$element.trigger($.Event('show.adcom.form', { serialized: data }))
 
     this.$element[0].reset()
     this.$element.deserialize(data)
+
+    this.$element.trigger($.Event('shown.adcom.form', { serialized: data }))
   }
   // alias
-  Form.prototype.show = Form.prototype.deserialize
+  Form.prototype.deserialize = Form.prototype.show
 
   Form.prototype.submit = function () {
     var data = this.serialize()
@@ -34,8 +38,8 @@
     // maybe we shouldn't use this name then?
     // this.$element.trigger($.Event('submit.adcom.form', { serialized: data }))
 
-    this.$element.trigger($.Event('update.adcom.index', { serialized: data }))
-    this.$element.trigger($.Event('updated.adcom.index', { serialized: data }))
+    // this.$element.trigger($.Event('update.adcom.index', { serialized: data }))
+    // this.$element.trigger($.Event('updated.adcom.index', { serialized: data }))
 
     this.$element.trigger($.Event('submitted.adcom.form', { serialized: data }))
   }
@@ -106,19 +110,14 @@
   $(document).on('click', '[data-toggle="form"]', function (e) {
     var $this      = $(this).closest('[data-toggle="form"]')
     var $target    = $($this.data('target'))
+    var $sourceKey = $this.data('source') || 'serialized'
 
-    var serialized = $this.closest('[data-toggle="form"]').data('serialized')
+    var source = closestWithData($this, $sourceKey)
 
-    // Default to item data provided to index.js items, if available
-    var indexItem = closestWithData($this, 'adcom.index.item')
-    if (serialized === undefined && indexItem !== undefined) {
-      serialized = indexItem.data('adcom.index.item')
-      $target.off('update.adcom.index').on('update.adcom.index', function (e) {
-        indexItem.trigger($.Event('update.adcom.index', {item: e.serialized}))
-      })
-    }
-
-    Plugin.call($target, 'show', serialized)
+    Plugin.call($target, 'show', source.data($sourceKey))
+    $target.data('adcom.form.trigger', $this)
+    $target.data('adcom.form.source', source)
+    $target.data('adcom.form.sourceKey', $sourceKey)
   })
 
   $(document).on('submit', 'form[data-control="form"]', function (e) {

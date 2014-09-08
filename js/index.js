@@ -36,7 +36,9 @@
     this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
     this.template = typeof this.options.template === 'string' ? this.compileTemplate(this.options.template) : (this.options.template || this.defaultTemplate())
 
-    this.states      = []
+    this.states   = this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
+    this.rendered = []
+
     this.sort        = null
     this.filters     = {}
     this.currentPage = parseInt(this.options.currentPage || 1)
@@ -55,6 +57,8 @@
     templateEngine: 'string',
     items: [],
     fields: [],
+    states: [],
+    selectedClass: 'active',
     pagination: 'off',
     currentPage: 1,
     pageSize: 20
@@ -63,56 +67,71 @@
   // Orchestration
 
   Index.prototype.show = function () {
-    var visibleItems = this.getCurrentItems()
-    this.renderItems(visibleItems)
+    var $this = this
+    var items = $this.getCurrentItems()
+
+    $($this.$element).empty()
+    $this.rendered = []
+
+    $this.$element.trigger($.Event('render.adcom.index', { items: items }))
+
+    $.each(items, function (idx, item) {
+      var renderedItem = $this.renderItem(item)
+      $($this.$element).append(renderedItem)
+    })
+
+    $this.$element.trigger($.Event('rendered.adcom.index', { items: items }))
   }
 
   Index.prototype.destroy = function () {
     this.$element.off('.adcom.index').removeData('adcom.index')
     this.$element.empty()
+    this.states = []
   }
 
   // Actions
 
   Index.prototype.select = function (selector) {
     var $this = this
-    $(selector).each(function (idx, el) { $this.changeState(el, 'select') })
+    $(selector).each(function (idx, el) { $this.changeState(el, true) })
   }
 
   Index.prototype.deselect = function (selector) {
     var $this = this
-    $(selector).each(function (idx, el) { $this.changeState(el, 'deselect') })
+    $(selector).each(function (idx, el) { $this.changeState(el, false) })
   }
 
   Index.prototype.toggle = function (selector) {
     var $this = this
     $(selector).each(function (idx, el) {
-      var idx = $this.$items.indexOf($(el).data('adcom.index.item'))
-      var selected = $this.states[idx] == 'selected'
-      $this.changeState(el, selected ? 'deselect' : 'select')
+      var idx = $(el).data('adcom.index.idx')
+      $this.changeState(el, $this.states[idx] ? false : true)
     })
   }
 
   // Helpers
 
-  Index.prototype.changeState = function (el, action) {
-    var item = $(el).data('adcom.index.item')
+  Index.prototype.changeState = function (el, state) {
+    var item   = $(el).data('adcom.index.item')
+    var action = state ? 'select' : 'unselect'
 
-    this.$element.trigger($.Event('toggle.adcom.index', { item: item }))
-    this.$element.trigger($.Event(action + '.adcom.index', { item: item }))
+    this.$element.trigger($.Event('toggle.adcom.index', { item: item, el: el, state: state }))
+    this.$element.trigger($.Event(action + '.adcom.index', { item: item, el: el }))
 
-    var idx = this.$items.indexOf($(el).data('adcom.index.item'))
-    this.states[idx] = action + 'ed'
+    // var idx = this.$items.indexOf($(el).data('adcom.index.item'))
+    var idx = $(el).data('adcom.index.idx')
+    this.states[idx] = state
+    if (state) { $(el).addClass(this.options.selectedClass) } else { $(el).removeClass(this.options.selectedClass) }
 
-    this.$element.trigger($.Event(action + 'ed.adcom.index', { item: item }))
-    this.$element.trigger($.Event('toggled.adcom.index', { item: item }))
+    this.$element.trigger($.Event(action + 'ed.adcom.index', { item: item, el: el }))
+    this.$element.trigger($.Event('toggled.adcom.index', { item: item, el: el, state: state }))
   }
 
   Index.prototype.getSelected = function () {
     var selected = []
     var $this = this
     $.each(this.$items, function (idx, item) {
-      if ($this.states[idx] == 'selected') selected.push(item)
+      if ($this.states[idx]) selected.push(item)
     })
     return selected
   }
@@ -206,10 +225,10 @@
   }
 
   // Modeled after PourOver's .getCurrentItems. Should return the items in a
-  // collection which have been filtered, sorted[, and paged?].
+  // collection which have been filtered, sorted, and paged.
   Index.prototype.getCurrentItems = function () {
     var $this        = this
-    var visibleItems = this.$items.slice(0)
+    var visibleItems = this.$items.slice(0) // dup
 
     // filter
     if (!$.isEmptyObject(this.filters)) {
@@ -245,7 +264,7 @@
 
     items = items.slice(startIdx, endIdx)
 
-    this.$element.trigger($.Event('paginated.adcom.index', { page: this.currentPage, pages: pages, count: count }))
+    this.$element.trigger($.Event('paginated.adcom.index', { page: this.currentPage, pages: pages, count: count, start: startIdx + 1, end: Math.min(endIdx, count) }))
     return items
   }
 
@@ -256,25 +275,14 @@
 
   // Rendering
 
-  Index.prototype.renderItems = function (items) {
-    var $this = this
-    $(this.$element).empty()
-
-    this.$element.trigger($.Event('render.adcom.index', { items: items }))
-
-    $.each(items, function (idx, item) {
-      var renderedItem = $this.renderItem(item)
-      $($this.$element).append(renderedItem)
-    })
-
-    this.$element.trigger($.Event('rendered.adcom.index', { items: items }))
-  }
-
   Index.prototype.renderItem = function (item) {
     var $this    = this
     var $item    = item
+    var $idx     = this.$items.indexOf(item)
     var compiled = this.template($item)
     var el       = $(compiled)
+
+    if (this.states[$idx]) el.addClass(this.options.selectedClass)
 
     el.find('[data-field]').each(function (idx, fieldContainer) {
       var field = $(fieldContainer).attr('data-field')
@@ -283,12 +291,21 @@
     })
 
     el.data('adcom.index.item', $item)
+    el.data('adcom.index.idx', $idx)
     el.on('update.adcom.index', function (e) {
       $.extend($item, e.item)
-      el.replaceWith($this.renderItem($item))
+      $this.updateAtIndex($idx, $item)
     })
 
+    $this.rendered[$idx] = el
+
     return el
+  }
+
+  Index.prototype.updateAtIndex = function (idx, item) {
+    this.$items[idx] = item
+
+    if (this.rendered[idx]) this.rendered[idx].replaceWith(this.renderItem(item))
   }
 
   // Trigger definitions
@@ -313,7 +330,7 @@
       if (nextState !== 'off') $el.attr('data-state', nextState)
 
       $this.setSort(field, {'ascending': false, 'descending': true, 'off': null}[nextState])
-      $this.show()
+      // $this.show()
     })
   }
 
@@ -328,7 +345,7 @@
       var value   = $el.val() == '' ? undefined : $el.val()
 
       $this.setFilter(fields, value)
-      $this.show()
+      // $this.show()
     })
   }
 
@@ -343,7 +360,7 @@
       var value   = $el.data('match')
 
       $this.setFilter(fields, value)
-      $this.show()
+      // $this.show()
     })
   }
 
@@ -407,6 +424,7 @@
     var $target = $($this.data('target'))
 
     Plugin.call($target, 'toggleSort', $this)
+    Plugin.call($target, 'show')
   })
 
   $(document).on(Index.EVENTS, '[data-search]', function (e) {
@@ -417,6 +435,7 @@
     if (triggers.indexOf(e.type) == -1) return
 
     Plugin.call($target, 'toggleSearch', $this)
+    Plugin.call($target, 'show')
   })
 
   $(document).on(Index.EVENTS, '[data-filter]', function (e) {
@@ -427,6 +446,7 @@
     if (triggers.indexOf(e.type) == -1) return
 
     Plugin.call($target, 'toggleFilter', $this)
+    Plugin.call($target, 'show')
   })
 
   $(document).on('click.adcom.index.data-api', '[data-page]', function (e) {
@@ -434,6 +454,7 @@
     var $target  = $($this.data('target'))
 
     Plugin.call($target, 'page', $this.data('page'))
+    Plugin.call($target, 'show')
   })
 
 }(jQuery);

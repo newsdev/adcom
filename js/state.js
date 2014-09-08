@@ -303,8 +303,8 @@
       // data.title    = data.title    || {}
       data.condense = data.condense || {}
 
-      if (data.pathattr)     data.path.attr     = data.pathattr
-      if (data.pathbase)     data.path.base     = data.pathbase
+      if (data.pathAttr)     data.path.attr     = data.pathAttr
+      if (data.pathBase)     data.path.base     = data.pathBase
       // if (data.titleattr)    data.title.attr    = data.titleattr
       if (data.condenseattr) data.consense.attr = data.condenseattr
 
