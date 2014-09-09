@@ -32,7 +32,7 @@
   Form.prototype.deserialize = Form.prototype.show
 
   Form.prototype.submit = function () {
-    var data = this.serialize()
+    var serialized = this.serialize()
 
     // 'submit' event already exists for actually submitting the form
     // maybe we shouldn't use this name then?
@@ -41,24 +41,24 @@
     // this.$element.trigger($.Event('update.adcom.index', { serialized: data }))
     // this.$element.trigger($.Event('updated.adcom.index', { serialized: data }))
 
-    this.$element.trigger($.Event('submitted.adcom.form', { serialized: data }))
+    this.$element.trigger($.Event('submitted.adcom.form', serialized))
   }
 
   Form.prototype.serialize = function () {
-    var data       = {}
-    var disabled   = this.$element.find(':disabled').removeAttr('disabled')
-    var serialized = this.$element.serializeArray()
+    var data     = {}
+    var disabled = this.$element.find(':disabled').removeAttr('disabled')
+    var array    = this.$element.serializeArray()
     disabled.attr('disabled', 'disabled')
 
-    for (var idx in serialized) {
-      if (serialized[idx].value === '') {
-        data[serialized[idx].name] = null
+    for (var idx in array) {
+      if (array[idx].value === '') {
+        data[array[idx].name] = null
       } else {
-        data[serialized[idx].name] = serialized[idx].value
+        data[array[idx].name] = array[idx].value
       }
     }
 
-    return data
+    return { object: data, array: array }
   }
 
   Form.prototype.destroy = function (data) {

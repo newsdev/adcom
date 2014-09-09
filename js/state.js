@@ -128,7 +128,7 @@
   // url => {}
   State.prototype.deserialize = function (string) {
     var path   = string.split('?')[0]
-    var params = this.parseParams(string.split('?')[1])
+    var params = State.parseParams(string.split('?')[1])
     var state  = {}
 
     switch (this.options.format) {
@@ -154,7 +154,7 @@
   // }
 
   // https://gist.github.com/kares/956897#comment-1190642
-  State.prototype.parseParams = function (query) {
+  State.parseParams = function (query) {
     var re = /([^&=]+)=?([^&]*)/g;
     var decode = function (str) {
       return decodeURIComponent(str.replace(/\+/g, ' '));
