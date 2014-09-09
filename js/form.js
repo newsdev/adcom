@@ -114,10 +114,11 @@
 
     var source = closestWithData($this, $sourceKey)
 
-    Plugin.call($target, 'show', source.data($sourceKey))
     $target.data('adcom.form.trigger', $this)
     $target.data('adcom.form.source', source)
     $target.data('adcom.form.sourceKey', $sourceKey)
+
+    Plugin.call($target, 'show', source.data($sourceKey))
   })
 
   $(document).on('submit', 'form[data-control="form"]', function (e) {
