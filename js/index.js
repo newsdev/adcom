@@ -257,16 +257,18 @@
   }
 
   Index.prototype.getCurrentPage = function (items) {
-    var count = items.length
-    var pages = Math.ceil(count / this.pageSize)
-    this.$element.trigger($.Event('paginate.adcom.index', { page: this.currentPage, pages: pages, count: count }))
-
+    var count    = items.length
+    var pages    = Math.ceil(count / this.pageSize)
     var startIdx = (this.currentPage - 1) * this.pageSize
     var endIdx   = startIdx + this.pageSize
+    var start    = Math.min(startIdx + 1, count)
+    var end      = Math.min(endIdx, count)
+
+    this.$element.trigger($.Event('paginate.adcom.index', { page: this.currentPage, pages: pages, count: count, items: items, start: start, end: end }))
 
     items = items.slice(startIdx, endIdx)
 
-    this.$element.trigger($.Event('paginated.adcom.index', { page: this.currentPage, pages: pages, count: count, start: startIdx + 1, end: Math.min(endIdx, count) }))
+    this.$element.trigger($.Event('paginated.adcom.index', { page: this.currentPage, pages: pages, count: count, items: items, start: start, end: end }))
     return items
   }
 
