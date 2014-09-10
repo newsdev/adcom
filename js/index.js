@@ -206,8 +206,11 @@
     fields = typeof fields === 'string' ? fields.split(/,\s*/) : fields
     fields = $.isArray(fields) ? fields : [fields]
 
+    this.currentPage = 1
+
     // If value is undefined, remove this filter
     if (value === undefined) return delete this.filters[fields]
+    if (typeof value === 'function') return this.filters[fields] = value
 
     this.filters[fields] = function (item) {
       var matches = false
@@ -221,7 +224,6 @@
       })
       return matches
     }
-    this.currentPage = 1
   }
 
   // Modeled after PourOver's .getCurrentItems. Should return the items in a
