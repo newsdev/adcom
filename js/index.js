@@ -274,8 +274,12 @@
 
   Index.prototype.updateAtIndex = function (idx, item) {
     this.$items[idx] = item
-
-    if (this.rendered[idx]) this.rendered[idx].replaceWith(this.renderItem(item))
+    if (this.rendered[idx]) {
+      var original    = this.rendered[idx]
+      var replacement = this.renderItem(item)
+      original.replaceWith(replacement)
+      this.rendered[idx] = replacement
+    }
   }
 
   // Trigger definitions
