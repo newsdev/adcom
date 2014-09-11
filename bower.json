@@ -9,7 +9,15 @@
   "private": false,
   "dependencies": {
   },
+  "main": [
+    "dist/css/adcom.css",
+    "dist/js/adcom.js"
+  ],
   "ignore": [
-    ".bowerrc"
+    "/.*",
+    ".bowerrc",
+    "Gruntfile.js",
+    "docs",
+    "_config.yml"
   ]
 }
