@@ -1,27 +1,3 @@
-/*
-
-  Action API:
-    toggle      (el...)
-    select      (el...)
-    deselect    (el...)
-
-    sort (attr / function, direction)
-
-    insertAt  (index, item)
-    removeAt  (index)
-
-  Helper API:
-    getSelected ()
-    setItems (items...)
-
-    show ()
-    destroy ()
-
-  Philosophies:
-    Create an little markup for you as possible. You should be in control of
-    how your page looks.
-
- */
 +function ($) {
   'use strict';
 
@@ -54,7 +30,6 @@
   Index.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.index.data-api" }).join(' ')
 
   Index.DEFAULTS = {
-    templateEngine: 'string',
     items: [],
     fields: [],
     states: [],
@@ -68,19 +43,20 @@
 
   Index.prototype.show = function () {
     var $this = this
+
+    $this.$element.trigger('show.adcom.index')
+
     var items = $this.getCurrentItems()
 
     $($this.$element).empty()
     $this.rendered = []
-
-    $this.$element.trigger($.Event('render.adcom.index', { items: items }))
 
     $.each(items, function (idx, item) {
       var renderedItem = $this.renderItem(item)
       $($this.$element).append(renderedItem)
     })
 
-    $this.$element.trigger($.Event('rendered.adcom.index', { items: items }))
+    $this.$element.trigger($.Event('shown.adcom.index', { items: items }))
   }
 
   Index.prototype.destroy = function () {
@@ -113,18 +89,15 @@
 
   Index.prototype.changeState = function (el, state) {
     var item   = $(el).data('adcom.index.item')
-    var action = state ? 'select' : 'unselect'
 
-    this.$element.trigger($.Event('toggle.adcom.index', { item: item, el: el, state: state }))
-    this.$element.trigger($.Event(action + '.adcom.index', { item: item, el: el }))
+    this.$element.trigger($.Event('toggle.adcom.index', { item: item, target: el, state: state }))
 
     // var idx = this.$items.indexOf($(el).data('adcom.index.item'))
     var idx = $(el).data('adcom.index.idx')
     this.states[idx] = state
     if (state) { $(el).addClass(this.options.selectedClass) } else { $(el).removeClass(this.options.selectedClass) }
 
-    this.$element.trigger($.Event(action + 'ed.adcom.index', { item: item, el: el }))
-    this.$element.trigger($.Event('toggled.adcom.index', { item: item, el: el, state: state }))
+    this.$element.trigger($.Event('toggled.adcom.index', { item: item, target: el, state: state }))
   }
 
   Index.prototype.getSelected = function () {
@@ -139,20 +112,13 @@
   Index.prototype.setInitialState = function () {
     this.toggleFilter($('.active[data-filter][data-target]'))
     this.toggleSort($('.active[data-sort][data-target]'))
-    this.toggleSearch($('[data-search][data-target][value]'))
   }
 
   // Template
 
   Index.prototype.compileTemplate = function (template) {
-    switch (this.options.templateEngine) {
-      case 'string':
-        return function () { return template }
-      case 'underscore':
-        return _.template(template)
-      default:
-        throw "Unkown templateEngine for Index: " + this.options.templateEngine
-    }
+    if (this.options.templateEngine) return this.options.templateEngine(template)
+    return function() { return template }
   }
 
   Index.prototype.defaultTemplate = function () {
@@ -163,7 +129,7 @@
       templateString += '<td data-field="' + field + '"></td>'
     })
 
-    templateString = '<tr data-toggle="select">' + templateString + '</tr>'
+    templateString = '<tr>' + templateString + '</tr>'
 
     return this.compileTemplate(templateString)
   }
@@ -264,8 +230,6 @@
     var start    = Math.min(startIdx + 1, count)
     var end      = Math.min(endIdx, count)
 
-    this.$element.trigger($.Event('paginate.adcom.index', { page: this.currentPage, pages: pages, count: count, items: items, start: start, end: end }))
-
     items = items.slice(startIdx, endIdx)
 
     this.$element.trigger($.Event('paginated.adcom.index', { page: this.currentPage, pages: pages, count: count, items: items, start: start, end: end }))
@@ -288,7 +252,9 @@
 
     if (this.states[$idx]) el.addClass(this.options.selectedClass)
 
-    el.find('[data-field]').each(function (idx, fieldContainer) {
+    var dynamicElements = el.data('field') === undefined ? el.find('[data-field]') : el
+
+    dynamicElements.each(function (idx, fieldContainer) {
       var field = $(fieldContainer).attr('data-field')
       var value = typeof $item[field] !== 'function' ? $item[field] : $item[field]()
       $(fieldContainer).html(value)
@@ -334,22 +300,6 @@
       if (nextState !== 'off') $el.attr('data-state', nextState)
 
       $this.setSort(field, {'ascending': false, 'descending': true, 'off': null}[nextState])
-      // $this.show()
-    })
-  }
-
-  Index.prototype.toggleSearch = function (el) {
-    var $this = this
-    el.each(function () {
-      var $el     = $(this)
-      var $target = $($el.data('target'))
-      if ($target[0] !== $this.$element[0]) return
-
-      var fields  = $el.data('search')
-      var value   = $el.val() == '' ? undefined : $el.val()
-
-      $this.setFilter(fields, value)
-      // $this.show()
     })
   }
 
@@ -361,10 +311,10 @@
       if ($target[0] !== $this.$element[0]) return
 
       var fields  = $el.data('filter')
-      var value   = $el.data('match')
+      var value   = $el.is(':input') ? $el.val() : $el.data('match')
+      if (value == '') value = undefined
 
       $this.setFilter(fields, value)
-      // $this.show()
     })
   }
 
@@ -431,21 +381,11 @@
     Plugin.call($target, 'show')
   })
 
-  $(document).on(Index.EVENTS, '[data-search]', function (e) {
-    var $this    = $(this).closest('[data-search]')
-    var $target  = $($this.data('target'))
-    var triggers = ($this.attr('data-trigger') || 'change').split(' ')
-
-    if (triggers.indexOf(e.type) == -1) return
-
-    Plugin.call($target, 'toggleSearch', $this)
-    Plugin.call($target, 'show')
-  })
-
   $(document).on(Index.EVENTS, '[data-filter]', function (e) {
-    var $this    = $(this).closest('[data-filter]')
-    var $target  = $($this.data('target'))
-    var triggers = ($this.attr('data-trigger') || 'click').split(' ')
+    var $this        = $(this).closest('[data-filter]')
+    var $target      = $($this.data('target'))
+    var defaultEvent = $this.is(':input') ? 'change' : 'click'
+    var triggers     = ($this.attr('data-trigger') || defaultEvent).split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
 
@@ -460,5 +400,7 @@
     Plugin.call($target, 'page', $this.data('page'))
     Plugin.call($target, 'show')
   })
+
+  $('[data-control="index"]').index()
 
 }(jQuery);
