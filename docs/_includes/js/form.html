@@ -5,14 +5,295 @@
   <p>For all their complexity, the function forms serve in admins is often very repetitive. Form.js takes an existing <code>&lt;form&gt;</code> element and adds useful events hooks for serialization, deserialization and submitting.</p>
 
   <h3>Populate a form</h3>
+  <p>Most forms are fairly simple, and can be expressed with a serialized JSON object. Form.js lets you populate forms based on that JSON. This comes in handy when you have multiple items on a page that you may want to edit. Instead of rendering the form dynamically for each one, or populating the fields manually in JavaScript, you can populate the form automatically based on a source object.</p>
 
   <div class="bs-example">
-    <form data-control="form">
-      <input type="text" class="form-control" name="id">
-      <input type="submit" class="btn btn-default" value="Create">
+    <form id="myForm" data-control="form">
+      <div class="form-group">
+        <input type="text" class="form-control" name="id" placeholder="id">
+      </div>
+    </form>
+    <button type="button" class="btn btn-primary" data-toggle="form" data-target="#myForm" data-serialized='{"id": 1}'>Populate with "1"</button>
+    <button type="button" class="btn btn-primary" data-toggle="form" data-target="#myForm" data-serialized='{"id": 2}'>Populate with "2"</button>
+  </div>
+
+{% highlight html %}
+<form id="myForm" data-control="form">
+  <div class="form-group">
+    <input type="text" class="form-control" name="id" placeholder="id">
+  </div>
+</form>
+<button type="button" class="btn btn-primary" data-toggle="form" data-target="#myForm" data-serialized='{"id": 1}'>Populate with "1"</button>
+<button type="button" class="btn btn-primary" data-toggle="form" data-target="#myForm" data-serialized='{"id": 2}'>Populate with "2"</button>
+{% endhighlight %}
+
+  <h3>Use a form with multiple objects</h3>
+  <p>Forms are most useful when they are associated with a collection of items, for example a form that can edit any item in a list.</p>
+  <p>It uses the data available at the trigger's <code>data-serialized</code> attribute by default, but you can override that with any data attribute key. Because Index.js stores each item's data on it's rendered element, you're able to link forms to lists without JavaScript.</p>
+
+  <div class="bs-callout bs-callout-info" id="form-index-integration">
+    <h4>Use a form with an Index</h4>
+    <p>Specify <code>data-source="adcom.index.item"</code> on a trigger element within an Index.js item to populate a form with that item's data.</p>
+    {% highlight html %}<button data-toggle="form" data-target="#myForm" data-source="adcom.index.item">Click me</button>{% endhighlight %}
+  </div>
+
+  <div class="bs-example">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody data-control="index"
+             data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
+             data-template="
+             <tr>
+               <td data-field='id'></td>
+               <td data-field='name'></td>
+               <td>
+                 <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.index.item'>Populate Form</button>
+               </td>
+             </tr>
+        "></tbody>
+    </table>
+
+    <form id="myFormMultipleSources" data-control="form">
+      <div class="row">
+        <div class="form-group col-sm-5">
+          <input type="text" class="form-control" name="id" placeholder="id">
+        </div>
+        <div class="form-group col-sm-5">
+          <input type="text" class="form-control" name="name" placeholder="name">
+        </div>
+        <div class="form-group col-sm-2">
+          <input type="submit" class="form-control btn btn-primary" disabled value="Save">
+        </div>
+      </div>
     </form>
   </div>
 
+{% highlight html %}
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody data-control="index"
+         data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
+         data-template="
+         <tr>
+           <td data-field='id'></td>
+           <td data-field='name'></td>
+           <td>
+             <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.index.item'>Populate Form</button>
+           </td>
+         </tr>
+    "></tbody>
+</table>
+
+<form id="myFormMultipleSources" data-control="form">
+  <div class="row">
+    <div class="form-group col-sm-5">
+      <input type="text" class="form-control" name="id" placeholder="id">
+    </div>
+    <div class="form-group col-sm-5">
+      <input type="text" class="form-control" name="name" placeholder="name">
+    </div>
+    <div class="form-group col-sm-2">
+      <input type="submit" class="form-control btn btn-primary" disabled value="Save">
+    </div>
+  </div>
+</form>
+{% endhighlight %}
+
+  <h3>Update source objects from the form</h3>
+
+  <div class="bs-callout bs-callout-danger" id="form-source-updates">
+    <h4>Submitting a form doesn't do anything</h4>
+    <p>You must hook into the <code>submitted.adcom.form</code> event to update your associated record on a server and / or your local copy of that object.</p>
+{% highlight js %}
+$('#myForm').on('submitted.adcom.form', function(e) {
+  $.post(myUrl, e.object);
+});
+{% endhighlight %}
+  </div>
+
+  <div class="bs-callout bs-callout-info" id="form-source-updates-index">
+    <h4>Update objects from Index.js</h4>
+    <p>When you update an object from an Index.js list, you'll want to make sure the changes you've made are persisted to the index, and that those changes are rendered. Trigger the <code>update.adcom.index</code> event on the item's container element to do so:</p>
+    {% highlight js %}$(itemContainer).trigger('update.adcom.index', newData);{% endhighlight %}
+  </div>
+
+  <div class="bs-example">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody data-control="index" id="myIndexUpdate"
+             data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
+             data-template="
+             <tr>
+               <td data-field='id'></td>
+               <td data-field='name'></td>
+               <td>
+                 <button class='btn btn-default'
+                   data-toggle='form'
+                   data-target='#myFormUpdate'
+                   data-source='adcom.index.item'>Populate Form</button>
+               </td>
+             </tr>
+        "></tbody>
+    </table>
+
+    <form id="myFormUpdate" data-control="form">
+      <div class="row">
+        <div class="form-group col-sm-5">
+          <input type="text" class="form-control" name="id" placeholder="id">
+        </div>
+        <div class="form-group col-sm-5">
+          <input type="text" class="form-control" name="name" placeholder="name">
+        </div>
+        <div class="form-group col-sm-2">
+          <input type="submit" class="form-control btn btn-primary" value="Save">
+        </div>
+      </div>
+    </form>
+
+    <script>
+      $(document).ready(function() {
+        $('#myFormUpdate').on('submitted.adcom.form', function(e) {
+          $(e.sourceElement).trigger('update.adcom.index', $.extend(e.sourceData, e.object))
+        });
+      });
+    </script>
+  </div>
+
+{% highlight html %}
+<script>
+  $(document).ready(function() {
+    $('#myFormUpdate').on('submitted.adcom.form', function(e) {
+      $(e.sourceElement).trigger('update.adcom.index', $.extend(e.sourceData, e.object))
+    });
+  });
+</script>
+{% endhighlight %}
+
   <h2 id="form-usage">Usage</h2>
 
+  <h3>Via data attributes</h3>
+  <p>Trigger changes to a form without writing any JavaScript. Set <code>data-control="form"</code> on your form element, and on a second trigger element, specify the <code>data-toggle</code>, <code>data-target</code> and <code>data-serialized</code> attributes.</p>
+{% highlight html %}
+<form id="myForm" data-control="form"> ... </form>
+<button data-toggle="form"
+        data-target="#myForm"
+        data-serialized="{ ... }">
+  Click me
+</button>
+{% endhighlight %}
+
+  <h3>Via JavaScript</h3>
+  <p>Or call the <code>.form()</code> method on the form element. Events triggered on the form will be triggered against this element.</p>
+
+{% highlight js %}
+$('#myForm').form(options);
+$('#myForm').on('submitted.adcom.form', function(e) { ... });
+{% endhighlight %}
+
+  <h3>Options</h3>
+  <p>Options can be passed via data attributes or JavaScript. For data attributes, append the option name to <code>data-</code>, as in <code>data-items=""</code>.</p>
+  <h4>The form element</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+       <tr>
+         <th style="width: 100px;">Name</th>
+         <th style="width: 50px;">type</th>
+         <th style="width: 50px;">default</th>
+         <th>description</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td>serialized</td>
+         <td>native or serialized object</td>
+         <td></td>
+         <td>Populate the form with these attributes on instantiation.</td>
+       </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Form triggers</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+       <tr>
+         <th style="width: 100px;">Name</th>
+         <th style="width: 50px;">type</th>
+         <th style="width: 50px;">default</th>
+         <th>description</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td>serialized</td>
+         <td>native or serialized object</td>
+         <td></td>
+         <td>Populate the form with these attributes when trigger fires.</td>
+       </tr>
+       <tr>
+         <td>source</td>
+         <td>strong</td>
+         <td>serialized</td>
+         <td>When the event fires, Form.js must find the data to populate the form with. It will look in trigger element's data using this key. So by default the trigger element will use any data at <code>data-serialized=""</code>. If no data with that key is found on the trigger element, it will look up through the elements parents until it finds one.</td>
+       </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Methods</h3>
+
+  <h4>.form('show', object)</h4>
+  <p>Deserializes the passed object into the form's input fields.</p>
+  {% highlight js %}$('#myForm').form('show', {"id": 1}){% endhighlight %}
+
+  <h3>Events</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+       <tr>
+         <th style="width: 150px;">Event Type</th>
+         <th>Description</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td>show.adcom.index</td>
+         <td>This event is fired immediately when the <code>show</code> instance method has been called. The serialized data to be displayed is available as the <code>serialized</code> property of the event.</td>
+       </tr>
+       <tr>
+         <td>shown.adcom.index</td>
+         <td>This event is fired when the serialized data has been inserted into the form. The data is available as the <code>serialized</code> property of the event.</td>
+       </tr>
+       <tr>
+         <td>submitted.adcom.index</td>
+         <td>This data is fired when the form has been submitted. <strong><code>data-control="form"</code> must be present on the form element in order for Form.js to override the default submit handling of the form and fire this event instead.</strong> The form data is available in two ways: serialized into an object as the <code>object</code> property of the event, and as a raw array of input fields as <code>array</code>.</td>
+       </tr>
+      </tbody>
+    </table>
+  </div><!-- /.table-responsive -->
+{% highlight js %}
+$('#myForm').on('submitted.adcom.form', function (e) {
+  // do something...
+})
+{% endhighlight %}
 </div>

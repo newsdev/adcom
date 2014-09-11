@@ -1,0 +1,20 @@
+<div class="bs-docs-section">
+  <h1 id="js-overview" class="page-header">Overview</h1>
+
+  <h3 id="js-design">Defaults versus Overrides</h3>
+  <p>Adcom's JavaScript plugins try to allow graceful iteration from simple to advanced usage. All provide sensible defaults, letting you add common interactions quickly. But the core assumptions of each are kept small, and provide hooks to override components and templates as your needs get more specific.</p>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Using multiple JavaScript plugins</h4>
+    <p>You may want to use Adcom JavaScript plugins in conjunction with one another or with Bootstrap's JavaScript plugins, such as having a button trigger both a modal and a form inside. Because both are triggered with overlapping data attributes, you cannot place them both on the same element.</p>
+    <p>Instead, you can use a wrapper element. Event bubbling will allow both events to fire sequentially.</p>
+{% highlight html %}
+<span data-toggle="modal" data-target="#myModal">
+  <button class="btn btn-primary" data-toggle="form" data-target="#myForm">Click</button>
+</span>
+{% endhighlight %}
+  </div>
+
+  <h3 id="js-extending-bootstrap">Extending Bootstrap</h3>
+  <p>The JavaScript plugins (and this documentation) are written in the style of Bootstrap's JavaScript plugins. The <a href="http://getbootstrap.com/javascript/">general principles</a> that apply to Bootstrap's plugins apply here as well.</p>
+</div>
