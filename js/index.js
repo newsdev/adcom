@@ -263,8 +263,7 @@
     el.data('adcom.index.item', $item)
     el.data('adcom.index.idx', $idx)
     el.on('update.adcom.index', function (e) {
-      $.extend($item, e.item)
-      $this.updateAtIndex($idx, $item)
+      $this.updateAtIndex($idx, e.item)
     })
 
     $this.rendered[$idx] = el
