@@ -171,7 +171,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
     <script>
       $(document).ready(function() {
         $('#myFormUpdate').on('submitted.adcom.form', function(e) {
-          $(e.sourceElement).trigger($.Event('update.adcom.index', { item: $.extend(e.sourceData, e.object) }));
+          $(e.sourceElement).trigger($.Event('update.adcom.index', { item: $.extend({}, e.sourceData, e.object) }));
         });
       });
     </script>
@@ -181,7 +181,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
 <script>
   $(document).ready(function() {
     $('#myFormUpdate').on('submitted.adcom.form', function(e) {
-      $(e.sourceElement).trigger($.Event('update.adcom.index', { item: $.extend(e.sourceData, e.object) }));
+      $(e.sourceElement).trigger($.Event('update.adcom.index', { item: $.extend({}, e.sourceData, e.object) }));
     });
   });
 </script>
@@ -258,6 +258,13 @@ $('#myForm').on('submitted.adcom.form', function(e) { ... });
        </tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="bs-callout bs-callout-info" id="form-stored-data">
+    <h3>Stored data</h3>
+    <p>When you display data in a form using the data-api, several helper references are added to the form element. They are there to help you find where the data you're editing came from.</p>
+    <p><code>$('#myForm').data('adcom.form.sourceElement')</code> returns the element the source data was stored on.</code></p>
+    <p><code>$('#myForm').data('adcom.form.sourceData')</code> returns the source data that was deserialized into the form.</code></p>
   </div>
 
   <h3>Methods</h3>

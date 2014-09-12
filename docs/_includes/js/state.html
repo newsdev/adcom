@@ -1,15 +1,203 @@
+<div id="state" data-control="state" data-path-attr="path" data-path-base="/javascript/"></div>
+
 <div class="bs-docs-section">
   <h1 id="state" class="page-header">Page State <small>state.js</small></h1>
+  <p>The Page State plugin reponds to events on your page by saving data into a state object, and serializing that state object into your page's url using the HTML history API. It can use that serialized state to return your page to that state when a user deep links in, or uses the browser history buttons.</p>
 
   <h2 id="state-examples">Examples</h2>
 
+  <p>Enable State.js by adding <code>data-control="state"</code> to an element on your page. The <code>&lt;html&gt;</code> tag is a good convention, but it can be placed on any element.</p>
+
+{% highlight html %}
+<html data-control="state"></html>
+{% endhighlight %}
+
+  <p>Attach event triggers to elements on the page that should change the page state. Triggers must have the <code>data-toggle="state"</code> attribute, and zero or more attributes that begin with the <code>state-</code> prefix.</p>
+  <p>The state-* attributes are converted into an object, and merged into the page state (unless <code>data-merge="false"</code>, which causes the specified state to replace the current state).</p>
+
+  <div class="bs-example">
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-primary" data-toggle="state" state-page="page1">
+        <input type="radio" name="page"> page1
+      </label>
+      <label class="btn btn-primary" data-toggle="state" state-page="page2">
+        <input type="radio" name="page"> page2
+      </label>
+      <label class="btn btn-primary" data-toggle="state" state-page="page3">
+        <input type="radio" name="page"> page3
+      </label>
+      <label class="btn btn-primary" data-toggle="state" data-merge="false">
+        <input type="radio" name="page"> clear
+      </label>
+    </div>
+  </div><!-- /example -->
+
+{% highlight html %}
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary" data-toggle="state" state-page="page1">
+    <input type="radio" name="page"> page1
+  </label>
+  <label class="btn btn-primary" data-toggle="state" state-page="page2">
+    <input type="radio" name="page"> page2
+  </label>
+  <label class="btn btn-primary" data-toggle="state" state-page="page3">
+    <input type="radio" name="page"> page3
+  </label>
+  <label class="btn btn-primary" data-toggle="state" data-merge="false">
+    <input type="radio" name="page"> clear
+  </label>
+</div>
+{% endhighlight %}
+
+  <h3>Changing the path</h3>
+  <p>All state parameters are serialized into one or more querystring attributes by default. But you can designate a single attribute to function as the page's path. Instead of getting serialized to the querystring, it will replace the current <code>pathname</code> in the url when triggered.</p>
+
+  <div class="bs-example">
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-primary" data-toggle="state" state-path="sub-page">
+        <input type="radio" name="page"> /javascript/sub-page
+      </label>
+      <label class="btn btn-primary" data-toggle="state" state-path="">
+        <input type="radio" name="page"> /javascript/
+      </label>
+    </div>
+  </div><!-- /example -->
+
+{% highlight html %}
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary" data-toggle="state" state-path="/not-javascript/">
+    <input type="radio" name="page"> /not-javascript/
+  </label>
+  <label class="btn btn-primary" data-toggle="state" state-path="/javascript/">
+    <input type="radio" name="page"> /javascript/
+  </label>
+</div>
+{% endhighlight %}
+
   <h2 id="state-usage">Usage</h2>
 
-  <h3>Methods</h3>
+  <h3>Via data attributes</h3>
+  <p>Configure your page to use State.js by setting <code>data-control="state"</code> on an element of your page, along with any desired configuration options.</p>
+{% highlight html %}
+<html data-control="state" ... > ... </html>
+{% endhighlight %}
 
-  <h4>.state('')</h4>
-  <p></p>
-  {% highlight js %}{% endhighlight %}
+  <p>Trigger changes to the state by setting <code>data-toggle="state"</code> and any number of <code>state-*</code> attributes on an element.</p>
+
+  {% highlight html %}<button data-toggle="state" state-key="value"></button>{% endhighlight %}
+
+  <h3>Via JavaScript</h3>
+  <p>Initialize Page State by calling <code>.state()</code> on the window element with configuration options. Change the state by capping <code>.push()</code>.</p>
+
+{% highlight js %}
+$(window).state({initialState: {key: "value"}});
+
+$(window).state('push', {key: "updated value"}[, options]);
+{% endhighlight %}
+
+  <h3>Options</h3>
+  <p>Options can be passed via data attributes or JavaScript. For data attributes, append the option name to <code>data-</code>, as in <code>data-items=""</code>.</p>
+
+  <h4>The state container / window</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+       <tr>
+         <th style="width: 100px;">Name</th>
+         <th style="width: 50px;">type</th>
+         <th style="width: 50px;">default</th>
+         <th>description</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td>format</td>
+         <td>humanize, condense</td>
+         <td>humanize</td>
+         <td>Format the serialized state parameters into the querystring either as a single variable (<code>condense</code>) or as a direct translation from the Page State's attributes into querystring attributes.</td>
+       </tr>
+       <tr>
+         <td>initial-state</td>
+         <td>native or serialized object</td>
+         <td></td>
+         <td>Initialize the Page State to a known object.</td>
+       </tr>
+       <tr>
+         <td>path-attr</td>
+         <td>string</td>
+         <td></td>
+         <td>Treat one top-level attribute of the state as the page's path, which will be reflected in the <code>pathname</code> sent to the HTML history API. That attribute will not be rendered as a querystring.</td>
+       </tr>
+       <tr>
+         <td>path-base</td>
+         <td>string</td>
+         <td></td>
+         <td>A prefix that will be ignored when deserializing the path attribute from the current window location, and remove when serializing it.</td>
+       </tr>
+       <tr>
+         <td>condense-attr</td>
+         <td>string</td>
+         <td>q</td>
+         <td>When <code>format="condense"</code>, the state hash will be serialized into this top-level querystring attribute.</td>
+       </tr>
+       <tr>
+         <td>allow-repeats</td>
+         <td>boolean</td>
+         <td>true</td>
+         <td>Sequential duplicate states will never be saved in the window history stack. However, if this is set to true then the <code>updated.adcom.state</code> event will still fire whenever a state pushed is attempted, regardless of whether it's new.</td>
+       </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Trigger elements</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+       <tr>
+         <th style="width: 100px;">Name</th>
+         <th style="width: 50px;">type</th>
+         <th style="width: 50px;">default</th>
+         <th>description</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+         <td>trigger</td>
+         <td>string</td>
+         <td>click</td>
+         <td>Event that will trigger the state change.</td>
+       </tr>
+       <tr>
+         <td>merge</td>
+         <td>boolean</td>
+         <td>true</td>
+         <td>Whether the state specified on this element will be merged into the existing state, rather than replace the current state.</td>
+       </tr>
+       <tr>
+         <td>action</td>
+         <td>push, replace</td>
+         <td>push</td>
+         <td>Push will append the specific state onto the end of the window's history using <code>window.history.pushState</code>.. Replace will update the current page state without moving the browser history forward using <code>winow.history.replaceState</code>.</td>
+       </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Methods</h3>
+  <p>All of these public JavaScript API methods add, remove to examine the window's history stack. They should not directly lead to changes on the page; instead, listen for the <code>updated.adcom.state</code> event and launch changes from it.</p>
+
+  <h4>.state('push', object)</h4>
+  <p>Append the given state object to the browser's history and reflect the change in <code>window.location</code>.</p>
+  {% highlight js %}$(window).state('push', {"key": "value"});{% endhighlight %}
+
+  <h4>.state('pop')</h4>
+  <p>Essentially <code>window.history.back()</code>. Moves the history back one place.</p>
+  {% highlight js %}$(window).state('pop');{% endhighlight %}
+
+  <h4>.state('peek')</h4>
+  <p>Fire the <code>updated</code> event with the current Page State, but do not remove it from the history stack.</p>
+  {% highlight js %}$(window).state('peek');{% endhighlight %}
 
   <h3>Events</h3>
   <p></p>
@@ -23,14 +211,26 @@
       </thead>
       <tbody>
        <tr>
-         <td></td>
-         <td></td>
+         <td>update.adcom.state</td>
+         <td>This event is fired immediately when the <code>update</code> method is called, which will precede an updating of the page due to a <code>push</code> trigger or browser history action. The new state is available as the <code>state</code> property of the event. <strong>The changes may not be reflected on the page, but the window's url will have been updated when this event fires.</strong></td>
+       </tr>
+       <tr>
+         <td>updated.adcom.state</td>
+         <td>This event is fired after the Page State has been updated due to a user <code>push</code> trigger, or a browser history action. The new state is available as the <code>state</code> property of the event.</td>
+       </tr>
+       <tr>
+         <td>push.adcom.state</td>
+         <td>This event is fired when a user <code>push</code> trigger has occurred, but before the window's URL or Page State have been updated. The new state and any update options are available as the <code>state</code> and <code>options</code> properties of the event.</td>
+       </tr>
+       <tr>
+         <td>pushed.adcom.state</td>
+         <td>This event is fired after a user <code>push</code> trigger has occurred, and after the window's URL and Page State have been updated, and after the <code>updated.adcom.state</code> event has fired. The new state and any update options are available as the <code>state</code> and <code>options</code> properties of the event.</td>
        </tr>
       </tbody>
     </table>
   </div><!-- /.table-responsive -->
 {% highlight js %}
-$('#').on('', function (e) {
+$(window).on('updated.adcom.state', function (e) {
   // do something...
 })
 {% endhighlight %}

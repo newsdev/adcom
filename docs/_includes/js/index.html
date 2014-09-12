@@ -399,6 +399,11 @@ $('#myIndex').index({
   <p>Manually sets a sort function. Only one sort function can exist at a time. Pass <code>undefined</code> as the function to remove an existing filter.</p>
   {% highlight js %}$('#myIndex').index('setSort', function(a, b) { ... }){% endhighlight %}
 
+  <h4>.index('updateAtIndex', idx, item)</h4>
+  <p>Replaces the item at index <code>idx</code> with the passed <code>item</code>, and rerenders that element in the container element if it's visible.</p>
+  {% highlight js %}$('#myIndex').index('updateAtIndex', 0, {"id": 1}){% endhighlight %}
+
+
   <h3>Events</h3>
   <p>Adcom's index class exposes a few events for hooking into modal functionality.</p>
   <div class="table-responsive">
