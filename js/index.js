@@ -25,7 +25,7 @@
     this.show()
   }
 
-  Index.VERSION = '0.0.1'
+  Index.VERSION = '0.1.0'
 
   Index.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.index.data-api" }).join(' ')
 

@@ -11,7 +11,7 @@
     this.show(typeof this.options.serialized === 'string' ? JSON.parse(this.options.serialized) : this.options.serialized)
   }
 
-  Form.VERSION = '0.0.1'
+  Form.VERSION = '0.1.0'
 
   Form.DEFAULTS = {
     serialized: {}
