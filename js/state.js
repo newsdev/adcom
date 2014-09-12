@@ -25,14 +25,8 @@
   State.DEFAULTS = {
     format: 'humanize',
     initialState: null,
-    path: {
-      attr: 'path',
-      base: window.location.pathname
-    },
-    // title: {
-    //   attr: 'title',
-    //   default: document.title
-    // },
+    allowRepeats: false,
+    path: false,
     condense: {
       attr: 'q'
     }
@@ -47,7 +41,7 @@
     options = typeof options !== 'undefined' ? options : {}
 
     options.merge        = typeof options.merge !== 'undefined' ? options.merge : true
-    options.allowRepeats = typeof options.allowRepeats !== 'undefined' ? options.allowRepeats : true
+    options.allowRepeats = this.options.allowRepeats
     options.action       = options.action || 'push'
 
     if (options.merge) state = $.extend(true, {}, this.state, state)
@@ -56,9 +50,9 @@
     var serialized = this.serialize(state)
     // if (serialized == this.serialize(this.state)) return
 
-    this.$element.trigger('push.adcom.state')
+    this.$element.trigger($.Event('push.adcom.state', { state: state, options: options }))
 
-    if (serialized != this.serialize(this.state)) {
+    if (serialized !== this.serialize(this.state)) {
       // If this state is new, append it into the history and trigger an update
       this.$history[options.action + "State"](state, document.title, serialized)
       this.update(state)
@@ -68,7 +62,7 @@
       if (options.allowRepeats) this.update(state)
     }
 
-    this.$element.trigger('pushed.adcom.state')
+    this.$element.trigger($.Event('pushed.adcom.state', { state: state, options: options }))
   }
 
   State.prototype.pop = function (e) {
@@ -84,14 +78,9 @@
   }
 
   State.prototype.update = function (state) {
-    var e = $.Event('update.adcom.state', { state: state })
-    this.$element.trigger(e)
-
+    this.$element.trigger($.Event('update.adcom.state', { state: state }))
     this.state = state
-    // document.title = this.getTitle(state)
-
-    var e = $.Event('updated.adcom.state', { state: state })
-    this.$element.trigger(e)
+    this.$element.trigger($.Event('updated.adcom.state', { state: state }))
   }
 
   // {} => url
@@ -102,14 +91,13 @@
     var params     = ''
 
     if (this.options.path) {
-      var serialized = this.options.path.base
+      var serialized = this.options.path.base || ''
       var attr       = this.options.path.attr
       if (state[attr]) {
         serialized += state[attr]
       }
       delete state[attr]
     }
-    // if (this.options.title) delete state[this.options.title.attr]
 
     switch (this.options.format) {
       case 'humanize':
@@ -121,6 +109,7 @@
         break
     }
     if (params.length > 0) serialized += '?' + params
+    if (serialized.length == 0) serialized = '/'
 
     return serialized
   }
@@ -149,86 +138,60 @@
     return state
   }
 
-  // State.prototype.getTitle = function (state) {
-  //   return state[this.options.title.attr] || this.options.title.default
-  // }
-
-  // https://gist.github.com/kares/956897#comment-1190642
+  // Adapted from https://gist.github.com/kares/956897#comment-1190642
   State.parseParams = function (query) {
-    var re = /([^&=]+)=?([^&]*)/g;
-    var decode = function (str) {
-      return decodeURIComponent(str.replace(/\+/g, ' '));
-    };
+    var re = /([^&=]+)=?([^&]*)/g
+    var decode = function (str) { return decodeURIComponent(str.replace(/\+/g, ' ')) }
 
-    // recursive function to construct the result object
-    function createElement(params, key, value) {
-      key = key + '';
-      // if the key is a property
+    function createElement (params, key, value) {
+      key = key + ''
       if (key.indexOf('.') !== -1) {
-        // extract the first part with the name of the object
-        var list = key.split('.');
-        // the rest of the key
-        var new_key = key.split(/\.(.+)?/)[1];
-        // create the object if it doesnt exist
-        if (!params[list[0]]) params[list[0]] = {};
-        // if the key is not empty, create it in the object
+        var list = key.split('.')
+        var new_key = key.split(/\.(.+)?/)[1]
+        if (!params[list[0]]) params[list[0]] = {}
         if (new_key !== '') {
-            createElement(params[list[0]], new_key, value);
-        } else console.warn('parseParams :: empty property in key "' + key + '"');
+          createElement(params[list[0]], new_key, value)
+        } else console.warn('parseParams :: empty property in key "' + key + '"')
       } else
-      // if the key is an array
       if (key.indexOf('[') !== -1) {
-        // extract the array name
-        var list = key.split('[');
-        key = list[0];
-        // extract the index of the array
-        var list = list[1].split(']');
+        var list = key.split('[')
+        key = list[0]
+        var list = list[1].split(']')
         var index = list[0]
-        // if index is empty, just push the value at the end of the array
         if (index == '') {
-            if (!params) params = {};
-            if (!params[key] || !$.isArray(params[key])) params[key] = [];
-            params[key].push(value);
-        } else
-        // add the value at the index (must be an integer)
-        {
-            if (!params) params = {};
-            if (!params[key] || !$.isArray(params[key])) params[key] = [];
-            params[key][parseInt(index)] = value;
+          if (!params) params = {}
+          if (!params[key] || !$.isArray(params[key])) params[key] = []
+          params[key].push(value)
+        } else {
+          if (!params) params = {}
+          if (!params[key] || !$.isArray(params[key])) params[key] = []
+          params[key][parseInt(index)] = value
         }
-      } else
-      // just normal key
-      {
-        if (!params) params = {};
-        params[key] = value;
+      } else {
+        if (!params) params = {}
+        params[key] = value
       }
     }
-    // be sure the query is a string
-    query = query + '';
-    // if (query === '') query = window.location + '';
+    query = query + ''
     if (query.match(/\?/) === null) query = '?' + query
-    var params = {}, e;
+    var params = {}, e
     if (query) {
-      // remove # from end of query
       if (query.indexOf('#') !== -1) {
-        query = query.substr(0, query.indexOf('#'));
+        query = query.substr(0, query.indexOf('#'))
       }
 
-      // remove ? at the begining of the query
       if (query.indexOf('?') !== -1) {
-        query = query.substr(query.indexOf('?') + 1, query.length);
-      } else return {};
-      // empty parameters
-      if (query == '') return {};
-      // execute a createElement on every key and value
+        query = query.substr(query.indexOf('?') + 1, query.length)
+      } else return {}
+      if (query == '') return {}
       while (e = re.exec(query)) {
-        var key = decode(e[1]);
-        var value = decode(e[2]);
-        createElement(params, key, value);
+        var key = decode(e[1])
+        var value = decode(e[2])
+        createElement(params, key, value)
       }
     }
     delete params[undefined]
-    return params;
+    return params
   }
 
 
@@ -266,7 +229,7 @@
   $(document).on(State.EVENTS, '[data-toggle="state"]', function (e) {
     var $this    = $(this)
     var triggers = ($this.attr('data-trigger') || 'click').split(' ')
-    var merge    = $this.attr('data-merge') == 'true' ? true : false
+    var merge    = $this.attr('data-merge') == 'false' ? false : true
     var action   = $this.attr('data-action')
 
     if (triggers.indexOf(e.type) == -1) return
@@ -295,18 +258,21 @@
 
   // Init state from data attrs on html
   $(window).on('load', function () {
-    $('[data-state="state"]').each(function() {
+    $('[data-control="state"]').each(function() {
       var $state = $(this)
       var data   = $state.data()
 
       data.path     = data.path     || {}
-      // data.title    = data.title    || {}
       data.condense = data.condense || {}
+
+      data.allowRepeats = (data.allowRepeats != false) ? true : false
 
       if (data.pathAttr)     data.path.attr     = data.pathAttr
       if (data.pathBase)     data.path.base     = data.pathBase
-      // if (data.titleattr)    data.title.attr    = data.titleattr
       if (data.condenseattr) data.consense.attr = data.condenseattr
+
+      if ($.isEmptyObject(data.path))     delete data.path
+      if ($.isEmptyObject(data.condense)) delete data.condense
 
       Plugin.call($(window), data)
     })
