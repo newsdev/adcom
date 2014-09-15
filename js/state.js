@@ -16,6 +16,16 @@
 
     this.$history.replaceState(this.initialState, document.title, this.$location.pathname + this.$location.search)
     this.$element[0].onpopstate = $.proxy(this.onpopstate, this)
+
+    if (this.options.triggerState) {
+      this.options.allowRepeats = false
+      this.$element.on('updated.adcom.state', $.proxy(this.triggerState, this))
+
+      // Necessary to avoid infinite recursion; peek will use adcom.state in
+      // data-api, which normally isn't set until Constructor returns.
+      this.$element.data('adcom.state', this)
+      this.peek()
+    }
   }
 
   State.VERSION = '0.1.0'
@@ -25,7 +35,8 @@
   State.DEFAULTS = {
     format: 'humanize',
     initialState: null,
-    allowRepeats: false,
+    allowRepeats: true,
+    triggerState: false,
     path: false,
     condense: {
       attr: 'q'
@@ -48,18 +59,17 @@
 
     // Update only if this is a new state
     var serialized = this.serialize(state)
-    // if (serialized == this.serialize(this.state)) return
 
     this.$element.trigger($.Event('push.adcom.state', { state: state, options: options }))
 
     if (serialized !== this.serialize(this.state)) {
       // If this state is new, append it into the history and trigger an update
       this.$history[options.action + "State"](state, document.title, serialized)
-      this.update(state)
+      this.update(state, $.Event('push.adcom.state'))
     } else {
       // If this state is the same as the current state, don't append to the
       // history, and only trigger an update if `allowRepeats` is on
-      if (options.allowRepeats) this.update(state)
+      if (options.allowRepeats) this.update(state, $.Event('push.adcom.state'))
     }
 
     this.$element.trigger($.Event('pushed.adcom.state', { state: state, options: options }))
@@ -70,17 +80,17 @@
   }
 
   State.prototype.peek = function () {
-    this.update(this.state)
+    this.update(this.state, $.Event('peek.adcom.state'))
   }
 
   State.prototype.onpopstate = function (e) {
-    this.update(e.state)
+    this.update(e.state, e)
   }
 
-  State.prototype.update = function (state) {
-    this.$element.trigger($.Event('update.adcom.state', { state: state }))
+  State.prototype.update = function (state, trigger) {
+    this.$element.trigger($.Event('update.adcom.state', { state: state, trigger: trigger }))
     this.state = state
-    this.$element.trigger($.Event('updated.adcom.state', { state: state }))
+    this.$element.trigger($.Event('updated.adcom.state', { state: state, trigger: trigger }))
   }
 
   // {} => url
@@ -136,6 +146,23 @@
     }
 
     return state
+  }
+
+  State.prototype.triggerState = function (e) {
+    var setState = function (parents, state) {
+      var prefix = [].concat(['state'], parents).join('-')
+      $.each(state, function (key, value) {
+        if (typeof value === "object") {
+          setState([].concat(parents, [key]), value)
+        } else {
+          var matches = $('[data-toggle="state"][' + prefix + '-' + key + '="' + value + '"]')
+          matches.each(function (idx, el) {
+            $(el).trigger($(el).data('trigger') || 'click')
+          })
+        }
+      })
+    }
+    if (e.trigger && e.trigger.type !== 'push.adcom.state') setState([], e.state)
   }
 
   // Adapted from https://gist.github.com/kares/956897#comment-1190642
@@ -243,7 +270,7 @@
         var cursor     = state
         var components = attr.name.replace(/^state-/, '').split('-')
 
-        $.each(components, function(index, component) {
+        $.each(components, function (index, component) {
           if (index < components.length - 2) {
             cursor = cursor[component]
           } else {

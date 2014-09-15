@@ -7,6 +7,7 @@
   var Form = function (element, options) {
     this.options  = options
     this.$element = $(element)
+    this.destroy()
 
     this.show(typeof this.options.serialized === 'string' ? JSON.parse(this.options.serialized) : this.options.serialized)
   }
@@ -32,8 +33,8 @@
     var attributes = this.serialize()
     $.extend(attributes, {
       relatedTarget: this.$element,
-      sourceElement: this.$element.data('adcom.form.sourceElement'),
-      sourceData:    this.$element.data('adcom.form.sourceData')
+      sourceElement: this.sourceElement,
+      sourceData:    this.sourceData
     })
 
     this.$element.trigger($.Event('submitted.adcom.form', attributes))
@@ -70,9 +71,9 @@
       var data  = $this.data('adcom.form')
 
       // Reset the form if we call the constructor again with options
-      if (typeof option == 'object' && option && data) data.destroy(), data = false
+      if (typeof option == 'object' && option && data) data = false
 
-      var options = $.extend({}, Form.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var options = $.extend({}, Form.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
       if (!data) $this.data('adcom.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
@@ -110,8 +111,8 @@
     var source     = closestWithData($this, $sourceKey)
     var serialized = source.data($sourceKey)
 
-    $target.data('adcom.form.sourceElement', source.clone(true, false))
-    $target.data('adcom.form.sourceData', serialized)
+    $target.data('adcom.form').sourceElement = source.clone(true, false)
+    $target.data('adcom.form').sourceData    = serialized
 
     Plugin.call($target, 'show', serialized)
   })

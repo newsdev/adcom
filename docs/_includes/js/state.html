@@ -1,8 +1,9 @@
-<div id="state" data-control="state" data-path-attr="path" data-path-base="/javascript/"></div>
+<div id="state" data-control="state" data-path-attr="path" data-path-base="/javascript/" data-trigger-state="true"></div>
 
 <div class="bs-docs-section">
   <h1 id="state" class="page-header">Page State <small>state.js</small></h1>
-  <p>The Page State plugin reponds to events on your page by saving data into a state object, and serializing that state object into your page's url using the HTML history API. It can use that serialized state to return your page to that state when a user deep links in, or uses the browser history buttons.</p>
+  <p>The Page State plugin is like a mini-router for a single page of your app.</p>
+  <p>Page events save data into a state object, which is serialized into your path and querystring using the HTML history API. This lets you preserve your page state across page refreshes, links state changes to the history buttons, and enables deep-linking into states.</p>
 
   <h2 id="state-examples">Examples</h2>
 
@@ -12,8 +13,15 @@
 <html data-control="state"></html>
 {% endhighlight %}
 
-  <p>Attach event triggers to elements on the page that should change the page state. Triggers must have the <code>data-toggle="state"</code> attribute, and zero or more attributes that begin with the <code>state-</code> prefix.</p>
-  <p>The state-* attributes are converted into an object, and merged into the page state (unless <code>data-merge="false"</code>, which causes the specified state to replace the current state).</p>
+  <div class="bs-callout bs-callout-danger" id="state-element-binding">
+    <h4>Associated element is always window</h4>
+    <p>Most Adcom JavaScript plugins are bound to the element that specifies a <code>data-control</code> attribute. The State plugin is slightly different. Since the page can handle only one instance, the instantiated State object and any associated data is always bound to the <code>window</code> object.</p>
+  </div>
+
+  <h3>Event triggers</h3>
+
+  <p>Attach events to elements on the page that should change the page state. Triggers must have the <code>data-toggle="state"</code> attribute, and attributes that begin with the <code>state-</code> prefix, which collectively represent the new state.</p>
+  <p>You can specify just a <code>state="{}"</code> attribute containing your serialized state, or specify any number of <code>state-*</code> attributes. These are converted into an object, and merged into the page state unless <code>data-merge="false"</code>, which causes the specified state to replace the current state. (Specify no state-* attributes with <code>data-merge="false"</code> to clear the state.)</p>
 
   <div class="bs-example">
     <div class="btn-group" data-toggle="buttons">
@@ -49,8 +57,16 @@
 </div>
 {% endhighlight %}
 
+  <div class="bs-callout bs-callout-info" id="state-nested-attributes">
+    <h4>Specifying nested state attributes with the data-api</h4>
+    <p>State.js will perform a deep merge on your state attributes if you add nested values to your trigger.</p>
+    <p>While <code>state-attr="value"</code> will translate into a state object of <code>{"attr": "value"}</code>. But using hyphen notation to nest values lets you turn <code>state-namespace-attr="value"</code> into <code>{"namespace": {"attr": "value"}}</code>.</p>
+  </div>
+
+
   <h3>Changing the path</h3>
-  <p>All state parameters are serialized into one or more querystring attributes by default. But you can designate a single attribute to function as the page's path. Instead of getting serialized to the querystring, it will replace the current <code>pathname</code> in the url when triggered.</p>
+  <p>The state is serialized into the querystring by default. But you can designate one attribute to function as the page's path. Instead of getting serialized to the querystring, it will replace the current <code>window.location.pathname</code> when triggered.</p>
+  <p>Use the <code>path-attr</code> and optionally <code>path-base</code> options when initializing State.js to set that attribute and the path prefix to which your path values are related.</p>
 
   <div class="bs-example">
     <div class="btn-group" data-toggle="buttons">
@@ -64,6 +80,8 @@
   </div><!-- /example -->
 
 {% highlight html %}
+<div data-control="state" data-path-attr="path" data-path-base="/javascript/"></div>
+
 <div class="btn-group" data-toggle="buttons">
   <label class="btn btn-primary" data-toggle="state" state-path="/not-javascript/">
     <input type="radio" name="page"> /not-javascript/
@@ -73,6 +91,18 @@
   </label>
 </div>
 {% endhighlight %}
+
+  <h2 id="state-routing">Routing</h2>
+  <p>The purpose of routing is to bring your page from it's base state to the state described by your querystring. Generally this means altering the appearance or content of the page to match how it looked when the user left it.</p>
+  <p>How you do this depends on how your original page was structured. It's good practice to <strong>avoid duplicate logic for rendering a state on the page</strong>. Generally, the page can update it's appearance in one of two ways.</p>
+  <ol>
+    <li>Binding change events directly to user actions (selecting an active Bootstrap tab)</li>
+    <li>Have user actions change the url, listen for changes in the url and change the page based on the route (more similar to Backbone.Router)</li>
+  </ol>
+
+  <p>Whichever is better for your application, you should try to update your page programmatically in as similar a way as possible to how it was originally manipulated.</p>
+
+  <h3>Direct event binding</h3>
 
   <h2 id="state-usage">Usage</h2>
 
@@ -145,6 +175,12 @@ $(window).state('push', {key: "updated value"}[, options]);
          <td>boolean</td>
          <td>true</td>
          <td>Sequential duplicate states will never be saved in the window history stack. However, if this is set to true then the <code>updated.adcom.state</code> event will still fire whenever a state pushed is attempted, regardless of whether it's new.</td>
+       </tr>
+       <tr>
+         <td>trigger-state</td>
+         <td>boolean</td>
+         <td>false</td>
+         <td>When using only data-api triggers with states where firing order doesn't matter, <code>trigger-state="true"</code> attempts to fire events on the page automatically based on the current page state.</td>
        </tr>
       </tbody>
     </table>

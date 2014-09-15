@@ -1,8 +1,16 @@
 <div class="bs-docs-section">
   <h1 id="index" class="page-header">Lists <small>index.js</small></h1>
 
-  <h2 id="index-examples">Examples</h2>
   <p>Lists are a convention-based, flexible system for rendering an array of objects as html. While defaults are provided, the HTML used to render the list is largely left up to you. The power of lists comes in a set of actions that can be performed on the list, triggered via data-apis, allowing you to display dynamic lists by writing minimal JavaScript.</p>
+
+  <div class="bs-callout bs-callout-info" id="index-filtering-multiple">
+    <h4>Override hooks</h4>
+    <p>Templates can be overridden using either strings with the data-api or a compiled template function using the JavaScript API.</p>
+    <p>Most other overridable logic occurs in the private <code>.getCurrentItems</code> method. This method is called to generate a sorted, fitered and paginated list of items to render using the default or your custom template.</p>
+    <p>It calls the following functions in order if they are turned on, each of which has a default implementation and can be overridden by setting your own function: <code>.getFilteredItems</code>, <code>.getSortedItems</code>, <code>.getPaginatedItems</code>. You can also override <code>.getCurrentItems</code> entirely to set your own logic while retaining the build-in rendering logic.</p>
+  </div>
+
+  <h2 id="index-examples">Examples</h2>
 
   <h3>Static</h3>
   <p>A list rendered by specifying the content as serialized JSON in a data attribute. This uses the default template to render each row, which renders a table row for each item with the data for each field specified in <code>data-fields</code>.</p>
@@ -169,19 +177,34 @@
   </div>
 
   <h2 id="index-pagination">Pagination</h2>
+  <style>.pg-link { margin: 0 8px 8px 0; width: 40px; }</style>
 
   <p>When your list of items gets too long, you'll want to start paginating your data.</p>
 
   <p>Show first 5 items of a 10 page list:</p>
 
   <div class="bs-example">
-    <div id="myIndexPagination"
-      data-control="index"
-      data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}, {"id": 7}, {"id": 8}, {"id": 9}, {"id": 10}]'
-      data-template="<span class='btn btn-default disabled' data-field='id'>"
-      data-pagination="on"
-      data-page-size="5">
+    <div class="row">
+      <div id="myIndexPagination" class="col-sm-6 col-xs-12"
+        data-control="index"
+        data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}, {"id": 7}, {"id": 8}, {"id": 9}, {"id": 10}]'
+        data-template="<span class='btn btn-default disabled pg-link' data-field='id'>"
+        data-pagination="on"
+        data-page-size="5">
+      </div>
+
+      <div class="col-sm-6 col-xs-12">
+        <input id="changePagination" class="form-control" type="number" min="0" max="10" value="5">
+      </div>
     </div>
+
+    <script>
+      $(document).ready(function() {
+        $('#changePagination').on('keyup', function(e) {
+          $('#myIndexPagination').index({pageSize: $(e.target).val()});
+        });
+      });
+    </script>
   </div><!-- /example -->
 
 {% highlight html %}
@@ -192,11 +215,20 @@
   data-pagination="on"
   data-page-size="5">
 </div>
+
+<script>
+  $(document).ready(function() {
+    $('#changePagination').on('keyup', function(e) {
+      $('#myIndexPagination').index({pageSize: $(e.target).val()});
+    });
+  });
+</script>
 {% endhighlight %}
 
   <div class="bs-callout bs-callout-info" id="index-sort-override">
     <h4>Rendering page controls</h4>
-    <p>It's up to you to render any sort of pagination controls you want to navigate over your list. Use the <code>paginated.adcom.index</code> event described below to render information on page count / current page / etc, and the <code>page</code> instance method to update the current page.</p>
+    <p>It's up to you to render any sort of pagination controls you want to navigate over your list. Use the <code>paginated.adcom.index</code> event described below to retrieve information on page count / current page / etc, and then use the <code>page</code> instance method to update the current page.</p>
+
   </div>
 
   <h2 id="index-selection">Selection</h2>
@@ -208,7 +240,7 @@
       data-control="index"
       data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}]'
       data-selected-class="active btn-primary"
-      data-template="<span class='btn btn-default' data-toggle='select' data-field='id'>">
+      data-template="<span class='btn btn-default pg-link' data-toggle='select' data-field='id'>">
     </div>
   </div><!-- /example -->
 
@@ -278,10 +310,22 @@
          <td>If you want to use a custom templating library. Function that takes a template as a string and returns a function to render that template for a given item. For example, <code>_.template</code>.</td>
        </tr>
        <tr>
+         <td>filtering</td>
+         <td>on or off</td>
+         <td>on</td>
+         <td>Turn filtering on. Uses <code>$('#index').data('adcom.index').getFilteredItems</code>, which can be overridden.</td>
+       </tr>
+       <tr>
+         <td>sorting</td>
+         <td>on or off</td>
+         <td>on</td>
+         <td>Turn sorting on. Uses <code>$('#index').data('adcom.index').getSortedItems</code>, which can be overridden.</td>
+       </tr>
+       <tr>
          <td>pagination</td>
          <td>on or off</td>
          <td>off</td>
-         <td>Turn pagination on. If off, then every visible item will be rendered.</td>
+         <td>Turn pagination on. Uses <code>$('#index').data('adcom.index').getPaginatedItems</code>, which can be overridden. If off, then every visible item will be rendered.</td>
        </tr>
        <tr>
          <td>page-size</td>

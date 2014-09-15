@@ -8,6 +8,7 @@
     var $this = this
     this.options  = options
     this.$element = $(element)
+    this.destroy()
 
     this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
     this.template = typeof this.options.template === 'string' ? this.compileTemplate(this.options.template) : (this.options.template || this.defaultTemplate())
@@ -21,7 +22,6 @@
     this.pageSize    = parseInt(this.options.pageSize || 1)
 
     this.setInitialState()
-
     this.show()
   }
 
@@ -34,6 +34,8 @@
     fields: [],
     states: [],
     selectedClass: 'active',
+    filtering: 'on',
+    sorting: 'on',
     pagination: 'off',
     currentPage: 1,
     pageSize: 20
@@ -88,11 +90,10 @@
   // Helpers
 
   Index.prototype.changeState = function (el, state) {
-    var item   = $(el).data('adcom.index.item')
+    var item = $(el).data('adcom.index.item')
 
     this.$element.trigger($.Event('toggle.adcom.index', { item: item, target: el, state: state }))
 
-    // var idx = this.$items.indexOf($(el).data('adcom.index.item'))
     var idx = $(el).data('adcom.index.idx')
     this.states[idx] = state
     if (state) { $(el).addClass(this.options.selectedClass) } else { $(el).removeClass(this.options.selectedClass) }
@@ -199,30 +200,37 @@
     var visibleItems = this.$items.slice(0) // dup
 
     // filter
+    if (this.options.filtering == 'on') visibleItems = this.getFilteredItems(visibleItems)
+
+    // sort
+    if (this.options.sorting == 'on') visibleItems = this.getSortedItems(visibleItems)
+
+    // paginate
+    if (this.options.pagination == 'on') visibleItems = this.getPaginatedItems(visibleItems)
+
+    return visibleItems
+  }
+
+  Index.prototype.getFilteredItems = function (items) {
     if (!$.isEmptyObject(this.filters)) {
       var filtered = []
-      $.each(visibleItems, function (idx, item) {
+      $.each(items, function (idx, item) {
         var matches = true
         $.each($this.filters, function (fields, filter) {
           if (!matches || !filter(item)) matches = false
         })
         if (matches) filtered.push(item)
       })
-      visibleItems = filtered
+      return filtered
     }
-
-    // sort
-    if (this.sort) visibleItems = visibleItems.sort(this.sort)
-
-    // paginate
-    if (this.options.pagination == 'on') {
-      visibleItems = this.getCurrentPage(visibleItems)
-    }
-
-    return visibleItems
+    return items
   }
 
-  Index.prototype.getCurrentPage = function (items) {
+  Index.prototype.getSortedItems = function (items) {
+    return this.sort ? items.sort(this.sort) : items
+  }
+
+  Index.prototype.getPaginatedItems = function (items) {
     var count    = items.length
     var pages    = Math.ceil(count / this.pageSize)
     var startIdx = (this.currentPage - 1) * this.pageSize
@@ -327,13 +335,13 @@
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
     return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('adcom.index')
+      var $this   = $(this)
+      var data    = $this.data('adcom.index')
 
       // Reset the index if we call the constructor again with options
-      if (typeof option == 'object' && option && data) data.destroy(), data = false
+      if (typeof option == 'object' && option && data) data = false
 
-      var options = $.extend({}, Index.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var options = $.extend({}, Index.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
       if (!data) $this.data('adcom.index', (data = new Index(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)

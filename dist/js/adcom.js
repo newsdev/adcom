@@ -8,6 +8,7 @@
     var $this = this
     this.options  = options
     this.$element = $(element)
+    this.destroy()
 
     this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
     this.template = typeof this.options.template === 'string' ? this.compileTemplate(this.options.template) : (this.options.template || this.defaultTemplate())
@@ -21,11 +22,10 @@
     this.pageSize    = parseInt(this.options.pageSize || 1)
 
     this.setInitialState()
-
     this.show()
   }
 
-  Index.VERSION = '0.0.1'
+  Index.VERSION = '0.1.0'
 
   Index.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.index.data-api" }).join(' ')
 
@@ -34,6 +34,8 @@
     fields: [],
     states: [],
     selectedClass: 'active',
+    filtering: 'on',
+    sorting: 'on',
     pagination: 'off',
     currentPage: 1,
     pageSize: 20
@@ -88,11 +90,10 @@
   // Helpers
 
   Index.prototype.changeState = function (el, state) {
-    var item   = $(el).data('adcom.index.item')
+    var item = $(el).data('adcom.index.item')
 
     this.$element.trigger($.Event('toggle.adcom.index', { item: item, target: el, state: state }))
 
-    // var idx = this.$items.indexOf($(el).data('adcom.index.item'))
     var idx = $(el).data('adcom.index.idx')
     this.states[idx] = state
     if (state) { $(el).addClass(this.options.selectedClass) } else { $(el).removeClass(this.options.selectedClass) }
@@ -199,30 +200,37 @@
     var visibleItems = this.$items.slice(0) // dup
 
     // filter
+    if (this.options.filtering == 'on') visibleItems = this.getFilteredItems(visibleItems)
+
+    // sort
+    if (this.options.sorting == 'on') visibleItems = this.getSortedItems(visibleItems)
+
+    // paginate
+    if (this.options.pagination == 'on') visibleItems = this.getPaginatedItems(visibleItems)
+
+    return visibleItems
+  }
+
+  Index.prototype.getFilteredItems = function (items) {
     if (!$.isEmptyObject(this.filters)) {
       var filtered = []
-      $.each(visibleItems, function (idx, item) {
+      $.each(items, function (idx, item) {
         var matches = true
         $.each($this.filters, function (fields, filter) {
           if (!matches || !filter(item)) matches = false
         })
         if (matches) filtered.push(item)
       })
-      visibleItems = filtered
+      return filtered
     }
-
-    // sort
-    if (this.sort) visibleItems = visibleItems.sort(this.sort)
-
-    // paginate
-    if (this.options.pagination == 'on') {
-      visibleItems = this.getCurrentPage(visibleItems)
-    }
-
-    return visibleItems
+    return items
   }
 
-  Index.prototype.getCurrentPage = function (items) {
+  Index.prototype.getSortedItems = function (items) {
+    return this.sort ? items.sort(this.sort) : items
+  }
+
+  Index.prototype.getPaginatedItems = function (items) {
     var count    = items.length
     var pages    = Math.ceil(count / this.pageSize)
     var startIdx = (this.currentPage - 1) * this.pageSize
@@ -327,13 +335,13 @@
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
     return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('adcom.index')
+      var $this   = $(this)
+      var data    = $this.data('adcom.index')
 
       // Reset the index if we call the constructor again with options
-      if (typeof option == 'object' && option && data) data.destroy(), data = false
+      if (typeof option == 'object' && option && data) data = false
 
-      var options = $.extend({}, Index.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var options = $.extend({}, Index.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
       if (!data) $this.data('adcom.index', (data = new Index(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
@@ -417,11 +425,12 @@
   var Form = function (element, options) {
     this.options  = options
     this.$element = $(element)
+    this.destroy()
 
     this.show(typeof this.options.serialized === 'string' ? JSON.parse(this.options.serialized) : this.options.serialized)
   }
 
-  Form.VERSION = '0.0.1'
+  Form.VERSION = '0.1.0'
 
   Form.DEFAULTS = {
     serialized: {}
@@ -442,8 +451,8 @@
     var attributes = this.serialize()
     $.extend(attributes, {
       relatedTarget: this.$element,
-      sourceElement: this.$element.data('adcom.form.sourceElement'),
-      sourceData:    this.$element.data('adcom.form.sourceData')
+      sourceElement: this.sourceElement,
+      sourceData:    this.sourceData
     })
 
     this.$element.trigger($.Event('submitted.adcom.form', attributes))
@@ -480,9 +489,9 @@
       var data  = $this.data('adcom.form')
 
       // Reset the form if we call the constructor again with options
-      if (typeof option == 'object' && option && data) data.destroy(), data = false
+      if (typeof option == 'object' && option && data) data = false
 
-      var options = $.extend({}, Form.DEFAULTS, $this.data(), typeof option == 'object' && option)
+      var options = $.extend({}, Form.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
       if (!data) $this.data('adcom.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
@@ -520,8 +529,8 @@
     var source     = closestWithData($this, $sourceKey)
     var serialized = source.data($sourceKey)
 
-    $target.data('adcom.form.sourceElement', source.clone(true, false))
-    $target.data('adcom.form.sourceData', serialized)
+    $target.data('adcom.form').sourceElement = source.clone(true, false)
+    $target.data('adcom.form').sourceData    = serialized
 
     Plugin.call($target, 'show', serialized)
   })
@@ -562,16 +571,27 @@
 
     this.$history.replaceState(this.initialState, document.title, this.$location.pathname + this.$location.search)
     this.$element[0].onpopstate = $.proxy(this.onpopstate, this)
+
+    if (this.options.triggerState) {
+      this.options.allowRepeats = false
+      this.$element.on('updated.adcom.state', $.proxy(this.triggerState, this))
+
+      // Necessary to avoid infinite recursion; peek will use adcom.state in
+      // data-api, which normally isn't set until Constructor returns.
+      this.$element.data('adcom.state', this)
+      this.peek()
+    }
   }
 
-  State.VERSION = '0.0.1'
+  State.VERSION = '0.1.0'
 
   State.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.state.data-api" }).join(' ')
 
   State.DEFAULTS = {
     format: 'humanize',
     initialState: null,
-    allowRepeats: false,
+    allowRepeats: true,
+    triggerState: false,
     path: false,
     condense: {
       attr: 'q'
@@ -594,18 +614,17 @@
 
     // Update only if this is a new state
     var serialized = this.serialize(state)
-    // if (serialized == this.serialize(this.state)) return
 
     this.$element.trigger($.Event('push.adcom.state', { state: state, options: options }))
 
     if (serialized !== this.serialize(this.state)) {
       // If this state is new, append it into the history and trigger an update
       this.$history[options.action + "State"](state, document.title, serialized)
-      this.update(state)
+      this.update(state, $.Event('push.adcom.state'))
     } else {
       // If this state is the same as the current state, don't append to the
       // history, and only trigger an update if `allowRepeats` is on
-      if (options.allowRepeats) this.update(state)
+      if (options.allowRepeats) this.update(state, $.Event('push.adcom.state'))
     }
 
     this.$element.trigger($.Event('pushed.adcom.state', { state: state, options: options }))
@@ -616,17 +635,17 @@
   }
 
   State.prototype.peek = function () {
-    this.update(this.state)
+    this.update(this.state, $.Event('peek.adcom.state'))
   }
 
   State.prototype.onpopstate = function (e) {
-    this.update(e.state)
+    this.update(e.state, e)
   }
 
-  State.prototype.update = function (state) {
-    this.$element.trigger($.Event('update.adcom.state', { state: state }))
+  State.prototype.update = function (state, trigger) {
+    this.$element.trigger($.Event('update.adcom.state', { state: state, trigger: trigger }))
     this.state = state
-    this.$element.trigger($.Event('updated.adcom.state', { state: state }))
+    this.$element.trigger($.Event('updated.adcom.state', { state: state, trigger: trigger }))
   }
 
   // {} => url
@@ -682,6 +701,23 @@
     }
 
     return state
+  }
+
+  State.prototype.triggerState = function (e) {
+    var setState = function (parents, state) {
+      var prefix = [].concat(['state'], parents).join('-')
+      $.each(state, function (key, value) {
+        if (typeof value === "object") {
+          setState([].concat(parents, [key]), value)
+        } else {
+          var matches = $('[data-toggle="state"][' + prefix + '-' + key + '="' + value + '"]')
+          matches.each(function (idx, el) {
+            $(el).trigger($(el).data('trigger') || 'click')
+          })
+        }
+      })
+    }
+    if (e.trigger && e.trigger.type !== 'push.adcom.state') setState([], e.state)
   }
 
   // Adapted from https://gist.github.com/kares/956897#comment-1190642
@@ -789,7 +825,7 @@
         var cursor     = state
         var components = attr.name.replace(/^state-/, '').split('-')
 
-        $.each(components, function(index, component) {
+        $.each(components, function (index, component) {
           if (index < components.length - 2) {
             cursor = cursor[component]
           } else {
