@@ -54,8 +54,8 @@ module.exports = function (grunt) {
       },
       docs_license: {
         files: [
-          { src: 'LICENSE', dest: '_gh_pages/LICENSE' },
-          { src: 'docs/LICENSE', dest: '_gh_pages/LICENSE-DOCS' }
+          { src: 'docs/LICENSE', dest: '_gh_pages/LICENSE-DOCS' },
+          { src: 'LICENSE', dest: '_gh_pages/LICENSE' }
         ]
       }
     }
