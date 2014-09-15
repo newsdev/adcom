@@ -51,6 +51,12 @@ module.exports = function (grunt) {
       docs: {
         src: 'dist/*/*',
         dest: 'docs/'
+      },
+      docs_license: {
+        files: [
+          { src: 'LICENSE', dest: '_gh_pages/LICENSE' },
+          { src: 'docs/LICENSE', dest: '_gh_pages/LICENSE-DOCS' }
+        ]
       }
     }
   });
@@ -70,7 +76,7 @@ module.exports = function (grunt) {
 
   // Docs task.
   grunt.registerTask('docs-js', ['uglify:docsJs']);
-  grunt.registerTask('docs', ['docs-js', 'clean:docs', 'copy:docs']);
+  grunt.registerTask('docs', ['docs-js', 'clean:docs', 'copy:docs', 'copy:docs_license']);
 
   // Default task.
   grunt.registerTask('default', ['dist', 'docs']);
