@@ -7,7 +7,6 @@
   var Form = function (element, options) {
     this.options  = options
     this.$element = $(element)
-    this.destroy()
 
     this.show(typeof this.options.serialized === 'string' ? JSON.parse(this.options.serialized) : this.options.serialized)
   }

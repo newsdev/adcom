@@ -8,7 +8,6 @@
     var $this = this
     this.options  = options
     this.$element = $(element)
-    this.destroy()
 
     this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
     this.template = typeof this.options.template === 'string' ? this.compileTemplate(this.options.template) : (this.options.template || this.defaultTemplate())

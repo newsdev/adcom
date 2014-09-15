@@ -1,3 +1,7 @@
+//
+// Index
+// --------------------------------------------------
+
 .sort-control[data-sort]:hover { cursor: pointer; }
 .sort-control[data-sort][data-state=descending]:after {
   content: "▼";
@@ -8,4 +12,91 @@
   content: "▲";
   font-size: 0.8em;
   padding-left: 4px;
+}
+
+// Container for individual items (not necessarily controls)
+.index {
+  margin: 0 0 10px 0;
+
+  .index-item {
+    padding: 10px 12px 10px 0;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  .index-item:first-child {
+    padding-top: 0;
+  }
+  .index-item:last-child {
+    padding-bottom: 0;
+  }
+
+  a.index-item {
+    text-decoration: none;
+    display: block;
+  }
+  a.index-item:hover {
+    cursor: pointer;
+  }
+
+  .index-item .index-item-state {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 2px;
+    border-color: transparent;
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 0;
+  }
+
+  .index-item.active {
+    background-color: @item-active-bg;
+    padding-left: 12px;
+    .index-item-state { border-color: @item-active-border; }
+  }
+  .index-item.warning {
+    // background-color: @item-warning-bg;
+    padding-left: 12px;
+    .index-item-state { border-color: @item-warning-border; }
+  }
+  .index-item.info {
+    // background-color: @item-info-bg;
+    padding-left: 12px;
+    .index-item-state { border-color: @item-info-border; }
+  }
+  .index-item.danger {
+    // background-color: @item-danger-bg;
+    padding-left: 12px;
+    .index-item-state { border-color: @item-danger-border; }
+  }
+  .index-item.success {
+    // background-color: @item-success-bg;
+    padding-left: 12px;
+    .index-item-state { border-color: @item-success-border; }
+  }
+
+  .index-item-meta {
+    font-size: 0.8em;
+    color: #888;
+
+    p {
+      margin: 0;
+    }
+
+    strong {
+      color: #777;
+    }
+  }
+}
+
+.index-bordered {
+  .index-item {
+    border-bottom: 1px solid @index-border-color;
+  }
+  .index-item:last-child {
+    border-bottom: none;
+  }
 }

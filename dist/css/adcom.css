@@ -11,4 +11,85 @@
   font-size: 0.8em;
   padding-left: 4px;
 }
+.index {
+  margin: 0 0 10px 0;
+}
+.index .index-item {
+  padding: 10px 12px 10px 0;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.index .index-item:first-child {
+  padding-top: 0;
+}
+.index .index-item:last-child {
+  padding-bottom: 0;
+}
+.index a.index-item {
+  text-decoration: none;
+  display: block;
+}
+.index a.index-item:hover {
+  cursor: pointer;
+}
+.index .index-item .index-item-state {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 2px;
+  border-color: transparent;
+  height: 100%;
+  top: 0;
+  left: 0;
+  width: 0;
+}
+.index .index-item.active {
+  background-color: #f2f2f2;
+  padding-left: 12px;
+}
+.index .index-item.active .index-item-state {
+  border-color: #cccccc;
+}
+.index .index-item.warning {
+  padding-left: 12px;
+}
+.index .index-item.warning .index-item-state {
+  border-color: #f0ad4e;
+}
+.index .index-item.info {
+  padding-left: 12px;
+}
+.index .index-item.info .index-item-state {
+  border-color: #5bc0de;
+}
+.index .index-item.danger {
+  padding-left: 12px;
+}
+.index .index-item.danger .index-item-state {
+  border-color: #d9534f;
+}
+.index .index-item.success {
+  padding-left: 12px;
+}
+.index .index-item.success .index-item-state {
+  border-color: #5cb85c;
+}
+.index .index-item-meta {
+  font-size: 0.8em;
+  color: #888;
+}
+.index .index-item-meta p {
+  margin: 0;
+}
+.index .index-item-meta strong {
+  color: #777;
+}
+.index-bordered .index-item {
+  border-bottom: 1px solid #dddddd;
+}
+.index-bordered .index-item:last-child {
+  border-bottom: none;
+}
 /*# sourceMappingURL=dist/css/adcom.css.map */

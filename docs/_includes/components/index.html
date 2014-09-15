@@ -1,0 +1,72 @@
+<div class="bs-docs-section">
+  <h1 id="index" class="page-header">Index</h1>
+
+  <p class="lead">Render a collection of items into a clear, compact list that supports common requirements like active states and metadata.</p>
+
+  <h2 id="index-examples">Examples</h2>
+  <p>The main classes you need to apply are <code>index</code> to the container element, and <code>index-item</code> to each item in the collection. By itself, Adcom some very light adjustments to padding and margin to ready your list for a stacked list of items that can contain one or several rows of text.</p>
+
+  <h4>Primary Index</h4>
+  <p>This index is suited well for a main index page of objects. Display metadata about the item within <code>index-item-meta</code>. By including a <code>&lt;span class="state"&gt;</code> inside the item, you can also add a highlight bar that adapts to various states using the <code>.active</code>, <code>.success</code>, <code>.warning</code>, <code>.info</code> and <code>.danger</code> classes.</p>
+
+  <div class="bs-example">
+    <div class="index">
+      <div class="index-item active">
+        <span class="index-item-state"></span>
+
+        <h4><a href="#">First Item</a></h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at. </p>
+
+        <div class="index-item-meta">
+          <span>3 pages.</span>
+          <span>Source: <strong>The New York Times</strong>.</span>
+          <span>Created: <strong>Jul 8, 2014</strong>.</span>
+          <span class="label label-primary">Special</span>
+        </div>
+      </div>
+      <div class="index-item info">
+        <span class="index-item-state"></span>
+
+        <h4><a href="#">Second Item</a></h4>
+        <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
+
+        <div class="index-item-meta">
+          <span>3 pages.</span>
+          <span>Source: <strong>The New York Times</strong>.</span>
+          <span>Created: <strong>Jul 8, 2014</strong>.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+{% highlight html %}
+<div class="index">
+  <div class="index-item index-item-active">
+    <span class="state"></span>
+
+    <h4><a href="#">First Item</a></h4>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at. </p>
+
+    <div class="index-item-meta">
+      <span>3 pages.</span>
+      <span>Source: <strong>The New York Times</strong>.</span>
+      <span>Created: <strong>Jul 8, 2014</strong>.</span>
+      <span class="label label-primary">Special</span>
+    </div>
+  </div>
+  <div class="index-item">
+    <span class="state"></span>
+
+    <h4><a href="#">Second Item</a></h4>
+    <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
+
+    <div class="index-item-meta">
+      <span>3 pages.</span>
+      <span>Source: <strong>The New York Times</strong>.</span>
+      <span>Created: <strong>Jul 8, 2014</strong>.</span>
+    </div>
+  </div>
+</div>
+{% endhighlight %}
+
+  <h4>Toggle Index</h4>
+</div>
