@@ -196,7 +196,6 @@
   // Modeled after PourOver's .getCurrentItems. Should return the items in a
   // collection which have been filtered, sorted, and paged.
   Index.prototype.getCurrentItems = function () {
-    var $this        = this
     var visibleItems = this.$items.slice(0) // dup
 
     // filter
@@ -212,6 +211,7 @@
   }
 
   Index.prototype.getFilteredItems = function (items) {
+    var $this = this
     if (!$.isEmptyObject(this.filters)) {
       var filtered = []
       $.each(items, function (idx, item) {
