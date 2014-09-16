@@ -23,7 +23,6 @@
 
       // Necessary to avoid infinite recursion; peek will use adcom.state in
       // data-api, which normally isn't set until Constructor returns.
-      this.$element.data('adcom.state', this)
       this.peek()
     }
   }

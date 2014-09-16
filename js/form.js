@@ -110,6 +110,7 @@
     var source     = closestWithData($this, $sourceKey)
     var serialized = source.data($sourceKey)
 
+    $target.form()
     $target.data('adcom.form').sourceElement = source.clone(true, false)
     $target.data('adcom.form').sourceData    = serialized
 

@@ -1,21 +1,19 @@
 <div class="bs-docs-section">
   <h1 id="index" class="page-header">Index</h1>
 
-  <p class="lead">Render a collection of items into a clear, compact list that supports common requirements like active states and metadata.</p>
+  <p class="lead">Render a collection of items into a clear, compact list that supports common requirements like active states and metadata. All of these style sets work with the Index.js plugin.</p>
 
-  <h2 id="index-examples">Examples</h2>
+  <h2 id="index-primary">Primary index</h2>
   <p>The main classes you need to apply are <code>index</code> to the container element, and <code>index-item</code> to each item in the collection. By itself, Adcom some very light adjustments to padding and margin to ready your list for a stacked list of items that can contain one or several rows of text.</p>
 
   <h4>Primary Index</h4>
-  <p>This index is suited well for a main index page of objects. Display metadata about the item within <code>index-item-meta</code>. By including a <code>&lt;span class="state"&gt;</code> inside the item, you can also add a highlight bar that adapts to various states using the <code>.active</code>, <code>.success</code>, <code>.warning</code>, <code>.info</code> and <code>.danger</code> classes.</p>
+  <p>This index is suited well for a main index page of objects: when you want more control than a table, more content than a title, and want to associate multiple actions with an item. Display metadata about the item within <code>index-item-meta</code>. Use the <code>index-bordered</code> class to add borders between the items.</p>
 
   <div class="bs-example">
-    <div class="index">
-      <div class="index-item active">
-        <span class="index-item-state"></span>
-
+    <div class="index index-bordered">
+      <div class="index-item">
         <h4><a href="#">First Item</a></h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at. </p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
 
         <div class="index-item-meta">
           <span>3 pages.</span>
@@ -24,9 +22,7 @@
           <span class="label label-primary">Special</span>
         </div>
       </div>
-      <div class="index-item info">
-        <span class="index-item-state"></span>
-
+      <div class="index-item">
         <h4><a href="#">Second Item</a></h4>
         <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
 
@@ -39,12 +35,10 @@
     </div>
   </div>
 {% highlight html %}
-<div class="index">
-  <div class="index-item index-item-active">
-    <span class="state"></span>
-
+<div class="index index-bordered">
+  <div class="index-item">
     <h4><a href="#">First Item</a></h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at. </p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
 
     <div class="index-item-meta">
       <span>3 pages.</span>
@@ -54,8 +48,6 @@
     </div>
   </div>
   <div class="index-item">
-    <span class="state"></span>
-
     <h4><a href="#">Second Item</a></h4>
     <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
 
@@ -68,5 +60,121 @@
 </div>
 {% endhighlight %}
 
-  <h4>Toggle Index</h4>
+  <h4>Contextual classes</h4>
+  <p>Use contextual classes along with the <code>table-state</code> class on the index to add partial highlighting to select items in your list.</p>
+
+  <div class="bs-example">
+    <div class="index index-bordered index-state">
+      <div class="index-item active">
+        <h4>Active</h4>
+      </div>
+      <div class="index-item success">
+        <h4>Success</h4>
+      </div>
+      <div class="index-item info">
+        <h4>Info</h4>
+      </div>
+      <div class="index-item warning">
+        <h4>Warning</h4>
+      </div>
+      <div class="index-item danger">
+        <h4>Danger</h4>
+      </div>
+    </div>
+  </div>
+{% highlight html %}
+<div class="index table-bordered index-state">
+  <div class="index-item active">...</div>
+  <div class="index-item success">...</div>
+  <div class="index-item info">...</div>
+  <div class="index-item warning">...</div>
+  <div class="index-item danger">...</div>
+</div>
+{% endhighlight %}
+
+  <h4>Compact version</h4>
+  <p>A more compact version of the index is available by applying the <code>.index-compact</code> class to the container element.</p>
+  <div class="bs-example">
+    <div class="index index-bordered index-compact index-state">
+      <div class="index-item active">
+        <h5>Active</h5>
+      </div>
+      <div class="index-item success">
+        <h5>Success</h5>
+      </div>
+      <div class="index-item info">
+        <h5>Info</h5>
+      </div>
+      <div class="index-item warning">
+        <h5>Warning</h5>
+      </div>
+      <div class="index-item danger">
+        <h5>Danger</h5>
+      </div>
+    </div>
+  </div>
+{% highlight html %}
+<div class="index index-bordered index-compact index-state">
+  <div class="index-item active">...</div>
+  <div class="index-item success">...</div>
+  <div class="index-item info">...</div>
+  <div class="index-item warning">...</div>
+  <div class="index-item danger">...</div>
+</div>
+{% endhighlight %}
+
+  <h4>Single-action lists</h4>
+  <p>Turn the entire list item into a link by making the item container an <code>&lt;a&gt;</code> element.</p>
+
+  <div class="bs-example">
+    <div class="index index-bordered index-state">
+      <a href="#" class="index-item">
+        <h4>First Item</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
+      </a>
+      <a href="#" class="index-item">
+        <h4>First Item</h4>
+        <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
+      </a>
+    </div>
+  </div>
+{% highlight html %}
+<div class="index index-bordered index-state">
+  <a href="#" class="index-item">
+    <h4>First Item</h4>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
+  </a>
+  <a href="#" class="index-item">
+    <h4>First Item</h4>
+    <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
+  </a>
+</div>
+{% endhighlight %}
+
+  <h2 id="index-toggle">Toggle Index</h2>
+  <p>A set of lightweight styles to show a single row of text that represents items to be toggled on and off.</p>
+
+  <div class="bs-example" id="index-toggle-example">
+    <div class="index index-toggle">
+      <a href="#" class="index-item active"><span>First Item</span></a>
+      <a href="#" class="index-item"><span>Second Item</span></a>
+      <a href="#" class="index-item active"><span>Third Item</span></a>
+    </div>
+  </div>
+  <script>
+    $('#index-toggle-example a').on('click', function(e) { $(this).toggleClass('active'); });
+  </script>
+{% highlight html %}
+<div class="index index-toggle">
+  <a href="#" class="index-item active"><span>First Item</span></a>
+  <a href="#" class="index-item"><span>Second Item</span></a>
+  <a href="#" class="index-item active"><span>Third Item</span></a>
+</div>
+<script>
+  $('#index-toggle-example a').on('click', function(e) {
+    $(this).toggleClass('active');
+  });
+</script>
+{% endhighlight %}
+
 </div>

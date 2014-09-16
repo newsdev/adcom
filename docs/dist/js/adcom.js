@@ -527,6 +527,7 @@
     var source     = closestWithData($this, $sourceKey)
     var serialized = source.data($sourceKey)
 
+    $target.form()
     $target.data('adcom.form').sourceElement = source.clone(true, false)
     $target.data('adcom.form').sourceData    = serialized
 
@@ -576,7 +577,6 @@
 
       // Necessary to avoid infinite recursion; peek will use adcom.state in
       // data-api, which normally isn't set until Constructor returns.
-      this.$element.data('adcom.state', this)
       this.peek()
     }
   }
@@ -858,4 +858,19 @@
     })
   })
 
+}(jQuery);
+
++function ($) {
+  'use strict';
+
+  $('[data-toggle="popover"]').popover()
+  $('.act[title]').tooltip()
+
+  $(document).on('DOMNodeInserted', function(e) {
+    var klass = e.target.getAttribute('class')
+    if (klass && klass.split(' ').indexOf('action') &&
+        e.target.getAttribute('target')) {
+      $(e.target).tooltip()
+    }
+  });
 }(jQuery);

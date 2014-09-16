@@ -14,7 +14,7 @@ baseurl:          /
 encoding:         UTF-8
 
 # Custom vars
-current_version:  0.1.0-rc0
+current_version:  0.1.0-rc1
 repo:             https://github.com/newsdev/adcom
 
 cdn:

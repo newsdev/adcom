@@ -1,0 +1,193 @@
+//
+// Menu
+// --------------------------------------------------
+
+.hover-state (@background-color, @border-color) {
+  background: darken(@background-color, 10%);
+  border-color: darken(@border-color, 15%);
+}
+
+.act {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 1em;
+  border-color: transparent;
+  background: transparent;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  width: 2em;
+  height: 2em;
+  color: @action-default-color;
+  line-height: 2em;
+  text-decoration: none !important;
+
+  &:hover:not(.disabled) {
+    cursor: pointer;
+    color: darken(@action-default-color, 10%);
+    border-color: darken(@action-default-border, 10%);
+    -webkit-transition: border-color @action-transition-time ease-out;
+    -moz-transition: border-color @action-transition-time ease-out;
+    -o-transition: border-color @action-transition-time ease-out;
+  }
+  & > span.dots::before {
+    content: "…";
+    display: block;
+    margin-top: -0.3em;
+  }
+
+  &.act-lg { font-size: 19px; }
+  &.act-sm { font-size: 12px; }
+  &.act-xs { font-size: 10px; }
+
+  &.act-primary, &.act-warning, &.act-info, &.act-danger, &.act-success {
+    &, &:hover {
+      color: white;
+    }
+  }
+
+  &.act-default {
+    background: @action-default-bg;
+    border-color: @action-default-border;
+    &:hover:not(.disabled) {
+      color: darken(@action-default-color, 33%);
+      background: darken(@action-default-bg, 5%);
+      border-color: darken(@action-default-color, 10%);
+    }
+  }
+  &.act-primary {
+    background: @action-primary-bg;
+    border-color: @action-primary-border;
+    &:hover:not(.disabled) {
+      .hover-state(@action-primary-bg, @action-primary-border);
+    }
+  }
+  &.act-warning {
+    background: @action-warning-bg;
+    border-color: @action-warning-border;
+    &:hover:not(.disabled) {
+      .hover-state(@action-warning-bg, @action-warning-border);
+    }
+  }
+  &.act-info {
+    background: @action-info-bg;
+    border-color: @action-info-border;
+    &:hover:not(.disabled) {
+      .hover-state(@action-info-bg, @action-info-border);
+    }
+  }
+  &.act-danger {
+    background: @action-danger-bg;
+    border-color: @action-danger-border;
+    &:hover:not(.disabled) {
+      .hover-state(@action-danger-bg, @action-danger-border);
+    }
+  }
+  &.act-success {
+    background: @action-success-bg;
+    border-color: @action-success-border;
+    &:hover:not(.disabled) {
+      .hover-state(@action-success-bg, @action-success-border);
+    }
+  }
+  &:hover {
+    &:not(.disabled) {
+      &.act-primary { background: darken(@action-primary-bg, 10%); }
+      &.act-warning { background: darken(@action-warning-bg, 10%); }
+      &.act-info { background: darken(@action-info-bg, 10%); }
+      &.act-danger { background: darken(@action-danger-bg, 10%); }
+      &.act-success { background: darken(@action-success-bg, 10%); }
+    }
+  }
+}
+.dropdown {
+  &.open .act.dropdown-toggle {
+    &.act-default, &.act-primary, &.act-warning, &.act-info, &.act-danger, &.act-success {
+      -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+      -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+      -o-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+      box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+
+      &.act-default {
+        color: darken(@action-default-color, 33%);
+        background: darken(@action-default-bg, 5%);
+        border-color: darken(@action-default-color, 10%);
+      }
+      &.act-primary {
+        .hover-state(@action-primary-bg, @action-primary-border);
+      }
+      &.act-success {
+        .hover-state(@action-success-bg, @action-success-border);
+      }
+      &.act-warning {
+        .hover-state(@action-warning-bg, @action-warning-border);
+      }
+      &.act-info {
+        .hover-state(@action-info-bg, @action-info-border);
+      }
+      &.act-danger {
+        .hover-state(@action-danger-bg, @action-danger-border);
+      }
+    }
+  }
+  .act ~ ul.dropdown-menu {
+    top: 0.4em;
+    > li {
+      > a {
+        font-size: 12px;
+        padding: 2px 20px;
+      }
+
+      &.divider {
+        margin: 4px 0;
+      }
+
+      &.destructive > a {
+        color: #a94442;
+        font-weight: 500;
+      }
+    }
+
+    .popover {
+      font-size: 12px;
+    }
+  }
+}
+
+.act-scope:hover {
+  .act:not(:hover) {
+    -webkit-transition: all @action-transition-time ease-out;
+    -moz-transition: all @action-transition-time ease-out;
+    -o-transition: all @action-transition-time ease-out;
+    transition: all @action-transition-time ease-out;
+
+    &.act-default {
+      color: darken(@action-default-color, 10%);
+      border-color: darken(@action-default-color, 10%);
+    }
+    &.act-primary {
+      background: darken(@action-primary-bg, 5%);
+      border-color: darken(@action-primary-border, 10%);
+    }
+    &.act-success {
+      background: darken(@action-success-bg, 5%);
+      border-color: darken(@action-success-border, 10%);
+    }
+    &.act-info {
+      background: darken(@action-info-bg, 5%);
+      border-color: darken(@action-info-border, 10%);
+    }
+    &.act-warning {
+      background: darken(@action-warning-bg, 5%);
+      border-color: darken(@action-warning-border, 10%);
+    }
+    &.act-danger {
+      background: darken(@action-danger-bg, 5%);
+      border-color: darken(@action-danger-border, 10%);
+    }
+  }
+}

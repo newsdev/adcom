@@ -1,0 +1,261 @@
+<style>
+  .scoop {
+    font-family: 'nyt-karnak-display-130124';
+    color: #f3f3f3 !important;
+    background: #333;
+    font-weight: bold;
+    border-color: #222 !important;
+  }
+  .scoop span {
+    font-size: 22px;
+  }
+</style>
+
+<div class="bs-docs-section">
+  <h1 id="actions" class="page-header">Actions</h1>
+
+  <p class="lead">Consistent visual language for describing actions that the user can perform.</p>
+
+  <p>Users presented with a choice of non-idempotent actions should be able understand exactly what will happen when they click. To do this in a trim and consistent manner, the Action component provides a derivation of Bootstrap's <a href="http://getbootstrap.com/css/#buttons">Button</a> and <a href="http://getbootstrap.com/components/#dropdowns">Dropdown</a> components.</p>
+  <p>Examples and usage guidelines are provided.</p>
+
+  <h2 id="actions-options">Options</h2>
+  <p>Actions assume that you have a one-dimensional array of potential actions to be displayed in a dropdown. To differentiate these potentially destructive actions from other events on the page, Actions are all housed in circle.</p>
+
+  <div class="bs-example">
+    <span class="act act-default" title="Default"><span class="dots"></span></span>
+    <span class="act act-primary" title="Primary"><span class="dots"></span></span>
+    <span class="act act-success" title="Success"><span class="dots"></span></span>
+    <span class="act act-info" title="Info"><span class="dots"></span></span>
+    <span class="act act-warning" title="Warning"><span class="dots"></span></span>
+    <span class="act act-danger" title="Danger"><span class="dots"></span></span>
+    <span class="act" title="No class"><span class="dots"></span></span>
+  </div>
+{% highlight html %}
+<span class="act act-default" title="Default"><span class="dots"></span></span>
+<span class="act act-primary" title="Primary"><span class="dots"></span></span>
+<span class="act act-success" title="Success"><span class="dots"></span></span>
+<span class="act act-info" title="Info"><span class="dots"></span></span>
+<span class="act act-warning" title="Warning"><span class="dots"></span></span>
+<span class="act act-danger" title="Danger"><span class="dots"></span></span>
+<span class="act" title="No class"><span class="dots"></span></span>
+{% endhighlight %}
+
+  <h2 id="actions-sizes">Sizes</h2>
+  <p>Apply the <code>.act-lg</code>, <code>.act-sm</code> or <code>.act-xs</code> class for different sizes.</p>
+
+  <div class="bs-example">
+    <span class="act act-default act-lg" title=".act-lg"><span class="dots"></span></span>
+    <span class="act act-default" title="No class"><span class="dots"></span></span>
+    <span class="act act-default act-sm" title=".act-sm"><span class="dots"></span></span>
+    <span class="act act-default act-xs" title=".act-xs"><span class="dots"></span></span>
+  </div>
+{% highlight html %}
+<span class="act act-default act-lg" title=".act-lg">
+  <span class="dots"></span>
+</span>
+<span class="act act-default" title="No class">
+  <span class="dots"></span>
+</span>
+<span class="act act-default act-sm" title=".act-sm">
+  <span class="dots"></span>
+</span>
+<span class="act act-default act-xs" title=".act-xs">
+  <span class="dots"></span>
+</span>
+{% endhighlight %}
+
+  <h2 id="actions-sizes">Dropdowns</h2>
+  <p>While you can group multiple actions together, when you want to save space or keep things visually simple, you can use a single action button to toggle a dropdown menu. This larger menu can also offer more description actions.</p>
+
+  <div class="bs-example">
+    <h4 class="act-scope">
+      My Resource
+      <span class="dropdown">
+        <a class="act act-default dropdown-toggle" data-toggle="dropdown" title="Actions"><span class="dots"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Edit</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Delete</a></li>
+        </ul>
+    </h4>
+  </div><!-- /example -->
+
+{% highlight html %}
+<h2 class="act-scope">
+  My Resource
+  <span class="act act-default" title="Edit"><span class="dots"></span></span>
+  <span class="act act-default" title="Edit"><i class="glyphicon glyphicon-edit"></i></span>
+  <span class="act act-success" title="Change Status">S</span>
+</h2>
+{% endhighlight %}
+
+  <h2 id="actions-usage">Usage Guidelines</h2>
+  <p>Actions attempt to make clear three of the traditional Five Ws: <strong>Who</strong> an action applies to, <strong>What</strong> the action will do, and <strong>Where</strong> the action will occur.</p>
+
+  <h3>Who?</h3>
+  <p>Action buttons should always clearly apply to a single resource on your page. Place them near a page heading to signal the actions apply to the page's primary resource, or inline to the side of each item in a collection.</p>
+  <p>Use the <code>.act-scope</code> class on the parent resource's container element to add a hover effect that helps suggest which item the actions are for.</p>
+
+  <div class="bs-example">
+    <h2 class="act-scope">
+      First Resource
+      <span class="act act-default"><span class="dots"></span></span>
+    </h2>
+    <h2 class="act-scope">
+      Second Resource
+      <span class="act act-primary"><span class="dots"></span></span>
+    </h2>
+
+    <br />
+
+    <p class="act-scope">
+      <span class="act act-default act-xs"><span class="dots"></span></span>
+      First Resource
+    </p>
+    <p class="act-scope">
+      <span class="act act-default act-xs"><span class="dots"></span></span>
+      Second Resource
+    </p>
+  </div><!-- /example -->
+
+{% highlight html %}
+<h2 class="act-scope">
+  First Resource
+  <span class="act act-default"><span class="dots"></span></span>
+</h2>
+<h2 class="act-scope">
+  Second Resource
+  <span class="act act-primary"><span class="dots"></span></span>
+</h2>
+
+<p class="act-scope">
+  <span class="act act-default act-xs"><span class="dots"></span></span>
+  First Resource
+</p>
+<p class="act-scope">
+  <span class="act act-default act-xs"><span class="dots"></span></span>
+  Second Resource
+</p>
+{% endhighlight %}
+
+  <h3>What?</h3>
+  <p>For action elements that act as a single button and do not contain a dropdown, you can use the element's <code>title</code> attribute to add a short action name. For visual consistency, the action button is very small, and there is room for only one character or a symbol inside.</p>
+  <p>You can use a Bootstrap <a href="http://getbootstrap.com/components/#glyphicons">Glyphicon</a> for easily understood actions. Otherwise, default to placing <code>&lt;span class="dots" /&gt;</code> inside.</p>
+
+  <div class="bs-example">
+    <h2 class="act-scope">
+      My Resource
+      <span class="act act-default" title="Edit"><i class="glyphicon glyphicon-edit"></i></span>
+      <span class="act act-success" title="Change Status">S</span>
+      <span class="act act-default" title="More"><span class="dots"></span></span>
+    </h2>
+  </div><!-- /example -->
+
+{% highlight html %}
+<h2 class="act-scope">
+  My Resource
+  <span class="act act-default" title="Edit"><i class="glyphicon glyphicon-edit"></i></span>
+  <span class="act act-success" title="Change Status">S</span>
+  <span class="act act-default" title="More"><span class="dots"></span></span>
+</h2>
+{% endhighlight %}
+
+  <p>If your actions are easily represented visually, then the above example is a good strategy to take. But if you want more complex action descriptions or just have more actions, you can use the optional dropdown menu.</p>
+  <p>Try to describe your actions briefly and with text only where possible. Use Bootstrap's <code>&lt;li class="divider"&gt;</code> element as a divider. Place constructive actions first, and destructive items last. Apply the <code>.destructive</code> class to destructive <code>&lt;li&gt;</code> elements.</p>
+
+  <div class="bs-example">
+    <h2 class="act-scope">
+      With a dropdown
+      <span class="dropdown">
+        <a class="act act-default" data-toggle="dropdown" title="More"><span class="dots"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Edit</a></li>
+          <li><a href="#">Save</a></li>
+          <li class="divider"></li>
+          <li class="destructive"><a href="#">Delete</a></li>
+        </ul>
+      </span>
+    </h2>
+  </div><!-- /example -->
+
+{% highlight html %}
+<h2 class="act-scope">
+  With a dropdown
+  <span class="dropdown">
+    <a class="act act-default" data-toggle="dropdown" title="More"><span class="dots"></span></a>
+    <ul class="dropdown-menu">
+      <li><a href="#">Edit</a></li>
+      <li><a href="#">Save</a></li>
+      <li class="divider"></li>
+      <li><a href="#" class="text-danger">Delete</a></li>
+    </ul>
+  </span>
+</h2>
+{% endhighlight %}
+
+  <h3>Where?</h3>
+  <p>When your actions interact with outside services, it can be important for users to understand the relationship between the data they're viewing and the second data the action might affect.</p>
+  <p>In this example, many actions apply to editing records in the current tool's database. But the tool might also push data into a Wordpress blog, or our CMS at The Times, called Scoop. The Wordpress action is noted clearly in the main actionbutton. The Scoop actions have been separated into a separate action with some custom styling.</p>
+
+  <div class="bs-example">
+    <h2 class="act-scope">
+      I live in multiple places
+      <span class="dropdown">
+        <a class="act act-default" data-toggle="dropdown" title="Edit"><span class="dots"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Edit</a></li>
+          <li><a href="#">Save</a></li>
+          <li><a href="#">
+            Export to <strong>Wordpress</strong>
+          </a></li>
+          <li class="divider"></li>
+          <li class="destructive"><a href="#">Delete</a></li>
+        </ul>
+      </span>
+      <span class="dropdown">
+        <a class="act scoop" data-toggle="dropdown" title="Scoop"><span>S</span></a>
+        <ul class="dropdown-menu">
+          <li class="dropdown-header">Scoop</li>
+          <li class="divider"></li>
+          <li><a href="#">View</a></li>
+          <li><a href="#">Save as new</a></li>
+          <li><a href="#">Update</a></li>
+          <li class="divider"></li>
+          <li class="destructive"><a href="#">Delete</a></li>
+        </ul>
+      </span>
+    </h2>
+  </div><!-- /example -->
+
+{% highlight html %}
+<h2 class="act-scope">
+  I live in multiple places
+  <span class="dropdown">
+    <a class="act act-default" data-toggle="dropdown" title="Edit"><span class="dots"></span></a>
+    <ul class="dropdown-menu">
+      <li><a href="#">Edit</a></li>
+      <li><a href="#">Save</a></li>
+      <li><a href="#">
+        Export to <strong>Wordpress</strong>
+      </a></li>
+      <li class="divider"></li>
+      <li class="destructive"><a href="#">Delete</a></li>
+    </ul>
+  </span>
+  <span class="dropdown">
+    <a class="act scoop" data-toggle="dropdown" title="Scoop"><span>S</span></a>
+    <ul class="dropdown-menu">
+      <li class="dropdown-header">Scoop</li>
+      <li class="divider"></li>
+      <li><a href="#">View</a></li>
+      <li><a href="#">Save as new</a></li>
+      <li><a href="#">Update</a></li>
+      <li class="divider"></li>
+      <li class="destructive"><a href="#">Delete</a></li>
+    </ul>
+  </span>
+</h2>
+{% endhighlight %}
+
+</div>
