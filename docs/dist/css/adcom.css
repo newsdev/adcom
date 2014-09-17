@@ -12,6 +12,11 @@
   content: "▲";
 }
 .index .index-item {
+<<<<<<< HEAD
+=======
+  padding: 10px 6px 10px 0;
+  margin: 0;
+>>>>>>> c0fe33ecff48172f17598daec35b07344f4fa265
   position: relative;
   display: inline-block;
   width: 100%;
