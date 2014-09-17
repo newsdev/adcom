@@ -29,8 +29,10 @@
             <ul class="nav bs-docs-sidenav">
               {% if page.slug == "js" %}
                 {% include nav/javascript.html %}
-              {% else if page.slug == "components" %}
+              {% elsif page.slug == "components" %}
                 {% include nav/components.html %}
+              {% elsif page.slug == "getting-started" %}
+                {% include nav/getting-started.html %}
               {% endif %}
             </ul>
             <a class="back-to-top" href="#top">

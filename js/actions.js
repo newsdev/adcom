@@ -1,7 +1,6 @@
 +function ($) {
   'use strict';
 
-  $('[data-toggle="popover"]').popover()
   $('.act[title]').tooltip()
 
   $(document).on('DOMNodeInserted', function(e) {

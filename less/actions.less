@@ -6,25 +6,29 @@
   background: darken(@background-color, 10%);
   border-color: darken(@border-color, 15%);
 }
+.action-size (@size: 14px) {
+  font-size: @size;
+  border-radius: @size * 2;
+  width: @size * 2;
+  height: @size * 2;
+  line-height: @size * 2;
+}
 
 .act {
   border-style: solid;
   border-width: 1px;
-  border-radius: 1em;
   border-color: transparent;
   background: transparent;
   display: inline-block;
+  position: relative;
   padding: 0;
   margin: 0;
-  font-size: 14px;
   font-weight: normal;
   text-align: center;
   vertical-align: middle;
-  width: 2em;
-  height: 2em;
   color: @action-default-color;
-  line-height: 2em;
   text-decoration: none !important;
+  box-sizing: content-box;
 
   &:hover:not(.disabled) {
     cursor: pointer;
@@ -34,15 +38,41 @@
     -moz-transition: border-color @action-transition-time ease-out;
     -o-transition: border-color @action-transition-time ease-out;
   }
-  & > span.dots::before {
-    content: "…";
-    display: block;
-    margin-top: -0.3em;
+  & > *,
+  & > *::before,
+  &.glyphicon::before {
+    width: inherit;
+    height: inherit;
+    line-height: inherit;
+    font-size: inherit;
+    box-sizing: border-box;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  &.dots {
+    &::before {
+      position: absolute;
+      top: -0.2em;
+      left: 0;
+      content: "…";
+      width: inherit;
+      height: inherit;
+    }
+  }
+  & > span.dots {
+    top: -0.3em;
+    &::before {
+      content: "…";
+    }
   }
 
-  &.act-lg { font-size: 19px; }
-  &.act-sm { font-size: 12px; }
-  &.act-xs { font-size: 10px; }
+  .action-size(14px);
+  &.act-lg { .action-size(19px;) }
+  &.act-sm { .action-size(12px;) }
+  &.act-xs { .action-size(10px;) }
 
   &.act-primary, &.act-warning, &.act-info, &.act-danger, &.act-success {
     &, &:hover {
@@ -135,7 +165,7 @@
     }
   }
   .act ~ ul.dropdown-menu {
-    top: 0.4em;
+    top: -0.2em;
     > li {
       > a {
         font-size: 12px;
