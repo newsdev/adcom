@@ -4,12 +4,24 @@
   "authors": [
     "michael.strickland@nytimes.com"
   ],
-  "description": "Front end components for use in NYT admins",
+  "description": "Front end framework for building iterative admin interfaces for the web.",
+  "keywords": [
+    "css",
+    "js",
+    "less",
+    "front-end",
+    "framework",
+    "web",
+    "admin"
+  ],
   "license": "MIT",
   "private": false,
+  "homepage": "https://newsdev.github.io/adcom/",
   "dependencies": {
+    "jquery": ">= 1.9.0"
   },
   "main": [
+    "less/adcom.less",
     "dist/css/adcom.css",
     "dist/js/adcom.js"
   ],

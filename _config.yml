@@ -17,7 +17,6 @@ encoding:         UTF-8
 current_version:  0.1.0-rc1
 repo:             https://github.com/newsdev/adcom
 
-cdn:
-  css:            https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css
-  css_theme:      https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css
-  js:             https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js
+download:
+  source:         https://github.com/newsdev/adcom/archive/0.1.0-rc1.zip
+  dist:           https://github.com/newsdev/adcom/releases/download/0.1.0-rc1/adcom-0.1.0-rc1-dist.zip
