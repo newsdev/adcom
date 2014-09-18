@@ -37,6 +37,7 @@
     -webkit-transition: border-color @action-transition-time ease-out;
     -moz-transition: border-color @action-transition-time ease-out;
     -o-transition: border-color @action-transition-time ease-out;
+    transition: border-color @action-transition-time ease-out;
   }
   & > *,
   & > *::before,
@@ -165,7 +166,7 @@
     }
   }
   .act ~ ul.dropdown-menu {
-    top: -0.2em;
+    // top: -0.1em;
     > li {
       > a {
         font-size: 12px;

@@ -65,6 +65,12 @@
 
   <div class="bs-example">
     <div class="index index-bordered index-state">
+      <div class="index-item">
+        <h4>No class</h4>
+      </div>
+      <div class="index-item default">
+        <h4>Default</h4>
+      </div>
       <div class="index-item active">
         <h4>Active</h4>
       </div>
@@ -84,6 +90,8 @@
   </div>
 {% highlight html %}
 <div class="index table-bordered index-state">
+  <div class="index-item">...</div>
+  <div class="index-item default">...</div>
   <div class="index-item active">...</div>
   <div class="index-item success">...</div>
   <div class="index-item info">...</div>
@@ -94,8 +102,15 @@
 
   <h4>Compact version</h4>
   <p>A more compact version of the index is available by applying the <code>.index-compact</code> class to the container element.</p>
+  <p>Left padding is applied to all items that have an explicit state defined.</p>
   <div class="bs-example">
     <div class="index index-bordered index-compact index-state">
+      <div class="index-item">
+        <h5>No class</h5>
+      </div>
+      <div class="index-item default">
+        <h5>Default</h5>
+      </div>
       <div class="index-item active">
         <h5>Active</h5>
       </div>
@@ -115,6 +130,8 @@
   </div>
 {% highlight html %}
 <div class="index index-bordered index-compact index-state">
+  <div class="index-item">...</div>
+  <div class="index-item default">...</div>
   <div class="index-item active">...</div>
   <div class="index-item success">...</div>
   <div class="index-item info">...</div>
@@ -123,31 +140,82 @@
 </div>
 {% endhighlight %}
 
-  <h4>Single-action lists</h4>
-  <p>Turn the entire list item into a link by making the item container an <code>&lt;a&gt;</code> element.</p>
+  <h4>Hover state</h4>
+  <p>Add a hover state to your index items by adding the <code>index-hover</code> class to your container element. This is useful for treating the entire item as a selectable element. It's up to you to use an <code>&lt;a&gt;</code> tag for the item or specify the cursor hover state another way.</p>
+  <p>Left padding is added to all items.</p>
 
   <div class="bs-example">
-    <div class="index index-bordered index-state">
-      <a href="#" class="index-item">
-        <h4>First Item</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
-      </a>
-      <a href="#" class="index-item">
-        <h4>First Item</h4>
-        <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
-      </a>
+    <div class="row">
+      <div class="index index-compact index-hover col-sm-6">
+        <h6><code>index-hover</code></h6>
+        <div class="index-item">
+          <h5>No class</h5>
+        </div>
+        <div class="index-item default">
+          <h5>Default</h5>
+        </div>
+        <div class="index-item active">
+          <h5>Active</h5>
+        </div>
+        <div class="index-item success">
+          <h5>Success</h5>
+        </div>
+        <div class="index-item info">
+          <h5>Info</h5>
+        </div>
+        <div class="index-item warning">
+          <h5>Warning</h5>
+        </div>
+        <div class="index-item danger">
+          <h5>Danger</h5>
+        </div>
+      </div>
+      <div class="index index-compact index-state index-hover col-sm-6">
+        <h6><code>index-hover + index-state</code></h6>
+        <div class="index-item">
+          <h5>No class</h5>
+        </div>
+        <div class="index-item default">
+          <h5>Default</h5>
+        </div>
+        <div class="index-item active">
+          <h5>Active</h5>
+        </div>
+        <div class="index-item success">
+          <h5>Success</h5>
+        </div>
+        <div class="index-item info">
+          <h5>Info</h5>
+        </div>
+        <div class="index-item warning">
+          <h5>Warning</h5>
+        </div>
+        <div class="index-item danger">
+          <h5>Danger</h5>
+        </div>
+      </div>
     </div>
+
   </div>
 {% highlight html %}
-<div class="index index-bordered index-state">
-  <a href="#" class="index-item">
-    <h4>First Item</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
-  </a>
-  <a href="#" class="index-item">
-    <h4>First Item</h4>
-    <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
-  </a>
+<div class="index index-bordered index-compact index-hover">
+  <div class="index-item">...</div>
+  <div class="index-item default">...</div>
+  <div class="index-item active">...</div>
+  <div class="index-item success">...</div>
+  <div class="index-item info">...</div>
+  <div class="index-item warning">...</div>
+  <div class="index-item danger">...</div>
+</div>
+
+<div class="index index-bordered index-compact index-hover index-state">
+  <div class="index-item">...</div>
+  <div class="index-item default">...</div>
+  <div class="index-item active">...</div>
+  <div class="index-item success">...</div>
+  <div class="index-item info">...</div>
+  <div class="index-item warning">...</div>
+  <div class="index-item danger">...</div>
 </div>
 {% endhighlight %}
 

@@ -77,42 +77,63 @@
   }
 }
 
-.index-state {
-  .index-item.active,
-  .index-item.warning,
-  .index-item.info,
-  .index-item.danger,
-  .index-item.success,
-  a.index-item:hover {
-    padding-left: @index-item-border-padding;;
-    border-left-width: @index-item-border-width;
-    border-left-style: solid;
-  }
-  a.index-item {
-    padding-left: @index-item-border-padding + @index-item-border-width;
-  }
-  a.index-item:hover {
-    border-left-color: @item-active-border;
-  }
+.index-hover {
+  .index-item {
+    padding-left: @index-item-border-padding;
 
-  .index-item.active {
-    background-color: @item-active-bg;
-    border-left-color: @item-active-border;
-  }
-  .index-item.warning {
-    // background-color: @item-warning-bg;
-    border-left-color: @item-warning-border;
-  }
-  .index-item.info {
-    // background-color: @item-info-bg;
-    border-left-color: @item-info-border;
-  }
-  .index-item.danger {
-    // background-color: @item-danger-bg;
-    border-left-color: @item-danger-border;
-  }
-  .index-item.success {
-    // background-color: @item-success-bg;
-    border-left-color: @item-success-border;
+    &:hover {
+      background-color: darken(@item-default-bg, 5%);
+      border-left-color: darken(@item-default-border, 5%);
+    }
   }
 }
+
+.index-state {
+  &.index-hover > .index-item {
+    padding-left: @index-item-border-padding;
+    border-left-width: @index-item-border-width;
+    border-left-style: solid;
+    border-left-color: transparent;
+    &.default:hover {
+      border-left-color: @item-default-border;
+    }
+  }
+  .index-item {
+    &.default,
+    &.active,
+    &.warning,
+    &.info,
+    &.danger,
+    &.success {
+      padding-left: @index-item-border-padding;
+      border-left-width: @index-item-border-width;
+      border-left-style: solid;
+      border-left-color: transparent;
+    }
+
+    &.default {
+      border-left-color: transparent;
+    }
+  }
+}
+
+.index-item-variant(@state; @border; @background) {
+  .index-hover {
+    & > .index-item.@{state}:hover {
+      background-color: darken(@background, 5%);
+      border-left-color: darken(@border, 5%);
+    }
+  }
+  .index-state {
+    & > .index-item.@{state} {
+      border-left-color: @border;
+    }
+  }
+}
+
+.index-item-variant(default, transparent, @item-default-bg);
+.index-item-variant(active, @item-active-border, @item-active-bg);
+.index-item-variant(info, @item-info-border, @item-info-bg);
+.index-item-variant(danger, @item-danger-border, @item-danger-bg);
+.index-item-variant(warning, @item-warning-border, @item-warning-bg);
+.index-item-variant(success, @item-success-border, @item-success-bg);
