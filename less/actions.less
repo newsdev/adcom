@@ -29,15 +29,15 @@
   color: @action-default-color;
   text-decoration: none !important;
   box-sizing: content-box;
+  -webkit-transition: all @action-transition-time ease-out;
+  -moz-transition: all @action-transition-time ease-out;
+  -o-transition: all @action-transition-time ease-out;
+  transition: all @action-transition-time ease-out;
 
   &:hover:not(.disabled) {
     cursor: pointer;
     color: darken(@action-default-color, 10%);
     border-color: darken(@action-default-border, 10%);
-    -webkit-transition: border-color @action-transition-time ease-out;
-    -moz-transition: border-color @action-transition-time ease-out;
-    -o-transition: border-color @action-transition-time ease-out;
-    transition: border-color @action-transition-time ease-out;
   }
   & > *,
   & > *::before,
