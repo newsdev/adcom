@@ -7,18 +7,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="../" class="navbar-brand">Adcom</a>
+      <a href="{{ page.link_prefix }}" class="navbar-brand">Adcom</a>
     </div>
     <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
         <li{% if page.slug == "getting-started" %} class="active"{% endif %}>
-          <a href="../getting-started/">Getting started</a>
+          <a href="{{ page.link_prefix }}getting-started/">Getting started</a>
         </li>
         <li{% if page.slug == "js" %} class="active"{% endif %}>
-          <a href="../javascript/">JavaScript</a>
+          <a href="{{ page.link_prefix }}javascript/">JavaScript</a>
         </li>
         <li{% if page.slug == "components" %} class="active"{% endif %}>
-          <a href="../components/">Components</a>
+          <a href="{{ page.link_prefix }}components/">Components</a>
         </li>
       </ul>
     </nav>
