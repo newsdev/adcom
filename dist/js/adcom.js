@@ -32,7 +32,7 @@
     items: [],
     fields: [],
     states: [],
-    selectedClass: 'active',
+    selectedClass: '',
     filtering: 'on',
     sorting: 'on',
     pagination: 'off',
@@ -858,18 +858,4 @@
     })
   })
 
-}(jQuery);
-
-+function ($) {
-  'use strict';
-
-  $('.act[title]').tooltip()
-
-  $(document).on('DOMNodeInserted', function(e) {
-    var klass = e.target.getAttribute('class')
-    if (klass && klass.split(' ').indexOf('action') &&
-        e.target.getAttribute('target')) {
-      $(e.target).tooltip()
-    }
-  });
 }(jQuery);
