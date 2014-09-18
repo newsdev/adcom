@@ -32,7 +32,7 @@
     items: [],
     fields: [],
     states: [],
-    selectedClass: 'active',
+    selectedClass: '',
     filtering: 'on',
     sorting: 'on',
     pagination: 'off',
