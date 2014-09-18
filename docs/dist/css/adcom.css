@@ -155,15 +155,15 @@
   border-style: solid;
   border-width: 1px;
   border-radius: 28px;
+  -webkit-transition: all 150ms ease-out;
+     -moz-transition: all 150ms ease-out;
+       -o-transition: all 150ms ease-out;
+          transition: all 150ms ease-out;
 }
 .act:hover:not(.disabled) {
   color: #919191;
   cursor: pointer;
   border-color: #b3b3b3;
-  -webkit-transition: border-color 150ms ease-out;
-     -moz-transition: border-color 150ms ease-out;
-       -o-transition: border-color 150ms ease-out;
-          transition: border-color 150ms ease-out;
 }
 .act > *,
 .act > *::before,
