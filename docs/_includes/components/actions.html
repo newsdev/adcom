@@ -205,6 +205,7 @@
   <h3>Where?</h3>
   <p>When your actions interact with outside services, it can be important for users to understand the relationship between the data they're viewing and the second data the action might affect.</p>
   <p>In this example, many actions apply to editing records in the current tool's database. But the tool might also push data into a Wordpress blog, or our CMS at The Times, called Scoop. The Wordpress action is noted clearly in the main actionbutton. The Scoop actions have been separated into a separate action with some custom styling.</p>
+  <p>In environments with lots of potential actions, you are encourage to develop cues to signal categories. For example, use the <code>.act-default</code> class for actions against the local database, and <code>.act-danger</code> for actions that push to a production database.</p>
 
   <div class="bs-example">
     <h2 class="act-scope">
