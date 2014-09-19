@@ -273,6 +273,10 @@ $('#myForm').on('submitted.adcom.form', function(e) { ... });
   <p>Deserializes the passed object into the form's input fields.</p>
   {% highlight js %}$('#myForm').form('show', {"id": 1}){% endhighlight %}
 
+  <h4>.form('validate')</h4>
+  <p>Trigger a browser-level validation of the form. If any errors are detected, the browser's default validation UI will alert the user. Triggers <code>validated.adcom.form</code> event with the result.</p>
+  {% highlight js %}$('#myForm').form('validate'){% endhighlight %}
+
   <h3>Events</h3>
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
@@ -290,6 +294,14 @@ $('#myForm').on('submitted.adcom.form', function(e) { ... });
        <tr>
          <td>shown.adcom.index</td>
          <td>This event is fired when the serialized data has been inserted into the form. The data is available as the <code>serialized</code> property of the event.</td>
+       </tr>
+       <tr>
+         <td>validate.adcom.index</td>
+         <td>This event is fired immediately when the <code>validate</code> instance method has been called.</td>
+       </tr>
+       <tr>
+         <td>validated.adcom.index</td>
+         <td>This event is fired when the form validation has completed. If any errors were detected, they will have been displayed to the user by this point. The validity of the form is available as the <code>isValid</code> property of the event.</td>
        </tr>
        <tr>
          <td>submitted.adcom.index</td>

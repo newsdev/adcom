@@ -13,9 +13,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <!-- Adcom core CSS -->
     <link rel="stylesheet" href="http://newsdev.github.io/adcom/dist/css/adcom.css">
+    <link rel="stylesheet" href="/assets/css/example.min.css">
   </head>
 
   <body>
+    <div data-example="one"></div>
 
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
@@ -43,19 +45,26 @@
     </div>
 
     <div class="container">
-      <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-        <div id="myIndex" class="index index-bordered">
-          <div class="index-item act-scope">
-            <p class="lead" data-field="about"></p>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" data-example="one">
+          <h2>
+            My Index
+            <span class="act act-default dots" title="Edit"></span>
+          </h2>
 
-            <div class="row index-item-meta">
-              <p class="col-xs-4" data-field="name"></p>
-              <p class="col-xs-4 text-center">
-                <span class="act act-default act-sm glyphicon glyphicon-chevron-down" title="Down"></span>
-                <span class="act act-default act-lg dots"></span>
-                <span class="act act-default act-sm glyphicon glyphicon-chevron-up" title="Up"></span>
-              </p>
-              <p class="col-xs-4 text-right" data-field="created_at"></p>
+          <div id="myIndex" class="index index-bordered" >
+            <div class="index-item act-scope">
+              <p class="lead" data-field="about"></p>
+
+              <div class="row index-item-meta">
+                <p class="col-xs-4" data-field="name"></p>
+                <p class="col-xs-4 text-center">
+                  <span class="act act-default act-sm glyphicon glyphicon-chevron-down" title="Down"></span>
+                  <span class="act act-default act-lg dots" title="More"></span>
+                  <span class="act act-default act-sm glyphicon glyphicon-chevron-up" title="Up"></span>
+                </p>
+                <p class="col-xs-4 text-right" data-field="created_at"></p>
+              </div>
             </div>
           </div>
         </div>
@@ -68,6 +77,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="http://newsdev.github.io/adcom/dist/js/adcom.min.js"></script>
-    <script src="index.js"></script>
+    <script src="index.js" data-example-source></script>
+
+    <script src="/assets/js/example.min.js"></script>
+
   </body>
 </html>

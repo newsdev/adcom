@@ -443,7 +443,6 @@
 
     this.$element.trigger($.Event('shown.adcom.form', { serialized: data }))
   }
-  // alias
 
   Form.prototype.submit = function () {
     var attributes = this.serialize()
@@ -471,6 +470,18 @@
     }
 
     return { object: data, array: array }
+  }
+
+  Form.prototype.validate = function () {
+    this.$element.trigger($.Event('validate.adcom.form'))
+
+    if (!this.$element[0].checkValidity()) {
+      var existing_submit = this.$element[0].find('input[type="submit"]')
+      if (!existing_submit[0]) this.$element.append(new_submit = $('<input style="display: none;" type="submit">'))
+      $(existing_submit[0] || new_submit[0]).trigger('click');
+      this.$element.trigger($.Event('validate.adcom.form', {isValid: false}))
+    }
+    this.$element.trigger($.Event('validate.adcom.form', {isValid: true}))
   }
 
   Form.prototype.destroy = function (data) {
