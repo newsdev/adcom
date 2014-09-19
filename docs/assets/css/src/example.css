@@ -10,7 +10,12 @@
   -moz-transition: all 200ms ease-out;
   -o-transition: all 200ms ease-out;
   transition: all 200ms ease-out;
-  background: linear-gradient(135deg, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 20%);
+  background: transparent;
+  background-image:
+    linear-gradient(135deg, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 20%),
+    linear-gradient(225deg, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 20%),
+    linear-gradient(315deg, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 20%),
+    linear-gradient(45deg, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 20%);
 }
 [data-example]:hover .adcom-example {
   opacity: 0.05;
