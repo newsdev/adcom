@@ -54,6 +54,22 @@
 {% endhighlight %}
 
   <p>Note that the template doesn't use a specific rendering engine's syntax for including dynamic attributes in the element. Any element with a <code>data-field</code> attribute will be populated with the corresponding value using jQuery's <code>.html()</code> method.</p>
+  <p>You can also specify the template inline inside the container element using normal HTML. If no <code>template</code> <code>fields</code> attributes are specified, then the value of the container's <code>.html()</code> method will be used as the template.</p>
+  <div class="bs-example">
+    <ol id="myIndex"
+        data-control="index"
+        data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'>
+      <li data-field='name'></li>
+    </ol>
+  </div><!-- /example -->
+
+{% highlight html %}
+<ol id="myIndex"
+    data-control="index"
+    data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'>
+  <li data-field='name'></li>
+</ol>
+{% endhighlight %}
 
   <p>If you do require a more advanced templating engine, you can specify the source template as a string, and set a second configuration option, <code>templateEngine</code>, to your template compilation function. Because you are passing a JavaScript function, this must be done using the JavaScript API.</p>
 
@@ -351,6 +367,18 @@
          <td></td>
          <td>Default an item's state to on by passing <code>true</code> at its index in the items array.</td>
        </tr>
+       <tr>
+         <td>show</td>
+         <td>boolean</td>
+         <td>true</td>
+         <td>Renders the Index when initialized.</td>
+       </tr>
+       <tr>
+         <td>remote</td>
+         <td>path</td>
+         <td>false</td>
+         <td>If a remote URL is provided, <strong>content will be loaded one time</strong> via jQuery's <code>.getJSON</code> method and stored as the Index's <code>items</code>.</td>
+       </tr>
       </tbody>
     </table>
   </div><!-- /.table-responsive -->
@@ -478,6 +506,10 @@ $('#myIndex').index({
        <tr>
          <td>paginated.adcom.index</td>
          <td>This event is fired when the rendered list of items has been paginated in preparation for rendering. <strong>Fires before the items have been rendered or inserted into the container element.</strong> The current <code>page</code>, number of <code>pages</code>, the <code>count</code> of items, the <code>items</code>, and the <code>start</code> and <code>end</code> positions of the current page are available as properties of the event.</td>
+       </tr>
+       <tr>
+         <td>loaded.adcom.index</td>
+         <td>This event is fired when the index has loaded content using the remote option.</td>
        </tr>
       </tbody>
     </table>

@@ -10,7 +10,7 @@
     this.$element = $(element)
 
     this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
-    this.template = typeof this.options.template === 'string' ? this.compileTemplate(this.options.template) : (this.options.template || this.defaultTemplate())
+    this.template = this.parseTemplate(this.options.template)
 
     this.states   = this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
     this.rendered = []
@@ -21,7 +21,14 @@
     this.pageSize    = parseInt(this.options.pageSize || 1)
 
     this.setInitialState()
-    this.show()
+
+    if (this.options.remote) {
+      $.getJSON(this.options.remote, function(items) {
+        $this.$items = items
+        if ($this.options.show) $this.show()
+        $this.$element.trigger('loaded.adcom.index')
+      })
+    }
   }
 
   Index.VERSION = '0.1.0'
@@ -29,8 +36,8 @@
   Index.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.index.data-api" }).join(' ')
 
   Index.DEFAULTS = {
+    show: true,
     items: [],
-    fields: [],
     states: [],
     selectedClass: '',
     filtering: 'on',
@@ -115,6 +122,12 @@
   }
 
   // Template
+  Index.prototype.parseTemplate = function (template) {
+    if (typeof template === 'function') return template
+    if (typeof template === 'string')   return this.compileTemplate(template)
+    if (this.options.fields) return this.defaultTemplate()
+    return this.compileTemplate(this.$element.html())
+  }
 
   Index.prototype.compileTemplate = function (template) {
     if (this.options.templateEngine) return this.options.templateEngine(template)
@@ -344,8 +357,7 @@
 
       if (!data) $this.data('adcom.index', (data = new Index(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
-
-      return data
+      else if (options.show) data.show()
     })
   }
 

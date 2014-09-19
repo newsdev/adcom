@@ -7,13 +7,12 @@
   var Form = function (element, options) {
     this.options  = options
     this.$element = $(element)
-
-    this.show(typeof this.options.serialized === 'string' ? JSON.parse(this.options.serialized) : this.options.serialized)
   }
 
   Form.VERSION = '0.1.0'
 
   Form.DEFAULTS = {
+    show: true,
     serialized: {}
   }
 
@@ -87,6 +86,7 @@
 
       if (!data) $this.data('adcom.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
+      else if (options.show) data.show(options.serialized === 'string' ? JSON.parse(options.serialized) : options.serialized)
     })
   }
 
@@ -121,7 +121,7 @@
     var source     = closestWithData($this, $sourceKey)
     var serialized = source.data($sourceKey)
 
-    $target.form()
+    $target.form({show: false})
     $target.data('adcom.form').sourceElement = source.clone(true, false)
     $target.data('adcom.form').sourceData    = serialized
 
