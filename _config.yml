@@ -16,7 +16,7 @@ encoding:         UTF-8
 # Custom vars
 current_version:  0.1.0-rc2
 repo:             https://github.com/newsdev/adcom
-homepage:         https://newsdev.github.io/adcom/
+homepage:         /adcom/
 # homepage:         /
 
 download:
