@@ -1,12 +1,30 @@
 $(document).ready(function() {
-  (function one() {
-    $.getJSON('http://int-shared-data.nytimes.com/adcom/items.json', function(items) {
-      $('#myIndex').index({
-        items: items,
-        template: $('#myIndex').html()
-      });
+  // (function index_pull_quote() {
+  //   $.getJSON('http://int-shared-data.nytimes.com/adcom/items.json', function(items) {
+  //     $('#index_pull_quote .index').index({
+  //       items: items,
+  //       pageSize: 3,
+  //       pagination: 'on',
+  //       template: $('#index_pull_quote .index').html()
+  //     });
 
-      $('[title]').tooltip();
-    });
-  })();
+  //     $('[title]').tooltip();
+  //   });
+  // })();
+
+  // (function index_search() {
+  //   $.getJSON('http://int-shared-data.nytimes.com/adcom/items.json', function(items) {
+  //     $('#index_search .index').index({
+  //       items: items,
+  //       pageSize: 3,
+  //       pagination: 'on',
+  //       template: $('#index_search .index').html()
+  //     });
+  //   });
+  // })();
+
+  $('body').scrollspy({
+    target: '.bs-docs-sidebar',
+    offset: 40
+  });
 });
