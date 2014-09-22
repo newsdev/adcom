@@ -20,25 +20,25 @@
   <p>Examples and usage guidelines are provided.</p>
 
   <h2 id="actions-options">Options</h2>
-  <p>Actions assume that you have a one-dimensional array of potential actions to be displayed in a dropdown. To differentiate these potentially destructive actions from other events on the page, Actions are all housed in circles inspired by Rdio.</p>
+  <p>Actions assume that you have a one-dimensional array of potential actions to be displayed in a dropdown. To differentiate these potentially destructive actions from other events on the page, Actions are all housed in circles inspired by Rdio. Apply contextual class names to trigger different colors.</p>
 
   <div class="bs-example">
-    <span class="act act-default dots" title="Default"></span>
-    <span class="act act-primary dots" title="Primary"></span>
-    <span class="act act-success dots" title="Success"></span>
-    <span class="act act-info dots" title="Info"></span>
-    <span class="act act-warning dots" title="Warning"></span>
-    <span class="act act-danger dots" title="Danger"></span>
-    <span class="act dots" title="No class"></span>
+    <span class="act act-bordered act-default dots" title="Default"></span>
+    <span class="act act-bordered act-primary dots" title="Primary"></span>
+    <span class="act act-bordered act-success dots" title="Success"></span>
+    <span class="act act-bordered act-info dots" title="Info"></span>
+    <span class="act act-bordered act-warning dots" title="Warning"></span>
+    <span class="act act-bordered act-danger dots" title="Danger"></span>
+    <span class="act act-bordered dots" title="No class"></span>
   </div>
 {% highlight html %}
-<span class="act act-default dots" title="Default"></span>
-<span class="act act-primary dots" title="Primary"></span>
-<span class="act act-success dots" title="Success"></span>
-<span class="act act-info dots" title="Info"></span>
-<span class="act act-warning dots" title="Warning"></span>
-<span class="act act-danger dots" title="Danger"></span>
-<span class="act dots" title="No class"></span>
+<span class="act act-bordered act-default dots" title="Default"></span>
+<span class="act act-bordered act-primary dots" title="Primary"></span>
+<span class="act act-bordered act-success dots" title="Success"></span>
+<span class="act act-bordered act-info dots" title="Info"></span>
+<span class="act act-bordered act-warning dots" title="Warning"></span>
+<span class="act act-bordered act-danger dots" title="Danger"></span>
+<span class="act act-bordered dots" title="No class"></span>
 {% endhighlight %}
 
   <h2 id="actions-sizes">Sizes</h2>
@@ -46,30 +46,110 @@
 
   <div class="bs-example">
     <p>
-      <span class="act act-default act-lg dots" title=".act-lg"></span>
-      <span class="act act-default dots" title="No class"></span>
-      <span class="act act-default act-sm dots" title=".act-sm"></span>
-      <span class="act act-default act-xs dots" title=".act-xs"></span>
+      <span class="act act-bordered act-default act-lg dots" title=".act-lg"></span>
+      <span class="act act-bordered act-default dots" title="No class"></span>
+      <span class="act act-bordered act-default act-sm dots" title=".act-sm"></span>
+      <span class="act act-bordered act-default act-xs dots" title=".act-xs"></span>
     </p>
     <p>
-      <span class="act act-default act-lg glyphicon glyphicon-chevron-right" title=".act-lg"></span>
-      <span class="act act-default glyphicon glyphicon-chevron-right" title="No class"></span>
-      <span class="act act-default act-sm glyphicon glyphicon-chevron-right" title=".act-sm"></span>
-      <span class="act act-default act-xs glyphicon glyphicon-chevron-right" title=".act-xs"></span>
+      <span class="act act-bordered act-default act-lg glyphicon glyphicon-chevron-right" title=".act-lg"></span>
+      <span class="act act-bordered act-default glyphicon glyphicon-chevron-right" title="No class"></span>
+      <span class="act act-bordered act-default act-sm glyphicon glyphicon-chevron-right" title=".act-sm"></span>
+      <span class="act act-bordered act-default act-xs glyphicon glyphicon-chevron-right" title=".act-xs"></span>
     </p>
   </div>
 {% highlight html %}
 <p>
-  <span class="act act-default act-lg dots" title=".act-lg"></span>
-  <span class="act act-default dots" title="No class"></span>
-  <span class="act act-default act-sm dots" title=".act-sm"></span>
-  <span class="act act-default act-xs dots" title=".act-xs"></span>
+  <span class="act act-bordered act-default act-lg dots" title=".act-lg"></span>
+  <span class="act act-bordered act-default dots" title="No class"></span>
+  <span class="act act-bordered act-default act-sm dots" title=".act-sm"></span>
+  <span class="act act-bordered act-default act-xs dots" title=".act-xs"></span>
 </p>
 <p>
-  <span class="act act-default act-lg glyphicon glyphicon-chevron-right" title=".act-lg"></span>
-  <span class="act act-default glyphicon glyphicon-chevron-right" title="No class"></span>
-  <span class="act act-default act-sm glyphicon glyphicon-chevron-right" title=".act-sm"></span>
-  <span class="act act-default act-xs glyphicon glyphicon-chevron-right" title=".act-xs"></span>
+  <span class="act act-bordered act-default act-lg glyphicon glyphicon-chevron-right" title=".act-lg"></span>
+  <span class="act act-bordered act-default glyphicon glyphicon-chevron-right" title="No class"></span>
+  <span class="act act-bordered act-default act-sm glyphicon glyphicon-chevron-right" title=".act-sm"></span>
+  <span class="act act-bordered act-default act-xs glyphicon glyphicon-chevron-right" title=".act-xs"></span>
+</p>
+{% endhighlight %}
+
+  <h2 id="actions-options">Styles</h2>
+  <p>Actions come in three distinct styles, each with slightly different hover behavior. By default actions, the circle border only appears on hover, and there is no fill color. Optionally add the <code>.act-fill</code> class to add a constant fill color to the action, or <code>.act-bordered</code> to add a border with a fill on hover.</p>
+
+  <div class="bs-example">
+    <h5>default</h5>
+    <p class="act-scope">
+      <span class="act act-default dots" title="Default"></span>
+      <span class="act act-primary dots" title="Primary"></span>
+      <span class="act act-success dots" title="Success"></span>
+      <span class="act act-info dots" title="Info"></span>
+      <span class="act act-warning dots" title="Warning"></span>
+      <span class="act act-danger dots" title="Danger"></span>
+      <span class="act dots" title="No class"></span>
+      &nbsp;&nbsp;
+      <span class="act act-primary dots disabled" title="Disabled"></span>
+    </p>
+    <h5>.act-fill</h5>
+    <p class="act-scope">
+      <span class="act act-default act-fill dots" title="Default"></span>
+      <span class="act act-primary act-fill dots" title="Primary"></span>
+      <span class="act act-success act-fill dots" title="Success"></span>
+      <span class="act act-info act-fill dots" title="Info"></span>
+      <span class="act act-warning act-fill dots" title="Warning"></span>
+      <span class="act act-danger act-fill dots" title="Danger"></span>
+      <span class="act act-fill dots" title="Primary"></span>
+      &nbsp;&nbsp;
+      <span class="act dots act-fill disabled" title="Disabled"></span>
+    </p>
+    <h5>.act-bordered</h5>
+    <p class="act-scope">
+      <span class="act act-default act-bordered dots" title="Default"></span>
+      <span class="act act-primary act-bordered dots" title="Primary"></span>
+      <span class="act act-success act-bordered dots" title="Success"></span>
+      <span class="act act-info act-bordered dots" title="Info"></span>
+      <span class="act act-warning act-bordered dots" title="Warning"></span>
+      <span class="act act-danger act-bordered dots" title="Danger"></span>
+      <span class="act dots act-bordered" title="No class"></span>
+      &nbsp;&nbsp;
+      <span class="act act-primary act-bordered dots disabled" title="Disabled"></span>
+    </p>
+  </div>
+{% highlight html %}
+<h5>default</h5>
+<p class="act-scope">
+  <span class="act act-default dots" title="Default"></span>
+  <span class="act act-primary dots" title="Primary"></span>
+  <span class="act act-success dots" title="Success"></span>
+  <span class="act act-info dots" title="Info"></span>
+  <span class="act act-warning dots" title="Warning"></span>
+  <span class="act act-danger dots" title="Danger"></span>
+  <span class="act dots" title="No class"></span>
+  &nbsp;&nbsp;
+  <span class="act act-primary dots disabled" title="Disabled"></span>
+</p>
+<h5>.act-fill</h5>
+<p class="act-scope">
+  <span class="act act-default act-fill dots" title="Default"></span>
+  <span class="act act-primary act-fill dots" title="Primary"></span>
+  <span class="act act-success act-fill dots" title="Success"></span>
+  <span class="act act-info act-fill dots" title="Info"></span>
+  <span class="act act-warning act-fill dots" title="Warning"></span>
+  <span class="act act-danger act-fill dots" title="Danger"></span>
+  <span class="act act-fill dots" title="Primary"></span>
+  &nbsp;&nbsp;
+  <span class="act dots act-fill disabled" title="Disabled"></span>
+</p>
+<h5>.act-bordered</h5>
+<p class="act-scope">
+  <span class="act act-default act-bordered dots" title="Default"></span>
+  <span class="act act-primary act-bordered dots" title="Primary"></span>
+  <span class="act act-success act-bordered dots" title="Success"></span>
+  <span class="act act-info act-bordered dots" title="Info"></span>
+  <span class="act act-warning act-bordered dots" title="Warning"></span>
+  <span class="act act-danger act-bordered dots" title="Danger"></span>
+  <span class="act dots act-bordered" title="No class"></span>
+  &nbsp;&nbsp;
+  <span class="act act-primary act-bordered dots disabled" title="Disabled"></span>
 </p>
 {% endhighlight %}
 
@@ -86,16 +166,22 @@
           <li class="divider"></li>
           <li><a href="#">Delete</a></li>
         </ul>
+      </span>
     </h4>
   </div><!-- /example -->
 
 {% highlight html %}
-<h2 class="act-scope">
+<h4 class="act-scope">
   My Resource
-  <span class="act act-default dots" title="Edit"></span>
-  <span class="act act-default glyphicon glyphicon-edit" title="Edit"></span>
-  <span class="act act-success" title="Change Status">S</span>
-</h2>
+  <span class="dropdown">
+    <a class="act act-default dropdown-toggle dots" data-toggle="dropdown" title="Actions"></a>
+    <ul class="dropdown-menu">
+      <li><a href="#">Edit</a></li>
+      <li class="divider"></li>
+      <li><a href="#">Delete</a></li>
+    </ul>
+  </span>
+</h4>
 {% endhighlight %}
 
   <h2 id="actions-usage">Usage Guidelines</h2>
@@ -108,21 +194,21 @@
   <div class="bs-example">
     <h2 class="act-scope">
       First Resource
-      <span class="act act-default dots"></span>
+      <span class="act act-bordered act-default dots"></span>
     </h2>
     <h2 class="act-scope">
       Second Resource
-      <span class="act act-primary dots"></span>
+      <span class="act act-bordered act-primary dots"></span>
     </h2>
 
     <br />
 
     <p class="act-scope">
-      <span class="act act-default act-xs dots"></span>
+      <span class="act act-bordered act-default act-xs dots"></span>
       First Resource
     </p>
     <p class="act-scope">
-      <span class="act act-default act-xs dots"></span>
+      <span class="act act-bordered act-default act-xs dots"></span>
       Second Resource
     </p>
   </div><!-- /example -->
@@ -130,19 +216,19 @@
 {% highlight html %}
 <h2 class="act-scope">
   First Resource
-  <span class="act act-default dots"></span>
+  <span class="act act-bordered act-default dots"></span>
 </h2>
 <h2 class="act-scope">
   Second Resource
-  <span class="act act-primary dots"></span>
+  <span class="act act-bordered act-primary dots"></span>
 </h2>
 
 <p class="act-scope">
-  <span class="act act-default act-xs dots"></span>
+  <span class="act act-bordered act-default act-xs dots"></span>
   First Resource
 </p>
 <p class="act-scope">
-  <span class="act act-default act-xs dots"></span>
+  <span class="act act-bordered act-default act-xs dots"></span>
   Second Resource
 </p>
 {% endhighlight %}
@@ -154,18 +240,18 @@
   <div class="bs-example">
     <h2 class="act-scope">
       My Resource
-      <span class="act act-default glyphicon glyphicon-edit" title="Edit"></span>
-      <span class="act act-success" title="Change Status"><span class="">S</span></span>
-      <span class="act act-default dots" title="More"></span>
+      <span class="act act-bordered act-default glyphicon glyphicon-edit" title="Edit"></span>
+      <span class="act act-bordered act-success" title="Change Status"><span class="">S</span></span>
+      <span class="act act-bordered act-default dots" title="More"></span>
     </h2>
   </div><!-- /example -->
 
 {% highlight html %}
 <h2 class="act-scope">
   My Resource
-  <span class="act act-default glyphicon glyphicon-edit" title="Edit"></span>
-  <span class="act act-success" title="Change Status">S</span>
-  <span class="act act-default dots" title="More"></span>
+  <span class="act act-bordered act-default glyphicon glyphicon-edit" title="Edit"></span>
+  <span class="act act-bordered act-success" title="Change Status">S</span>
+  <span class="act act-bordered act-default dots" title="More"></span>
 </h2>
 {% endhighlight %}
 
@@ -176,7 +262,7 @@
     <h2 class="act-scope">
       With a dropdown
       <span class="dropdown">
-        <a class="act act-default dots" data-toggle="dropdown" title="More"></a>
+        <a class="act act-bordered act-default dots dropdown-toggle" data-toggle="dropdown" title="More"></a>
         <ul class="dropdown-menu">
           <li><a href="#">Edit</a></li>
           <li><a href="#">Save</a></li>
@@ -191,7 +277,7 @@
 <h2 class="act-scope">
   With a dropdown
   <span class="dropdown">
-    <a class="act act-default dots" data-toggle="dropdown" title="More"></a>
+    <a class="act act-bordered act-default dots dropdown-toggle" data-toggle="dropdown" title="More"></a>
     <ul class="dropdown-menu">
       <li><a href="#">Edit</a></li>
       <li><a href="#">Save</a></li>
@@ -211,7 +297,7 @@
     <h2 class="act-scope">
       I live in multiple places
       <span class="dropdown">
-        <a class="act act-default dots" data-toggle="dropdown" title="Edit"></a>
+        <a class="act act-bordered act-default dots dropdown-toggle" data-toggle="dropdown" title="Edit"></a>
         <ul class="dropdown-menu">
           <li><a href="#">Edit</a></li>
           <li><a href="#">Save</a></li>
@@ -223,7 +309,7 @@
         </ul>
       </span>
       <span class="dropdown">
-        <a class="act scoop" data-toggle="dropdown" title="Scoop"><span>S</span></a>
+        <a class="act act-bordered scoop dropdown-toggle" data-toggle="dropdown" title="Scoop"><span>S</span></a>
         <ul class="dropdown-menu">
           <li class="dropdown-header">Scoop</li>
           <li class="divider"></li>
@@ -241,7 +327,7 @@
 <h2 class="act-scope">
   I live in multiple places
   <span class="dropdown">
-    <a class="act act-default dots" data-toggle="dropdown" title="Edit"></a>
+    <a class="act act-default dots dropdown-toggle" data-toggle="dropdown" title="Edit"></a>
     <ul class="dropdown-menu">
       <li><a href="#">Edit</a></li>
       <li><a href="#">Save</a></li>
@@ -253,7 +339,7 @@
     </ul>
   </span>
   <span class="dropdown">
-    <a class="act scoop" data-toggle="dropdown" title="Scoop"><span>S</span></a>
+    <a class="act scoop dropdown-toggle" data-toggle="dropdown" title="Scoop"><span>S</span></a>
     <ul class="dropdown-menu">
       <li class="dropdown-header">Scoop</li>
       <li class="divider"></li>
