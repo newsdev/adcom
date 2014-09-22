@@ -20,8 +20,8 @@
     padding: 10px 6px 10px 0;
     margin: 0;
     position: relative;
-    display: inline-block;
     width: 100%;
+    &:not(tr) { display: inline-block; }
   }
 
   a.index-item {
@@ -78,26 +78,36 @@
 }
 
 .index-hover {
-  .index-item {
-    padding-left: @index-item-border-padding;
-
-    &:hover {
-      background-color: darken(@item-default-bg, 5%);
-      border-left-color: darken(@item-default-border, 5%);
-    }
+  &:not(tr).index-item,
+  tr.index-item > td:first-child {
+    // padding-left: @index-item-border-padding;
+  }
+  &:not(tr).index-item:hover,
+  tr.index-item:hover > td {
+    background-color: darken(@item-default-bg, 5%);
+  }
+  &:not(tr).index-item:hover,
+  tr.index-item:hover > td:first-child {
+    border-left-color: darken(@item-default-border, 5%);
   }
 }
 
 .index-state {
-  &.index-hover > .index-item {
-    padding-left: @index-item-border-padding;
-    border-left-width: @index-item-border-width;
-    border-left-style: solid;
-    border-left-color: transparent;
-    &.default:hover {
+  &.index-hover {
+    :not(tr).index-item,
+    tr.index-item > td:first-child {
+      padding-left: @index-item-border-padding;
+      border-left-width: @index-item-border-width;
+      border-left-style: solid;
+      border-left-color: transparent;
+    }
+
+    :not(tr).index-item.default:hover,
+    tr.index-item.default:hover > td:first-child {
       border-left-color: @item-default-border;
     }
   }
+
   .index-item {
     &.default,
     &.active,
@@ -105,27 +115,36 @@
     &.info,
     &.danger,
     &.success {
-      padding-left: @index-item-border-padding;
-      border-left-width: @index-item-border-width;
-      border-left-style: solid;
-      border-left-color: transparent;
+      &:not(tr), & > td:first-child {
+        padding-left: @index-item-border-padding;
+        border-left-width: @index-item-border-width;
+        border-left-style: solid;
+        border-left-color: transparent;
+      }
     }
 
     &.default {
-      border-left-color: transparent;
+      &:not(tr), & > td:first-child {
+        border-left-color: transparent;
+      }
     }
   }
 }
 
 .index-item-variant(@state; @border; @background) {
   .index-hover {
-    & > .index-item.@{state}:hover {
+    :not(tr).index-item.@{state}:hover,
+    tr.index-item.@{state}:hover > td {
       background-color: darken(@background, 5%);
+    }
+    :not(tr).index-item.@{state}:hover,
+    tr.index-item.@{state}:hover > td:first-child {
       border-left-color: darken(@border, 5%);
     }
   }
   .index-state {
-    & > .index-item.@{state} {
+    :not(tr).index-item.@{state},
+    tr.index-item.@{state}:hover > td:first-child {
       border-left-color: @border;
     }
   }
