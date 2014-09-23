@@ -67,12 +67,6 @@
     $this.$element.trigger($.Event('shown.adcom.index', { items: items }))
   }
 
-  Index.prototype.destroy = function () {
-    this.$element.off('.adcom.index').removeData('adcom.index')
-    this.$element.empty()
-    this.states = []
-  }
-
   // Actions
 
   Index.prototype.select = function (selector) {
@@ -283,7 +277,7 @@
     el.data('adcom.index.item', $item)
     el.data('adcom.index.idx', $idx)
     el.on('update.adcom.index', function (e) {
-      $this.updateAtIndex($idx, e.item)
+      $this.updateItemAtIndex($idx, e.item)
     })
 
     $this.rendered[$idx] = el
@@ -291,7 +285,24 @@
     return el
   }
 
-  Index.prototype.updateAtIndex = function (idx, item) {
+  // Updates
+
+  // experimental
+  Index.prototype.updateItems = function (items) {
+    this.$element.empty()
+    this.states = []
+    this.rendered = []
+    this.$items = items
+    this.show()
+  }
+
+  // experimental
+  Index.prototype.deleteItemAtIndex = function (idx) {
+    this.$items.splice(idx, 1)
+    this.show()
+  }
+
+  Index.prototype.updateItemAtIndex = function (idx, item) {
     this.$items[idx] = item
     if (this.rendered[idx]) {
       var original    = this.rendered[idx]
@@ -299,6 +310,13 @@
       original.replaceWith(replacement)
       this.rendered[idx] = replacement
     }
+  }
+
+  Index.prototype.destroy = function () {
+    this.$element.off('.adcom.index').removeData('adcom.index')
+    this.$element.empty()
+    this.states = []
+    this.rendered = []
   }
 
   // Trigger definitions
