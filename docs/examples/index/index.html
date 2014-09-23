@@ -12,15 +12,15 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <!-- Adcom core CSS -->
+    <!--
     <link rel="stylesheet" href="//newsdev.github.io/adcom/dist/css/adcom.css">
     <link rel="stylesheet" href="//newsdev.github.io/adcom/assets/css/docs.min.css">
     <link rel="stylesheet" href="//newsdev.github.io/adcom/assets/css/example.min.css">
+    -->
 
-    <!--
     <link rel="stylesheet" href="/dist/css/adcom.css">
     <link rel="stylesheet" href="/assets/css/docs.min.css">
     <link rel="stylesheet" href="/assets/css/example.min.css">
-    -->
   </head>
 
   <body>
@@ -53,79 +53,84 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3 col-sm-2">
-          <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary" data-spy="affix" data-offset-top="40">
+          <div class="bs-docs-sidebar hide hidden-print hidden-xs hidden-sm" role="complementary" data-spy="affix" data-offset-top="40">
             <ul class="nav bs-docs-sidenav">
-              <li><a href="#header_with_dropdown">Header with dropdown</a></li>
-              <li><a href="#index_pull_quote">Index: Pull Quote</a></li>
-              <li><a href="#index_search">Index: Search</a></li>
+              <li>
+                <a id="index">Index</a>
+                <ul class="nav">
+                  <li><a href="#index-pull-quote">Pull Quote</a></li>
+                  <li><a href="#index-search">Search</a></li>
+              </li>
             </ul>
           </div>
         </div>
 
         <div class="col-xs-12 col-md-6 col-sm-8">
-          <div id="header_with_dropdown" data-example="header_with_dropdown">
-            <h2>
-              Header with dropdown
-              <span class="dropdown">
-                <a class="act act-default dots" data-toggle="dropdown" title="Edit"></a>
-                <ul class="dropdown-menu">
-                  <li class="dropdown-header">Scoop</li>
-                  <li class="divider"></li>
-                  <li><a href="#">View</a></li>
-                  <li><a href="#">Save as new</a></li>
-                  <li><a href="#">Update</a></li>
-                  <li class="divider"></li>
-                  <li class="destructive"><a href="#">Delete</a></li>
-                </ul>
-              </span>
-            </h2>
-          </div>
+          <div id="index">
+            <div data-example="header-with-dropdown">
+              <h2>
+                Header with dropdown
+                <span class="dropdown">
+                  <a class="act act-default dots" data-toggle="dropdown" title="Edit"></a>
+                  <ul class="dropdown-menu">
+                    <li class="dropdown-header">Scoop</li>
+                    <li class="divider"></li>
+                    <li><a href="#">View</a></li>
+                    <li><a href="#">Save as new</a></li>
+                    <li><a href="#">Update</a></li>
+                    <li class="divider"></li>
+                    <li class="destructive"><a href="#">Delete</a></li>
+                  </ul>
+                </span>
+              </h2>
+            </div>
 
-          <div data-example="index_pull_quote" id="index_pull_quote">
-            <div class="index index-bordered"
-                 data-control="index"
-                 data-pagination="on"
-                 data-page-size="3"
-                 data-remote="http://int-shared-data.nytimes.com/adcom/items.json">
-              <div class="index-item act-scope">
-                <p class="lead" data-field="about"></p>
+            <div data-example="index-pull-quote" id="index-pull-quote">
+              <div class="index index-bordered"
+                   data-control="index"
+                   data-pagination="on"
+                   data-page-size="3"
+                   data-remote="http://int-shared-data.nytimes.com/adcom/items.json">
+                <div class="index-item act-scope">
+                  <p class="lead" data-field="about"></p>
 
-                <div class="row index-item-meta">
-                  <p class="col-xs-4" data-field="name"></p>
-                  <p class="col-xs-4 text-center">
-                    <span class="act act-default act-sm glyphicon glyphicon-chevron-down" title="Down"></span>
-                    <span class="act act-default act-lg dots" title="More"></span>
-                    <span class="act act-default act-sm glyphicon glyphicon-chevron-up" title="Up"></span>
-                  </p>
-                  <p class="col-xs-4 text-right" data-field="created_at"></p>
+                  <div class="row index-item-meta">
+                    <p class="col-xs-4" data-field="name"></p>
+                    <p class="col-xs-4 text-center">
+                      <span class="act act-default act-sm glyphicon glyphicon-chevron-down" title="Down"></span>
+                      <span class="act act-default act-lg dots" title="More"></span>
+                      <span class="act act-default act-sm glyphicon glyphicon-chevron-up" title="Up"></span>
+                    </p>
+                    <p class="col-xs-4 text-right" data-field="created_at"></p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <hr />
+            <hr />
 
-          <div data-example="index_search" id="index_search">
-            <div class="form-group">
-              <input class="form-control" type="text" placeholder="Search"
-                     data-filter="about,id,balance,name"
-                     data-target="#index_search .index"
-                     data-trigger="keyup">
-            </div>
+            <div data-example="index-search" id="index-search">
+              <div class="form-group">
+                <input class="form-control" type="text" placeholder="Search"
+                       data-filter="about,id,balance,name"
+                       data-target="#index-search .index"
+                       data-trigger="keyup">
+              </div>
 
-            <div class="index index-bordered index-hover index-state"
-                 data-control="index"
-                 data-pagination="on"
-                 data-page-size="3"
-                 data-remote="http://int-shared-data.nytimes.com/adcom/items.json">
-              <div class="index-item default clearfix">
-                <div class="img pull-left" style="width: 64px; height: 75px; background: #eee; border: 1px solid #aaa; margin-right: 10px;"></div>
+              <div class="index index-bordered index-hover index-state"
+                   data-control="index"
+                   data-pagination="on"
+                   data-page-size="3"
+                   data-remote="http://int-shared-data.nytimes.com/adcom/items.json">
+                <div class="index-item default clearfix">
+                  <div class="img pull-left" style="width: 64px; height: 75px; background: #eee; border: 1px solid #aaa; margin-right: 10px;"></div>
 
-                <h4 style="margin-top: 0;"><a href="#" data-field="name"></a></h4>
-                <div class="index-item-meta">
-                  <span>Balance: <strong data-field="balance"></strong>.</span>
-                  <span>ID: <strong data-field="id"></strong>.</span>
-                  <span data-field="about"></span>
+                  <h4 style="margin-top: 0;"><a href="#" data-field="name"></a></h4>
+                  <div class="index-item-meta">
+                    <span>Balance: <strong data-field="balance"></strong>.</span>
+                    <span>ID: <strong data-field="id"></strong>.</span>
+                    <span data-field="about"></span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -141,12 +146,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
+    <script src="//newsdev.github.io/adcom/assets/js/vendor/ZeroClipboard.min.js"></script>
+    <script src="/assets/js/vendor/ZeroClipboard.min.js"></script>
+
     <script src="//newsdev.github.io/adcom/assets/js/example.min.js"></script>
-    <script src="//newsdev.github.io/adcom/dist/js/adcom.min.js"></script>
-    <!--
     <script src="/assets/js/example.min.js"></script>
+    <script src="//newsdev.github.io/adcom/dist/js/adcom.min.js"></script>
     <script src="/dist/js/adcom.min.js"></script>
-    -->
 
     <script type="text/javascript">
       $(document).ready(function() {

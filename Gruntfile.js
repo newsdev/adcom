@@ -107,6 +107,7 @@ module.exports = function (grunt) {
       examples: {
         src: [
           'docs/assets/css/src/default.css',
+          'docs/assets/css/src/docco.min.css',
           'docs/assets/css/src/example.css'
         ],
         dest: 'docs/assets/css/example.min.css'

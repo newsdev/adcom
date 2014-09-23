@@ -56,3 +56,9 @@
 [data-example] {
   position: relative;
 }
+.highlight > .example-code > code.hljs {
+  padding-left: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  background: transparent;
+}
