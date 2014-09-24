@@ -473,10 +473,11 @@
     meta = meta || {}
     this.sourceElement = meta.sourceElement
     this.sourceData    = meta.sourceData
-    $(this.$element[0]).once('reset', function () {
+    console.log('on reset', this.$element[0])
+    $(this.$element[0]).one('reset', $.proxy(function () {
       this.sourceElement =
       this.sourceData    = null
-    })
+    }, this))
 
     this.$element.trigger($.Event('shown.adcom.form', { serialized: data }))
   }
