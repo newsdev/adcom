@@ -473,7 +473,6 @@
     meta = meta || {}
     this.sourceElement = meta.sourceElement
     this.sourceData    = meta.sourceData
-    console.log('on reset', this.$element[0])
     $(this.$element[0]).one('reset', $.proxy(function () {
       this.sourceElement =
       this.sourceData    = null
