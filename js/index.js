@@ -352,8 +352,8 @@
       if ($target[0] !== $this.$element[0]) return
 
       var fields  = $el.attr('data-filter')
-      var value   = $el.is(':input') ? $el.val() : String($el.attr('data-match'))
-      if (value == '') value = undefined
+      var value   = $el.is(':input') ? $el.val() : $el.attr('data-match')
+      if (!value) value = undefined
 
       $this.setFilter(fields, value)
     })
