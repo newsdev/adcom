@@ -21,4 +21,4 @@ homepage:         /adcom/
 
 download:
   source:         https://github.com/newsdev/adcom/archive/v0.1.0-rc3.zip
-  dist:           https://github.com/newsdev/adcom/releases/download/0.1.0-rc3/adcom-v0.1.0-rc3-dist.zip
+  dist:           https://github.com/newsdev/adcom/releases/download/v0.1.0-rc3/adcom-0.1.0-rc3-dist.zip
