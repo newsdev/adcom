@@ -36,6 +36,13 @@
       color: @highlight-color;
     }
   }
+  .dropdown.open .act-@{state}.dropdown-toggle {
+    -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    -o-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  }
+
   .act-scope:hover .act:not(:hover):not(.disabled) {
     &.act-@{state} {
       border-color: screen(@border-color, #aaa);
@@ -120,14 +127,6 @@
 .act-variant(success, @action-success-border, @action-success-bg, white);
 
 .dropdown {
-  &.open .act.dropdown-toggle {
-    &.act-default, &.act-primary, &.act-warning, &.act-info, &.act-danger, &.act-success {
-      -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
-      -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
-      -o-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
-      box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
-    }
-  }
   .act ~ ul.dropdown-menu {
     > li {
       > a {
