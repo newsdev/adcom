@@ -16,12 +16,20 @@
     serialized: {}
   }
 
-  Form.prototype.show = function (data) {
+  Form.prototype.show = function (data, meta) {
     this.$element.trigger($.Event('show.adcom.form', { serialized: data }))
 
     this.data = data
     this.$element[0].reset()
     this.$element.deserialize(data)
+
+    meta = meta || {}
+    this.sourceElement = meta.sourceElement
+    this.sourceData    = meta.sourceData
+    $(this.$element[0]).once('reset', function () {
+      this.sourceElement =
+      this.sourceData    = null
+    })
 
     this.$element.trigger($.Event('shown.adcom.form', { serialized: data }))
   }
@@ -122,10 +130,8 @@
     var serialized = source.data($sourceKey)
 
     $target.form({show: false})
-    $target.data('adcom.form').sourceElement = source.clone(true, false)
-    $target.data('adcom.form').sourceData    = serialized
 
-    Plugin.call($target, 'show', serialized)
+    Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized})
   })
 
   $(document).on('submit', 'form[data-control="form"]', function (e) {

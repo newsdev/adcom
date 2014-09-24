@@ -271,7 +271,7 @@
     dynamicElements.each(function (idx, fieldContainer) {
       var field = $(fieldContainer).attr('data-field')
       var value = typeof $item[field] !== 'function' ? $item[field] : $item[field]()
-      $(fieldContainer).html(value)
+      $(fieldContainer).html(String(value || ''))
     })
 
     el.data('adcom.index.item', $item)
@@ -351,8 +351,8 @@
       var $target = $($el.data('target'))
       if ($target[0] !== $this.$element[0]) return
 
-      var fields  = $el.data('filter')
-      var value   = $el.is(':input') ? $el.val() : $el.data('match')
+      var fields  = $el.attr('data-filter')
+      var value   = $el.is(':input') ? $el.val() : String($el.attr('data-match'))
       if (value == '') value = undefined
 
       $this.setFilter(fields, value)
@@ -463,12 +463,20 @@
     serialized: {}
   }
 
-  Form.prototype.show = function (data) {
+  Form.prototype.show = function (data, meta) {
     this.$element.trigger($.Event('show.adcom.form', { serialized: data }))
 
     this.data = data
     this.$element[0].reset()
     this.$element.deserialize(data)
+
+    meta = meta || {}
+    this.sourceElement = meta.sourceElement
+    this.sourceData    = meta.sourceData
+    $(this.$element[0]).once('reset', function () {
+      this.sourceElement =
+      this.sourceData    = null
+    })
 
     this.$element.trigger($.Event('shown.adcom.form', { serialized: data }))
   }
@@ -569,10 +577,8 @@
     var serialized = source.data($sourceKey)
 
     $target.form({show: false})
-    $target.data('adcom.form').sourceElement = source.clone(true, false)
-    $target.data('adcom.form').sourceData    = serialized
 
-    Plugin.call($target, 'show', serialized)
+    Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized})
   })
 
   $(document).on('submit', 'form[data-control="form"]', function (e) {

@@ -271,7 +271,7 @@
     dynamicElements.each(function (idx, fieldContainer) {
       var field = $(fieldContainer).attr('data-field')
       var value = typeof $item[field] !== 'function' ? $item[field] : $item[field]()
-      $(fieldContainer).html(value)
+      $(fieldContainer).html(String(value || ''))
     })
 
     el.data('adcom.index.item', $item)
@@ -351,8 +351,8 @@
       var $target = $($el.data('target'))
       if ($target[0] !== $this.$element[0]) return
 
-      var fields  = $el.data('filter')
-      var value   = $el.is(':input') ? $el.val() : $el.data('match')
+      var fields  = $el.attr('data-filter')
+      var value   = $el.is(':input') ? $el.val() : String($el.attr('data-match'))
       if (value == '') value = undefined
 
       $this.setFilter(fields, value)
