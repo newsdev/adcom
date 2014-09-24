@@ -153,18 +153,14 @@
   // For even more control, write your own .getCurrentItems function, which is
   // called to retrieve the list of items to render in the current view.
 
-  Index.prototype.setSort = function (field, reverse) {
-    if (field === null || field === undefined) return this.sort = null
-
+  Index.prototype.getSort = function (field, reverse) {
     var factor = reverse ? -1 : 1
 
-    // set a custom sort function
-    if (typeof field === 'function') {
-      return this.sort = function (a, b) { return field(a, b) * factor }
-    }
+    if (field === null || field === undefined) return null
+    if (typeof field === 'function') return function (a, b) { return field(a, b) * factor }
 
     // default sort function based on single attribute and direction
-    this.sort = function (a, b) {
+    return function (a, b) {
       var left  = (typeof a[field] === 'function' ? a[field]() : a[field]) || ''
       var right = (typeof b[field] === 'function' ? b[field]() : b[field]) || ''
 
@@ -172,20 +168,16 @@
       if (left > right) return factor * 1
       return 0
     }
-    this.currentPage = 1
   }
 
-  Index.prototype.setFilter = function (fields, value) {
-    fields = typeof fields === 'string' ? fields.split(/,\s*/) : fields
+  Index.prototype.getFilter = function (key, value) {
+    if (typeof value === 'function' || value === undefined) return value
+
+    // Use the built-in filter generator if value is not undefined (delete) or
+    // a function itself.
+    var fields = typeof key === 'string' ? key.split(/,\s*/) : key
     fields = $.isArray(fields) ? fields : [fields]
-
-    this.currentPage = 1
-
-    // If value is undefined, remove this filter
-    if (value === undefined) return delete this.filters[fields]
-    if (typeof value === 'function') return this.filters[fields] = value
-
-    this.filters[fields] = function (item) {
+    return function (item) {
       var matches = false
       var match_all_fields = fields === null
 
@@ -197,6 +189,35 @@
       })
       return matches
     }
+  }
+
+  Index.prototype.setSort = function (field, reverse) {
+    this.$element.trigger($.Event('sortChange.adcom.index', { }))
+    this.sort = this.getSort(field, reverse)
+    this.currentPage = 1
+    this.$element.trigger($.Event('sortChanged.adcom.index', { function: this.sort }))
+  }
+
+  Index.prototype.setFilter = function (key, filter) {
+    this.$element.trigger($.Event('filterChange.adcom.index', { key: key }))
+
+    if (filter === undefined) {
+      delete this.filters[key]
+    } else this.filters[key] = this.getFilter(key, filter)
+
+    this.currentPage = 1
+    this.$element.trigger($.Event('filterChanged.adcom.index', { key: key, function: filter }))
+  }
+
+  Index.prototype.setCurrentPage = function (page) {
+    this.$element.trigger($.Event('pageChange.adcom.index', { }))
+    this.currentPage = parseInt(page)
+    this.$element.trigger($.Event('pageChanged.adcom.index', { page: this.currentPage }))
+  }
+
+  Index.prototype.page = function (page) {
+    this.setCurrentPage(page)
+    this.show()
   }
 
   // Modeled after PourOver's .getCurrentItems. Should return the items in a
@@ -250,11 +271,6 @@
     return items
   }
 
-  Index.prototype.page = function (page) {
-    this.currentPage = parseInt(page)
-    this.show()
-  }
-
   // Rendering
 
   Index.prototype.renderItem = function (item) {
@@ -293,13 +309,13 @@
     this.states = []
     this.rendered = []
     this.$items = items
-    this.show()
   }
 
   // experimental
   Index.prototype.deleteItemAtIndex = function (idx) {
     this.$items.splice(idx, 1)
-    this.show()
+    this.states.splice(idx, 1)
+    this.rendered.splice(idx, 1)
   }
 
   Index.prototype.updateItemAtIndex = function (idx, item) {

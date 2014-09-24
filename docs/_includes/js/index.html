@@ -459,10 +459,6 @@ $('#myIndex').index({
   <p>Calculates the list of visible items and renders them into it's container element.</p>
   {% highlight js %}$('#myIndex').index('show'){% endhighlight %}
 
-  <h4>.index('page', Integer)</h4>
-  <p>Manually sets the current page of the list.</p>
-  {% highlight js %}$('#myIndex').index('page', 2){% endhighlight %}
-
   <h4>.index('setFilter', key, function)</h4>
   <p>Manually sets a filter function to be applied. Can be used multiple times with different keys. Pass <code>undefined</code> as the final argument to remove an existing filter.</p>
   {% highlight js %}$('#myIndex').index('setFilter', function(item) { ... }){% endhighlight %}
@@ -471,9 +467,25 @@ $('#myIndex').index({
   <p>Manually sets a sort function. Only one sort function can exist at a time. Pass <code>undefined</code> as the function to remove an existing filter.</p>
   {% highlight js %}$('#myIndex').index('setSort', function(a, b) { ... }){% endhighlight %}
 
+  <h4>.index('setCurrentPage', Integer)</h4>
+  <p>Manually sets the current page of the list.</p>
+  {% highlight js %}$('#myIndex').index('setCurrentPage', 2){% endhighlight %}
+
+  <h4>.index('page', Integer)</h4>
+  <p>Calls setCurrentPage and re-renders the index.</p>
+  {% highlight js %}$('#myIndex').index('page', 2){% endhighlight %}
+
   <h4>.index('updateItemAtIndex', idx, item)</h4>
   <p>Replaces the item at index <code>idx</code> with the passed <code>item</code>, and rerenders that element in the container element if it's visible.</p>
   {% highlight js %}$('#myIndex').index('updateItemAtIndex', 0, {"id": 1}){% endhighlight %}
+
+  <h4>.index('deleteItemAtIndex', idx, item)</h4>
+  <p>Deletes the item at index <code>idx</code>.</p>
+  {% highlight js %}$('#myIndex').index('deleteItemAtIndex', 0){% endhighlight %}
+
+  <h4>.index('updateItems', items)</h4>
+  <p>Replaces the index's items with those passed in. The internal states (selected or unselected) are reset as well.</p>
+  {% highlight js %}$('#myIndex').index('updateItems', 0, {"id": 1}){% endhighlight %}
 
 
   <h3>Events</h3>
@@ -502,6 +514,30 @@ $('#myIndex').index({
        <tr>
          <td>toggled.adcom.index</td>
          <td>This event is fired when the status of an item has been updated. The item's rendered element is available as the <code>target</code> property of the event, along with the relevant <code>item</code> and boolean <code>state</code>.</td>
+       </tr>
+       <tr>
+         <td>sortChange.adcom.index</td>
+         <td>This event is fired immediately when the <code>setSort</code> instance method has been called.</td>
+       </tr>
+       <tr>
+         <td>sortChanged.adcom.index</td>
+         <td>This event is fired when the sort function for the index has been changed or removed. The new sort function is available as the <code>function</code> property of the event.</td>
+       </tr>
+       <tr>
+         <td>filterChange.adcom.index</td>
+         <td>This event is fired immediately when the <code>setFilter</code> instance method has been called. The key for this filter function is available as the <code>key</code> property of the event.</td>
+       </tr>
+       <tr>
+         <td>filterChanged.adcom.index</td>
+         <td>This event is fired when one of the filter functions for the index has been changed or removed. The key for this filter function is available as the <code>key</code> property of the event, and the new filter function is available as <code>function</code>.</td>
+       </tr>
+       <tr>
+         <td>pageChange.adcom.index</td>
+         <td>This event is fired immediately when the <code>setCurrentPage</code> instance method has been called.</td>
+       </tr>
+       <tr>
+         <td>pageChanged.adcom.index</td>
+         <td>This event is fired when the current page index has been changed. The new current page is available as the <code>page</code> property of the event.</td>
        </tr>
        <tr>
          <td>paginated.adcom.index</td>
