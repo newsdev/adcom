@@ -1,0 +1,23 @@
+<div class="bs-docs-section">
+  <h1 id="usage" class="page-header">Usage</h1>
+
+  <p class="lead">What it does, how it works, why it is what it is.</p>
+
+  <p>Adcom consists of 1) a collection of JavaScript plugins, and 2) styles for rendering common items. You can use them separately or together.</p>
+
+  <h3 id="usage-javascript">JavaScript</h3>
+  <h4>Consistency and iteration</h4>
+  <p>Some things are common in admins: rendering lists, editing records, searching a collection. They're so easy to do, it's <strong>often faster to reimplement</strong> them each time they come up. But this presents a few problems, especially when working as part of a large team across many admins.</p>
+  <ol>
+    <li>Each time you jump into someone else's codebase, you must <strong>relearn how the code is organized</strong>. Various methods of sorting and filtering tables and rendering JavaScript templates is mixed in with complex domain-specific JavaScript.</li>
+    <li><strong>Component complexity outgrows first-draft architecture.</strong> Rendering a sortable table of items might be simple at first, but those simple solutions may need to work with more specific needs later on. You may need to combine your original features with others: adding search, or the ability to update records on the backend. When these needs make your original solution obsolete, <strong>iteration can become an opportunity to duplicate work</strong>.</li>
+  </ol>
+  <p>Adcom's plugins are designed to let you handle simple things in the same way every time. For example, the list-rendering plugin, <code>Index.js</code>, lets you render a first draft of a collection in seconds, but provides hooks to override specifics without changing architecture. Complex pieces like server-side search or plugin-powered filtering can be swapped in without changing how you initialize or render content.</p>
+
+  <h4>Grounding interaction in HTML</h4>
+  <p>Adcom's iteractions are modeled after Bootstrap's, in that they are designed to integrate directly into your rendered HTML without having to write JavaScript yourself by using data-attributes. This helps keep your page's DOM as the starting point for understanding how your site works, giving it a more consistent grounding than one of the infinite JavaScript-first methods.</p>
+
+  <h3 id="usage-components">Components</h3>
+  <p>Interactive websites, particularly admins, need to <strong>clearly convey direction</strong> to the user, both in <strong>representing what they're looking at and what they're supposed to do</strong>.</p>
+  <p>Adcom addresses this by providing Bootstrap-like classes for displaying information in common ways. When possible, rendering attributes like a record's status or metadata should be done consistently so users understand what they're looking at. Adcom's <code>Actions</code> are an alternative to buttons, which let you build visual cues into destructive or constructive actions in your site, such as editing or deleting records.</p>
+</div>
