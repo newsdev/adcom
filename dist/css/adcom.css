@@ -226,6 +226,9 @@
        -o-transition: all 150ms ease-out;
           transition: all 150ms ease-out;
 }
+.act.disabled {
+  opacity: .65;
+}
 .act:hover:not(.disabled) {
   color: #919191;
   cursor: pointer;

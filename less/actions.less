@@ -77,6 +77,10 @@
   -o-transition: all @action-transition-time ease-out;
   transition: all @action-transition-time ease-out;
 
+  &.disabled {
+    opacity: 0.65;
+  }
+
   &:hover:not(.disabled) {
     cursor: pointer;
     color: darken(@action-default-color, 10%);
