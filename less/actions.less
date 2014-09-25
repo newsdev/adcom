@@ -24,16 +24,16 @@
   }
 
   .dropdown.open .act-@{state}.dropdown-toggle,
-  .act-@{state}:hover {
-    &:not(.disabled) {
+  .act-@{state}:not(.disabled) {
+    &:hover, &:active {
       border-color: @border-color;
       color: @border-color;
-    }
-    &.act-fill:not(.disabled),
-    &.act-bordered:not(.disabled) {
-      background: darken(@background-color, 10%);
-      border-color: darken(@border-color, 15%);
-      color: @highlight-color;
+
+      &.act-fill, &.act-bordered {
+        background: darken(@background-color, 10%);
+        border-color: darken(@border-color, 15%);
+        color: @highlight-color;
+      }
     }
   }
   .dropdown.open .act-@{state}.dropdown-toggle {
@@ -123,7 +123,7 @@
   &.act-xs { .action-size(10px;) }
 }
 
-.act-variant(default, @action-default-border, @action-default-bg, white);//@action-default-color);
+.act-variant(default, @action-default-border, @action-default-bg, white);
 .act-variant(primary, @action-primary-border, @action-primary-bg, white);
 .act-variant(info, @action-info-border, @action-info-bg, white);
 .act-variant(danger, @action-danger-border, @action-danger-bg, white);
@@ -160,10 +160,5 @@
     -moz-transition: all @action-transition-time ease-out;
     -o-transition: all @action-transition-time ease-out;
     transition: all @action-transition-time ease-out;
-
-    // &.act-default {
-    //   color: darken(@action-default-color, 10%);
-    //   border-color: darken(@action-default-color, 10%);
-    // }
   }
 }
