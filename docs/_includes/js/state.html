@@ -1,4 +1,4 @@
-<div id="state" data-control="state" data-path-attr="path" data-path-base="/javascript/" data-trigger-state="true"></div>
+<div id="state" data-control="state" data-path-attr="path" data-path-base="{{ site.homepage }}javascript/" data-trigger-state="true"></div>
 
 <div class="bs-docs-section">
   <h1 id="state" class="page-header">Page State <small>state.js</small></h1>
@@ -71,23 +71,23 @@
   <div class="bs-example">
     <div class="btn-group" data-toggle="buttons">
       <label class="btn btn-primary" data-toggle="state" state-path="sub-page">
-        <input type="radio" name="page"> /javascript/sub-page
+        <input type="radio" name="page"> {{ site.homepage }}javascript/sub-page
       </label>
       <label class="btn btn-primary" data-toggle="state" state-path="">
-        <input type="radio" name="page"> /javascript/
+        <input type="radio" name="page"> {{ site.homepage }}javascript/
       </label>
     </div>
   </div><!-- /example -->
 
 {% highlight html %}
-<div data-control="state" data-path-attr="path" data-path-base="/javascript/"></div>
+<div data-control="state" data-path-attr="path" data-path-base="{{ site.homepage }}javascript/"></div>
 
 <div class="btn-group" data-toggle="buttons">
-  <label class="btn btn-primary" data-toggle="state" state-path="/not-javascript/">
-    <input type="radio" name="page"> /not-javascript/
+  <label class="btn btn-primary" data-toggle="state" state-path="{{ site.homepage }}not-javascript/">
+    <input type="radio" name="page"> {{ site.homepage }}not-javascript/
   </label>
-  <label class="btn btn-primary" data-toggle="state" state-path="/javascript/">
-    <input type="radio" name="page"> /javascript/
+  <label class="btn btn-primary" data-toggle="state" state-path="{{ site.homepage }}javascript/">
+    <input type="radio" name="page"> {{ site.homepage }}javascript/
   </label>
 </div>
 {% endhighlight %}
