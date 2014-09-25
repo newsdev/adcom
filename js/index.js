@@ -72,16 +72,19 @@
 
   Index.prototype.select = function (selector) {
     var $this = this
+    selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) { $this.changeState(el, true) })
   }
 
   Index.prototype.deselect = function (selector) {
     var $this = this
+    selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) { $this.changeState(el, false) })
   }
 
   Index.prototype.toggle = function (selector) {
     var $this = this
+    selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) {
       var idx = (typeof el == 'number') ? el : $(el).data('adcom.index.idx')
       $this.changeState(el, $this.states[idx] ? false : true)
@@ -104,7 +107,7 @@
     this.$element.trigger($.Event('toggle.adcom.index', { item: item, target: target, index: idx, state: state }))
 
     this.states[idx] = state
-    if (state) { $(el).addClass(this.options.selectedClass) } else { $(el).removeClass(this.options.selectedClass) }
+    if (state) { target.addClass(this.options.selectedClass) } else { target.removeClass(this.options.selectedClass) }
 
     this.$element.trigger($.Event('toggled.adcom.index', { item: item, target: target, index: idx, state: state }))
   }
