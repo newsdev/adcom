@@ -26,7 +26,7 @@
       $.getJSON(this.options.remote, function(items) {
         $this.$items = items
         if ($this.options.show) $this.show()
-        $this.$element.trigger('loaded.adcom.index')
+        $this.$element.trigger($.Event('loaded.adcom.index', { items: items }))
       })
     }
   }
@@ -68,6 +68,7 @@
   }
 
   // Actions
+  // selector can be a jQuery selector, item index, or an array of item indices
 
   Index.prototype.select = function (selector) {
     var $this = this
@@ -82,7 +83,7 @@
   Index.prototype.toggle = function (selector) {
     var $this = this
     $(selector).each(function (idx, el) {
-      var idx = $(el).data('adcom.index.idx')
+      var idx = (typeof el == 'number') ? el : $(el).data('adcom.index.idx')
       $this.changeState(el, $this.states[idx] ? false : true)
     })
   }
@@ -90,15 +91,22 @@
   // Helpers
 
   Index.prototype.changeState = function (el, state) {
-    var item = $(el).data('adcom.index.item')
+    if (typeof el === 'number') {
+      var item   = this.$items[el]
+      var idx    = el
+      var target = this.rendered[idx]
+    } else {
+      var target = $(el)
+      var item   = target.data('adcom.index.item')
+      var idx    = target.data('adcom.index.idx')
+    }
 
-    this.$element.trigger($.Event('toggle.adcom.index', { item: item, target: el, state: state }))
+    this.$element.trigger($.Event('toggle.adcom.index', { item: item, target: target, index: idx, state: state }))
 
-    var idx = $(el).data('adcom.index.idx')
     this.states[idx] = state
     if (state) { $(el).addClass(this.options.selectedClass) } else { $(el).removeClass(this.options.selectedClass) }
 
-    this.$element.trigger($.Event('toggled.adcom.index', { item: item, target: el, state: state }))
+    this.$element.trigger($.Event('toggled.adcom.index', { item: item, target: target, index: idx, state: state }))
   }
 
   Index.prototype.getSelected = function () {
