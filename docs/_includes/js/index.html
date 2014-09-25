@@ -371,13 +371,13 @@
          <td>show</td>
          <td>boolean</td>
          <td>true</td>
-         <td>Renders the Index when initialized.</td>
+         <td>Renders the Index after initialization.</td>
        </tr>
        <tr>
          <td>remote</td>
          <td>path</td>
          <td>false</td>
-         <td>If a remote URL is provided, <strong>content will be loaded one time</strong> via jQuery's <code>.getJSON</code> method and stored as the Index's <code>items</code>.</td>
+         <td>If a remote URL is provided, <strong>content will be loaded one time</strong> via jQuery's <code>.getJSON</code> method and stored as the Index's <code>items</code>. If <code>show</code> is <code>true</code>, index will not be rendered until after content is loaded. You can thus use the original contents of the container element as a loading indicator.</td>
        </tr>
       </tbody>
     </table>

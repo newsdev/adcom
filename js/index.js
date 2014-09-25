@@ -9,7 +9,7 @@
     this.options  = options
     this.$element = $(element)
 
-    this.$items   = typeof this.options.items    === 'string' ? JSON.parse(this.options.items)              : this.options.items
+    this.$items   = typeof this.options.items === 'string' ? JSON.parse(this.options.items) : this.options.items
     this.template = this.parseTemplate(this.options.template)
 
     this.states   = this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
@@ -391,7 +391,7 @@
 
       if (!data) $this.data('adcom.index', (data = new Index(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
-      else if (options.show) data.show()
+      else if (options.show && !options.remote) data.show()
     })
   }
 
