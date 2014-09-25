@@ -5,3 +5,4 @@ _gh_pages
 _site
 .ruby-version
 .ruby-gemset
+dist/adcom-*.zip
