@@ -135,7 +135,8 @@
     });
   }
 
-  // Template
+  // Templates
+
   Index.prototype.parseTemplate = function (template) {
     if (typeof template === 'function') return template
     if (typeof template === 'string')   return this.compileTemplate(template)
@@ -156,9 +157,7 @@
       templateString += '<td data-field="' + field + '"></td>'
     })
 
-    templateString = '<tr>' + templateString + '</tr>'
-
-    return this.compileTemplate(templateString)
+    return this.compileTemplate('<tr>' + templateString + '</tr')
   }
 
   // Sort / Scope
@@ -323,29 +322,39 @@
   }
 
   // Updates
-
   // experimental
-  Index.prototype.updateItems = function (items) {
+  // TODO: How to (optionally) re-render automatically based on inserted
+  // or deleted items.
+  Index.prototype.updateItems = function (items, opts) {
     this.states = []
     this.rendered = []
     this.$items = items
+    if ((opts || {}).show != false) this.show()
   }
 
-  // experimental
-  Index.prototype.deleteItemAtIndex = function (idx) {
+  Index.prototype.deleteItemAtIndex = function (idx, opts) {
     this.$items.splice(idx, 1)
     this.states.splice(idx, 1)
     this.rendered.splice(idx, 1)
+    if ((opts || {}).show != false) this.show()
   }
 
-  Index.prototype.updateItemAtIndex = function (idx, item) {
+  Index.prototype.addItemAtIndex = function (idx, item, opts) {
+    this.$items.splice(idx, 0, item)
+    this.states.splice(idx, 0, undefined)
+    this.rendered.splice(idx, 0, undefined)
+    if ((opts || {}).show != false) this.show()
+  }
+
+  Index.prototype.addItem = function (item, opts) {
+    this.addItemAtIndex(this.$items.length - 1, item)
+    if ((opts || {}).show != false) this.show()
+  }
+
+  Index.prototype.updateItemAtIndex = function (idx, item, opts) {
     this.$items[idx] = item
-    if (this.rendered[idx]) {
-      var original    = this.rendered[idx]
-      var replacement = this.renderItem(item)
-      original.replaceWith(replacement)
-      this.rendered[idx] = replacement
-    }
+    delete this.rendered[idx]
+    if ((opts || {}).show != false) this.show()
   }
 
   Index.prototype.destroy = function () {
@@ -395,11 +404,21 @@
     })
   }
 
+  // Data accessor
+
+  Index.data = function (name) {
+    var attr = "adcom.index"
+    if (name) attr = attr + "." + name
+    var el = closestWithData($(this), attr)
+    if (el) return el.data(attr)
+  }
+
   // INDEX PLUGIN DEFINITION
   // =======================
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
+    if (option == 'data') return Index.data.apply(this, args)
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('adcom.index')
@@ -427,13 +446,14 @@
     return this
   }
 
+
   // INDEX DATA-API
   // ==============
 
   function closestWithData (el, attr) {
     return $.makeArray(el).concat($.makeArray($(el).parents())).reduce(function (previous, current) {
       if (previous) return previous
-      if ($(current).data(attr)) return $(current)
+      if ($(current).data(attr) !== undefined) return $(current)
     }, null)
   }
 

@@ -78,11 +78,21 @@
     this.$element.off('.adcom.form').removeData('adcom.form')
   }
 
+  // Data accessor
+
+  Form.data = function (name) {
+    var attr = "adcom.form"
+    if (name) attr = attr + "." + name
+    var el = closestWithData($(this), attr)
+    if (el) return el.data(attr)
+  }
+
   // FORM PLUGIN DEFINITION
   // ======================
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
+    if (option == 'data') return Form.data.apply(this, args)
     return this.each(function () {
       var $this = $(this)
       var data  = $this.data('adcom.form')
@@ -117,7 +127,7 @@
   function closestWithData (el, attr) {
     return $.makeArray(el).concat($.makeArray($(el).parents())).reduce(function (previous, current) {
       if (previous) return previous
-      if ($(current).data(attr)) return $(current)
+      if ($(current).data(attr) !== undefined) return $(current)
     }, null)
   }
 
