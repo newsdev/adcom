@@ -1,12 +1,12 @@
-.sort-control[data-sort]:hover {
+.sort-control:hover {
   cursor: pointer;
 }
-.sort-control[data-sort][data-state=descending]:after {
+.sort-control.sort-descending:after {
   padding-left: 4px;
   font-size: .8em;
   content: "▼";
 }
-.sort-control[data-sort][data-state=ascending]:after {
+.sort-control.sort-ascending:after {
   padding-left: 4px;
   font-size: .8em;
   content: "▲";
