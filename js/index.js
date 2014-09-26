@@ -141,7 +141,7 @@
     if (typeof template === 'function') return template
     if (typeof template === 'string')   return this.compileTemplate(template)
     if (this.options.fields) return this.defaultTemplate()
-    return this.compileTemplate(this.$element.html())
+    return this.compileTemplate(unescapeString(this.$element.html()))
   }
 
   Index.prototype.compileTemplate = function (template) {
@@ -158,6 +158,28 @@
     })
 
     return this.compileTemplate('<tr>' + templateString + '</tr')
+  }
+
+  function unescapeString (string) {
+    // Adapted from Underscore.js 1.7.0
+    // http://underscorejs.org
+    // (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+    // Underscore may be freely distributed under the MIT license.
+    var map = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#x27;': "'",
+      '&#x60;': '`'
+    };
+    var escaper = function (match) { return map[match] }
+    var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
+    var testRegexp = RegExp(source)
+    var replaceRegexp = RegExp(source, 'g')
+
+    string = string == null ? '' : '' + string
+    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string
   }
 
   // Sort / Scope
