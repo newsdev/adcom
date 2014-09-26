@@ -122,8 +122,17 @@
   }
 
   Index.prototype.setInitialState = function () {
+    var $this = this
     this.toggleFilter($('.active[data-filter][data-target]'))
-    this.toggleSort($('.active[data-sort][data-target]'))
+
+    $('[data-sort]').each(function (e) {
+      var el = $(this)
+      if ($(el.data('target'))[0] != $this.$element[0]) return
+
+      var field = el.data('sort')
+      if (el.hasClass('sort-ascending')) $this.setSort(field, false)
+      if (el.hasClass('sort-descending')) $this.setSort(field, true)
+    });
   }
 
   // Template
@@ -351,21 +360,21 @@
   Index.prototype.toggleSort = function (el) {
     var $this = this
     el.each(function () {
-      var $el     = $(this)
+      var $el = $(this)
       var $target = $($el.data('target'))
-      if ($target[0] !== $this.$element[0]) return
+      // if ($target[0] !== $this.$element[0]) return
 
-      var field   = $el.data('sort')
-      var states  = ($el.data('states') || 'ascending,descending,off').split(/,\s*/)
+      var field = $el.data('sort')
+      var states = ($el.data('states') || 'ascending,descending').split(/,\s*/)
 
-      // cycle between sorted, reversed, and not sorted
-      // clear all other sorts
-      var state     = $el.attr('data-state')
-      var stateIdx  = states.indexOf(state)
+      // Cycle between sorted, reversed, and not sorted.
+      // Clear all other sorts on this index.
+      var state = ($el.attr('class').match(/[\^\s]sort-(ascending|descending)/) || [])[1]
+      var stateIdx = states.indexOf(state)
       var nextState = states[(stateIdx + 1) % states.length]
-      $('[data-sort][data-target="' + $target.selector + '"]').removeAttr('data-state')
 
-      if (nextState !== 'off') $el.attr('data-state', nextState)
+      $('[data-sort][data-target="' + $el.data('target') + '"]').removeClass('sort-ascending sort-descending')
+      if (nextState !== 'off') $el.addClass('sort-' + nextState)
 
       $this.setSort(field, {'ascending': false, 'descending': true, 'off': null}[nextState])
     })

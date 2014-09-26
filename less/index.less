@@ -2,16 +2,18 @@
 // Index
 // --------------------------------------------------
 
-.sort-control[data-sort]:hover { cursor: pointer; }
-.sort-control[data-sort][data-state=descending]:after {
-  content: "▼";
-  font-size: 0.8em;
-  padding-left: 4px;
-}
-.sort-control[data-sort][data-state=ascending]:after {
-  content: "▲";
-  font-size: 0.8em;
-  padding-left: 4px;
+.sort-control {
+  &:hover { cursor: pointer; }
+  &.sort-descending:after {
+    content: "▼";
+    font-size: 0.8em;
+    padding-left: 4px;
+  }
+  &.sort-ascending:after {
+    content: "▲";
+    font-size: 0.8em;
+    padding-left: 4px;
+  }
 }
 
 // Container for individual items (not necessarily controls)
