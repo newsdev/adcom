@@ -326,7 +326,6 @@
 
   // experimental
   Index.prototype.updateItems = function (items) {
-    this.$element.empty()
     this.states = []
     this.rendered = []
     this.$items = items
