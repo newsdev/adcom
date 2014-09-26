@@ -478,6 +478,10 @@
     Plugin.call($target, 'show')
   })
 
-  $('[data-control="index"]').index()
+  $(window).on('load', function () {
+    $('[data-control="index"]').each(function () {
+      Plugin.call($(this))
+    })
+  })
 
 }(jQuery);
