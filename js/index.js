@@ -200,6 +200,7 @@
     return function (item) {
       var matches = false
       var match_all_fields = fields === null
+      value = value.toLowerCase()
 
       $.each(item, function (field, fieldValue) {
         if (!matches && (match_all_fields || fields.indexOf(field) > -1)) {
