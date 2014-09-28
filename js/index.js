@@ -61,7 +61,7 @@
 
     $.each(items, function (idx, item) {
       var renderedItem = $this.renderItem(item)
-      $($this.$element).append(renderedItem)
+      $($this.$element).append($this.renderItem(item))
     })
 
     $this.$element.trigger($.Event('shown.adcom.index', { items: items }))
@@ -338,45 +338,45 @@
       $this.updateItemAtIndex($idx, e.item)
     })
 
-    $this.rendered[$idx] = el
+    $this.rendered[$idx] = el[0]
 
-    return el
+    return el[0]
   }
 
   // Updates
-  // experimental
-  // TODO: How to (optionally) re-render automatically based on inserted
-  // or deleted items.
-  Index.prototype.updateItems = function (items, opts) {
-    this.states = []
-    this.rendered = []
-    this.$items = items
-    if ((opts || {}).show != false) this.show()
+
+  Index.prototype.add = function (data, opts) {
+    opts = opts || {}
+    opts.idx = opts.idx == undefined ? this.$items.length - 1 : opts.idx
+
+    this.$items.splice(opts.idx, 0, data)
+    this.states.splice(opts.idx, 0, undefined)
+    this.rendered.splice(opts.idx, 0, undefined)
+
+    this.show()
   }
 
-  Index.prototype.deleteItemAtIndex = function (idx, opts) {
+  Index.prototype.update = function (item, data, opts) {
+    var idx = typeof item == 'number' ? item : $(item).data('adcom.index.idx')
+    this.$items[idx] = data
+
+    if (this.rendered[idx]) {
+      var original    = $(this.rendered[idx])
+      var replacement = this.renderItem(data)
+      original.replaceWith(replacement)
+      this.rendered[idx] = replacement[0]
+    }
+
+    this.show()
+  }
+
+  Index.prototype.delete = function (item, opts) {
+    var idx = typeof item == 'number' ? item : $(item).data('adcom.index.idx')
     this.$items.splice(idx, 1)
     this.states.splice(idx, 1)
     this.rendered.splice(idx, 1)
-    if ((opts || {}).show != false) this.show()
-  }
 
-  Index.prototype.addItemAtIndex = function (idx, item, opts) {
-    this.$items.splice(idx, 0, item)
-    this.states.splice(idx, 0, undefined)
-    this.rendered.splice(idx, 0, undefined)
-    if ((opts || {}).show != false) this.show()
-  }
-
-  Index.prototype.addItem = function (item, opts) {
-    this.addItemAtIndex(this.$items.length - 1, item)
-    if ((opts || {}).show != false) this.show()
-  }
-
-  Index.prototype.updateItemAtIndex = function (idx, item, opts) {
-    this.$items[idx] = item
-    delete this.rendered[idx]
-    if ((opts || {}).show != false) this.show()
+    this.show()
   }
 
   Index.prototype.destroy = function () {

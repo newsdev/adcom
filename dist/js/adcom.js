@@ -61,7 +61,7 @@
 
     $.each(items, function (idx, item) {
       var renderedItem = $this.renderItem(item)
-      $($this.$element).append(renderedItem)
+      $($this.$element).append($this.renderItem(item))
     })
 
     $this.$element.trigger($.Event('shown.adcom.index', { items: items }))
@@ -135,12 +135,13 @@
     });
   }
 
-  // Template
+  // Templates
+
   Index.prototype.parseTemplate = function (template) {
     if (typeof template === 'function') return template
     if (typeof template === 'string')   return this.compileTemplate(template)
     if (this.options.fields) return this.defaultTemplate()
-    return this.compileTemplate(this.$element.html())
+    return this.compileTemplate(unescapeString(this.$element.html()))
   }
 
   Index.prototype.compileTemplate = function (template) {
@@ -156,9 +157,29 @@
       templateString += '<td data-field="' + field + '"></td>'
     })
 
-    templateString = '<tr>' + templateString + '</tr>'
+    return this.compileTemplate('<tr>' + templateString + '</tr')
+  }
 
-    return this.compileTemplate(templateString)
+  function unescapeString (string) {
+    // Adapted from Underscore.js 1.7.0
+    // http://underscorejs.org
+    // (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+    // Underscore may be freely distributed under the MIT license.
+    var map = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#x27;': "'",
+      '&#x60;': '`'
+    };
+    var escaper = function (match) { return map[match] }
+    var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
+    var testRegexp = RegExp(source)
+    var replaceRegexp = RegExp(source, 'g')
+
+    string = string == null ? '' : '' + string
+    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string
   }
 
   // Sort / Scope
@@ -317,36 +338,83 @@
       $this.updateItemAtIndex($idx, e.item)
     })
 
-    $this.rendered[$idx] = el
+    $this.rendered[$idx] = el[0]
 
-    return el
+    return el[0]
   }
 
   // Updates
-
   // experimental
-  Index.prototype.updateItems = function (items) {
-    this.states = []
-    this.rendered = []
-    this.$items = items
+  // TODO: How to (optionally) re-render automatically based on inserted
+  // or deleted items.
+
+  Index.prototype.add = function (data, opts) {
+    opts = opts || {}
+    opts.idx = opts.idx == undefined ? this.$items.length - 1 : opts.idx
+
+    this.$items.splice(opts.idx, 0, data)
+    this.states.splice(opts.idx, 0, undefined)
+    this.rendered.splice(opts.idx, 0, undefined)
+
+    this.show()
   }
 
-  // experimental
-  Index.prototype.deleteItemAtIndex = function (idx) {
+  Index.prototype.update = function (item, data, opts) {
+    var idx = typeof item == 'number' ? item : $(item).data('adcom.index.idx')
+    this.$items[idx] = data
+
+    if (this.rendered[idx]) {
+      var original    = $(this.rendered[idx])
+      var replacement = this.renderItem(data)
+      original.replaceWith(replacement)
+      this.rendered[idx] = replacement[0]
+    }
+
+    this.show()
+  }
+
+  Index.prototype.delete = function (item, opts) {
+    var idx = typeof item == 'number' ? item : $(item).data('adcom.index.idx')
     this.$items.splice(idx, 1)
     this.states.splice(idx, 1)
     this.rendered.splice(idx, 1)
+
+    this.show()
   }
 
-  Index.prototype.updateItemAtIndex = function (idx, item) {
-    this.$items[idx] = item
-    if (this.rendered[idx]) {
-      var original    = this.rendered[idx]
-      var replacement = this.renderItem(item)
-      original.replaceWith(replacement)
-      this.rendered[idx] = replacement
-    }
-  }
+
+
+  // Index.prototype.updateItems = function (items, opts) {
+  //   this.states = []
+  //   this.rendered = []
+  //   this.$items = items
+  //   if ((opts || {}).show != false) this.show()
+  // }
+
+  // Index.prototype.deleteItemAtIndex = function (idx, opts) {
+  //   this.$items.splice(idx, 1)
+  //   this.states.splice(idx, 1)
+  //   this.rendered.splice(idx, 1)
+  //   if ((opts || {}).show != false) this.show()
+  // }
+
+  // Index.prototype.addItemAtIndex = function (idx, item, opts) {
+  //   this.$items.splice(idx, 0, item)
+  //   this.states.splice(idx, 0, undefined)
+  //   this.rendered.splice(idx, 0, undefined)
+  //   if ((opts || {}).show != false) this.show()
+  // }
+
+  // Index.prototype.addItem = function (item, opts) {
+  //   this.addItemAtIndex(this.$items.length - 1, item)
+  //   if ((opts || {}).show != false) this.show()
+  // }
+
+  // Index.prototype.updateItemAtIndex = function (idx, item, opts) {
+  //   this.$items[idx] = item
+  //   delete this.rendered[idx]
+  //   if ((opts || {}).show != false) this.show()
+  // }
 
   Index.prototype.destroy = function () {
     this.$element.off('.adcom.index').removeData('adcom.index')
@@ -395,11 +463,21 @@
     })
   }
 
+  // Data accessor
+
+  Index.data = function (name) {
+    var attr = "adcom.index"
+    if (name) attr = attr + "." + name
+    var el = closestWithData($(this), attr)
+    if (el) return el.data(attr)
+  }
+
   // INDEX PLUGIN DEFINITION
   // =======================
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
+    if (option == 'data') return Index.data.apply(this, args)
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('adcom.index')
@@ -427,13 +505,14 @@
     return this
   }
 
+
   // INDEX DATA-API
   // ==============
 
   function closestWithData (el, attr) {
     return $.makeArray(el).concat($.makeArray($(el).parents())).reduce(function (previous, current) {
       if (previous) return previous
-      if ($(current).data(attr)) return $(current)
+      if ($(current).data(attr) !== undefined) return $(current)
     }, null)
   }
 
@@ -561,8 +640,21 @@
     this.$element.trigger($.Event('validate.adcom.form', {isValid: true}))
   }
 
+  Form.prototype.reset = function () {
+    this.$element[0].reset();
+  }
+
   Form.prototype.destroy = function (data) {
     this.$element.off('.adcom.form').removeData('adcom.form')
+  }
+
+  // Data accessor
+
+  Form.data = function (name) {
+    var attr = "adcom.form"
+    if (name) attr = attr + "." + name
+    var el = closestWithData($(this), attr)
+    if (el) return el.data(attr)
   }
 
   // FORM PLUGIN DEFINITION
@@ -570,6 +662,7 @@
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
+    if (option == 'data') return Form.data.apply(this, args)
     return this.each(function () {
       var $this = $(this)
       var data  = $this.data('adcom.form')
@@ -604,7 +697,7 @@
   function closestWithData (el, attr) {
     return $.makeArray(el).concat($.makeArray($(el).parents())).reduce(function (previous, current) {
       if (previous) return previous
-      if ($(current).data(attr)) return $(current)
+      if ($(current).data(attr) !== undefined) return $(current)
     }, null)
   }
 

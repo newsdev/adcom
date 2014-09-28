@@ -74,6 +74,10 @@
     this.$element.trigger($.Event('validate.adcom.form', {isValid: true}))
   }
 
+  Form.prototype.reset = function () {
+    this.$element[0].reset();
+  }
+
   Form.prototype.destroy = function (data) {
     this.$element.off('.adcom.form').removeData('adcom.form')
   }
