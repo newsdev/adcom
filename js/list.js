@@ -257,11 +257,6 @@
     this.$element.trigger($.Event('pageChanged.adcom.list', { page: this.currentPage }))
   }
 
-  List.prototype.page = function (page) {
-    this.setCurrentPage(page)
-    this.show()
-  }
-
   // Modeled after PourOver's .getCurrentItems. Should return the items in a
   // collection which have been filtered, sorted, and paged.
   List.prototype.getCurrentItems = function () {
