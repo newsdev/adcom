@@ -927,7 +927,7 @@
       var data    = $this.data('ac.state')
       var options = $.extend({}, State.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
-      if (!data) $this.data('aac.state', (data = new State(this, options)))
+      if (!data) $this.data('ac.state', (data = new State(this, options)))
 
       if (typeof option == 'string') data[option].apply(data, args)
     })
