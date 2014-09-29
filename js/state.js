@@ -19,9 +19,9 @@
 
     if (this.options.triggerState) {
       this.options.allowRepeats = false
-      this.$element.on('updated.adcom.state', $.proxy(this.triggerState, this))
+      this.$element.on('updated.ac.state', $.proxy(this.triggerState, this))
 
-      // Necessary to avoid infinite recursion; peek will use adcom.state in
+      // Necessary to avoid infinite recursion; peek will use ac.state in
       // data-api, which normally isn't set until Constructor returns.
       this.peek()
     }
@@ -29,7 +29,7 @@
 
   State.VERSION = '0.1.0'
 
-  State.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.state.data-api" }).join(' ')
+  State.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.state.data-api" }).join(' ')
 
   State.DEFAULTS = {
     format: 'humanize',
@@ -59,19 +59,19 @@
     // Update only if this is a new state
     var serialized = this.serialize(state)
 
-    this.$element.trigger($.Event('push.adcom.state', { state: state, options: options }))
+    this.$element.trigger($.Event('push.ac.state', { state: state, options: options }))
 
     if (serialized !== this.serialize(this.state)) {
       // If this state is new, append it into the history and trigger an update
       this.$history[options.action + "State"](state, document.title, serialized)
-      this.update(state, $.Event('push.adcom.state'))
+      this.update(state, $.Event('push.ac.state'))
     } else {
       // If this state is the same as the current state, don't append to the
       // history, and only trigger an update if `allowRepeats` is on
-      if (options.allowRepeats) this.update(state, $.Event('push.adcom.state'))
+      if (options.allowRepeats) this.update(state, $.Event('push.ac.state'))
     }
 
-    this.$element.trigger($.Event('pushed.adcom.state', { state: state, options: options }))
+    this.$element.trigger($.Event('pushed.ac.state', { state: state, options: options }))
   }
 
   State.prototype.pop = function (e) {
@@ -79,7 +79,7 @@
   }
 
   State.prototype.peek = function () {
-    this.update(this.state, $.Event('peek.adcom.state'))
+    this.update(this.state, $.Event('peek.ac.state'))
   }
 
   State.prototype.onpopstate = function (e) {
@@ -87,9 +87,9 @@
   }
 
   State.prototype.update = function (state, trigger) {
-    this.$element.trigger($.Event('update.adcom.state', { state: state, trigger: trigger }))
+    this.$element.trigger($.Event('update.ac.state', { state: state, trigger: trigger }))
     this.state = state
-    this.$element.trigger($.Event('updated.adcom.state', { state: state, trigger: trigger }))
+    this.$element.trigger($.Event('updated.ac.state', { state: state, trigger: trigger }))
   }
 
   // {} => url
@@ -161,7 +161,7 @@
         }
       })
     }
-    if (e.trigger && e.trigger.type !== 'push.adcom.state') setState([], e.state)
+    if (e.trigger && e.trigger.type !== 'push.ac.state') setState([], e.state)
   }
 
   // Adapted from https://gist.github.com/kares/956897#comment-1190642
@@ -228,10 +228,10 @@
     var args = Array.prototype.slice.call(arguments, Plugin.length)
     return this.each(function () {
       var $this   = $(this)
-      var data    = $this.data('adcom.state')
+      var data    = $this.data('ac.state')
       var options = $.extend({}, State.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
-      if (!data) $this.data('adcom.state', (data = new State(this, options)))
+      if (!data) $this.data('ac.state', (data = new State(this, options)))
 
       if (typeof option == 'string') data[option].apply(data, args)
     })

@@ -174,7 +174,7 @@ $(window).state('push', {key: "updated value"}[, options]);
          <td>allow-repeats</td>
          <td>boolean</td>
          <td>true</td>
-         <td>Sequential duplicate states will never be saved in the window history stack. However, if this is set to true then the <code>updated.adcom.state</code> event will still fire whenever a state pushed is attempted, regardless of whether it's new.</td>
+         <td>Sequential duplicate states will never be saved in the window history stack. However, if this is set to true then the <code>updated.ac.state</code> event will still fire whenever a state pushed is attempted, regardless of whether it's new.</td>
        </tr>
        <tr>
          <td>trigger-state</td>
@@ -221,7 +221,7 @@ $(window).state('push', {key: "updated value"}[, options]);
   </div>
 
   <h3>Methods</h3>
-  <p>All of these public JavaScript API methods add, remove to examine the window's history stack. They should not directly lead to changes on the page; instead, listen for the <code>updated.adcom.state</code> event and launch changes from it.</p>
+  <p>All of these public JavaScript API methods add, remove to examine the window's history stack. They should not directly lead to changes on the page; instead, listen for the <code>updated.ac.state</code> event and launch changes from it.</p>
 
   <h4>.state('push', object)</h4>
   <p>Append the given state object to the browser's history and reflect the change in <code>window.location</code>.</p>
@@ -247,26 +247,26 @@ $(window).state('push', {key: "updated value"}[, options]);
       </thead>
       <tbody>
        <tr>
-         <td>update.adcom.state</td>
+         <td>update.ac.state</td>
          <td>This event is fired immediately when the <code>update</code> method is called, which will precede an updating of the page due to a <code>push</code> trigger or browser history action. The new state is available as the <code>state</code> property of the event. <strong>The changes may not be reflected on the page, but the window's url will have been updated when this event fires.</strong></td>
        </tr>
        <tr>
-         <td>updated.adcom.state</td>
+         <td>updated.ac.state</td>
          <td>This event is fired after the Page State has been updated due to a user <code>push</code> trigger, or a browser history action. The new state is available as the <code>state</code> property of the event.</td>
        </tr>
        <tr>
-         <td>push.adcom.state</td>
+         <td>push.ac.state</td>
          <td>This event is fired when a user <code>push</code> trigger has occurred, but before the window's URL or Page State have been updated. The new state and any update options are available as the <code>state</code> and <code>options</code> properties of the event.</td>
        </tr>
        <tr>
-         <td>pushed.adcom.state</td>
-         <td>This event is fired after a user <code>push</code> trigger has occurred, and after the window's URL and Page State have been updated, and after the <code>updated.adcom.state</code> event has fired. The new state and any update options are available as the <code>state</code> and <code>options</code> properties of the event.</td>
+         <td>pushed.ac.state</td>
+         <td>This event is fired after a user <code>push</code> trigger has occurred, and after the window's URL and Page State have been updated, and after the <code>updated.ac.state</code> event has fired. The new state and any update options are available as the <code>state</code> and <code>options</code> properties of the event.</td>
        </tr>
       </tbody>
     </table>
   </div><!-- /.table-responsive -->
 {% highlight js %}
-$(window).on('updated.adcom.state', function (e) {
+$(window).on('updated.ac.state', function (e) {
   // do something...
 })
 {% endhighlight %}

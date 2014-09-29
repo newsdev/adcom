@@ -260,7 +260,7 @@ $('#myList').list({templateEngine: function(t) {
 
   <div class="bs-callout bs-callout-info" id="list-sort-override">
     <h4>Rendering page controls</h4>
-    <p>It's up to you to render any sort of pagination controls you want to navigate over your list. Use the <code>paginated.adcom.list</code> event described below to retrieve information on page count / current page / etc, and then use the <code>page</code> instance method to update the current page.</p>
+    <p>It's up to you to render any sort of pagination controls you want to navigate over your list. Use the <code>paginated.ac.list</code> event described below to retrieve information on page count / current page / etc, and then use the <code>page</code> instance method to update the current page.</p>
 
   </div>
 
@@ -346,19 +346,19 @@ $('#myList').list({templateEngine: function(t) {
          <td>filtering</td>
          <td>on or off</td>
          <td>on</td>
-         <td>Turn filtering on. Uses <code>$('#list').data('adcom.list').getFilteredItems</code>, which can be overridden.</td>
+         <td>Turn filtering on. Uses <code>$('#list').data('ac.list').getFilteredItems</code>, which can be overridden.</td>
        </tr>
        <tr>
          <td>sorting</td>
          <td>on or off</td>
          <td>on</td>
-         <td>Turn sorting on. Uses <code>$('#list').data('adcom.list').getSortedItems</code>, which can be overridden.</td>
+         <td>Turn sorting on. Uses <code>$('#list').data('ac.list').getSortedItems</code>, which can be overridden.</td>
        </tr>
        <tr>
          <td>pagination</td>
          <td>on or off</td>
          <td>off</td>
-         <td>Turn pagination on. Uses <code>$('#list').data('adcom.list').getPaginatedItems</code>, which can be overridden. If off, then every visible item will be rendered.</td>
+         <td>Turn pagination on. Uses <code>$('#list').data('ac.list').getPaginatedItems</code>, which can be overridden. If off, then every visible item will be rendered.</td>
        </tr>
        <tr>
          <td>page-size</td>
@@ -538,58 +538,58 @@ $('#myList').list('delete', 0, {"id": 1})
       </thead>
       <tbody>
        <tr>
-         <td>show.adcom.list</td>
+         <td>show.ac.list</td>
          <td>This event is fired immediately when the <code>show</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>shown.adcom.list</td>
+         <td>shown.ac.list</td>
          <td>This event is fired when the visible items have been rendered and inserted into the container element. The list of rendered items is available as the <code>items</code> property of the event.</td>
        </tr>
        <tr>
-         <td>toggle.adcom.list</td>
+         <td>toggle.ac.list</td>
          <td>This event is fired when the status of an item is about to be updated. The item whose state has been updated is available as the <code>item</code> property of the event, along with it's <code>index</code> and updated <code>state</code>. If rendered, the item's element is available as the <code>target</code> property of the event.</td>
        </tr>
        <tr>
-         <td>toggled.adcom.list</td>
+         <td>toggled.ac.list</td>
          <td>This event is fired when the status of an item has been updated. The item whose state has been updated is available as the <code>item</code> property of the event, along with it's <code>index</code> and updated <code>state</code>. If rendered, the item's element is available as the <code>target</code> property of the event.</td>
        </tr>
        <tr>
-         <td>sortChange.adcom.list</td>
+         <td>sortChange.ac.list</td>
          <td>This event is fired immediately when the <code>setSort</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>sortChanged.adcom.list</td>
+         <td>sortChanged.ac.list</td>
          <td>This event is fired when the sort function for the list has been changed or removed. The new sort function is available as the <code>function</code> property of the event.</td>
        </tr>
        <tr>
-         <td>filterChange.adcom.list</td>
+         <td>filterChange.ac.list</td>
          <td>This event is fired immediately when the <code>setFilter</code> instance method has been called. The key for this filter function is available as the <code>key</code> property of the event.</td>
        </tr>
        <tr>
-         <td>filterChanged.adcom.list</td>
+         <td>filterChanged.ac.list</td>
          <td>This event is fired when one of the filter functions for the list has been changed or removed. The key for this filter function is available as the <code>key</code> property of the event, and the new filter function is available as <code>function</code>.</td>
        </tr>
        <tr>
-         <td>pageChange.adcom.list</td>
+         <td>pageChange.ac.list</td>
          <td>This event is fired immediately when the <code>setCurrentPage</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>pageChanged.adcom.list</td>
+         <td>pageChanged.ac.list</td>
          <td>This event is fired when the current page has been changed. The new current page is available as the <code>page</code> property of the event.</td>
        </tr>
        <tr>
-         <td>paginated.adcom.list</td>
+         <td>paginated.ac.list</td>
          <td>This event is fired when the rendered list of items has been paginated in preparation for rendering. <strong>Fires before the items have been rendered or inserted into the container element.</strong> The current <code>page</code>, number of <code>pages</code>, the <code>count</code> of items, the <code>items</code>, and the <code>start</code> and <code>end</code> positions of the current page are available as properties of the event.</td>
        </tr>
        <tr>
-         <td>loaded.adcom.list</td>
+         <td>loaded.ac.list</td>
          <td>This event is fired when the list has loaded content using the remote option.</td>
        </tr>
       </tbody>
     </table>
   </div><!-- /.table-responsive -->
 {% highlight js %}
-$('#myList').on('shown.adcom.list', function (e) {
+$('#myList').on('shown.ac.list', function (e) {
   // do something...
 })
 {% endhighlight %}

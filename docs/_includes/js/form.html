@@ -33,8 +33,8 @@
 
   <div class="bs-callout bs-callout-info" id="form-list-integration">
     <h4>Use a form with a List</h4>
-    <p>Specify <code>data-source="adcom.list.item"</code> on a trigger element within a List.js item to populate a form with that item's data.</p>
-    {% highlight html %}<button data-toggle="form" data-target="#myForm" data-source="adcom.list.item">Click me</button>{% endhighlight %}
+    <p>Specify <code>data-source="ac.list.item"</code> on a trigger element within a List.js item to populate a form with that item's data.</p>
+    {% highlight html %}<button data-toggle="form" data-target="#myForm" data-source="ac.list.item">Click me</button>{% endhighlight %}
   </div>
 
   <div class="bs-example">
@@ -53,7 +53,7 @@
                <td data-field='id'></td>
                <td data-field='name'></td>
                <td>
-                 <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.list.item'>Populate Form</button>
+                 <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='ac.list.item'>Populate Form</button>
                </td>
              </tr>
         "></tbody>
@@ -90,7 +90,7 @@
            <td data-field='id'></td>
            <td data-field='name'></td>
            <td>
-             <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.list.item'>Populate Form</button>
+             <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='ac.list.item'>Populate Form</button>
            </td>
          </tr>
     "></tbody>
@@ -115,9 +115,9 @@
 
   <div class="bs-callout bs-callout-danger" id="form-source-updates">
     <h4>Submitting a form doesn't do anything</h4>
-    <p>You must hook into the <code>submitted.adcom.form</code> event to update your associated record on a server and / or your local copy of that object.</p>
+    <p>You must hook into the <code>submitted.ac.form</code> event to update your associated record on a server and / or your local copy of that object.</p>
 {% highlight js %}
-$('#myForm').on('submitted.adcom.form', function(e) {
+$('#myForm').on('submitted.ac.form', function(e) {
   $.post(myUrl, e.object);
 });
 {% endhighlight %}
@@ -148,7 +148,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
                  <button class='btn btn-default'
                    data-toggle='form'
                    data-target='#myFormUpdate'
-                   data-source='adcom.list.item'>Populate Form</button>
+                   data-source='ac.list.item'>Populate Form</button>
                </td>
              </tr>
         "></tbody>
@@ -170,7 +170,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
 
     <script>
       $(document).ready(function() {
-        $('#myFormUpdate').on('submitted.adcom.form', function(e) {
+        $('#myFormUpdate').on('submitted.ac.form', function(e) {
           $('#myListUpdate').list('update', e.sourceElement, $.extend({}, e.sourceData, e.object));
         });
       });
@@ -180,7 +180,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
 {% highlight html %}
 <script>
   $(document).ready(function() {
-    $('#myFormUpdate').on('submitted.adcom.form', function(e) {
+    $('#myFormUpdate').on('submitted.ac.form', function(e) {
       $('#myListUpdate').list('update', e.sourceElement, $.extend({}, e.sourceData, e.object));
     });
   });
@@ -205,7 +205,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
 
 {% highlight js %}
 $('#myForm').form(options);
-$('#myForm').on('submitted.adcom.form', function(e) { ... });
+$('#myForm').on('submitted.ac.form', function(e) { ... });
 {% endhighlight %}
 
   <h3>Options</h3>
@@ -269,8 +269,8 @@ $('#myForm').on('submitted.adcom.form', function(e) { ... });
   <div class="bs-callout bs-callout-info" id="form-stored-data">
     <h3>Stored data</h3>
     <p>When you display data in a form using the data-api, several helper references are added to the form element. They are there to help you find where the data you're editing came from.</p>
-    <p><code>$('#myForm').data('adcom.form.sourceElement')</code> returns the element the source data was stored on.</code></p>
-    <p><code>$('#myForm').data('adcom.form.sourceData')</code> returns the source data that was deserialized into the form.</code></p>
+    <p><code>$('#myForm').data('ac.form.sourceElement')</code> returns the element the source data was stored on.</code></p>
+    <p><code>$('#myForm').data('ac.form.sourceData')</code> returns the source data that was deserialized into the form.</code></p>
   </div>
 
   <h3>Methods</h3>
@@ -280,7 +280,7 @@ $('#myForm').on('submitted.adcom.form', function(e) { ... });
   {% highlight js %}$('#myForm').form('show', {"id": 1}){% endhighlight %}
 
   <h4>.form('validate')</h4>
-  <p>Trigger a browser-level validation of the form. If any errors are detected, the browser's default validation UI will alert the user. Triggers <code>validated.adcom.form</code> event with the result.</p>
+  <p>Trigger a browser-level validation of the form. If any errors are detected, the browser's default validation UI will alert the user. Triggers <code>validated.ac.form</code> event with the result.</p>
   {% highlight js %}$('#myForm').form('validate'){% endhighlight %}
 
   <h3>Events</h3>
@@ -294,30 +294,30 @@ $('#myForm').on('submitted.adcom.form', function(e) { ... });
       </thead>
       <tbody>
        <tr>
-         <td>show.adcom.form</td>
+         <td>show.ac.form</td>
          <td>This event is fired immediately when the <code>show</code> instance method has been called. The serialized data to be displayed is available as the <code>serialized</code> property of the event.</td>
        </tr>
        <tr>
-         <td>shown.adcom.form</td>
+         <td>shown.ac.form</td>
          <td>This event is fired when the serialized data has been inserted into the form. The data is available as the <code>serialized</code> property of the event.</td>
        </tr>
        <tr>
-         <td>validate.adcom.form</td>
+         <td>validate.ac.form</td>
          <td>This event is fired immediately when the <code>validate</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>validated.adcom.form</td>
+         <td>validated.ac.form</td>
          <td>This event is fired when the form validation has completed. If any errors were detected, they will have been displayed to the user by this point. The validity of the form is available as the <code>isValid</code> property of the event.</td>
        </tr>
        <tr>
-         <td>submitted.adcom.form</td>
+         <td>submitted.ac.form</td>
          <td>This data is fired when the form has been submitted. <strong><code>data-control="form"</code> must be present on the form element in order for Form.js to override the default submit handling of the form and fire this event instead.</strong> The form data is available in two ways: serialized into an object as the <code>object</code> property of the event, and as a raw array of input fields as <code>array</code>.</td>
        </tr>
       </tbody>
     </table>
   </div><!-- /.table-responsive -->
 {% highlight js %}
-$('#myForm').on('submitted.adcom.form', function (e) {
+$('#myForm').on('submitted.ac.form', function (e) {
   // do something...
 })
 {% endhighlight %}

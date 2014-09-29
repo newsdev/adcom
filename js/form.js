@@ -17,7 +17,7 @@
   }
 
   Form.prototype.show = function (data, meta) {
-    this.$element.trigger($.Event('show.adcom.form', { serialized: data }))
+    this.$element.trigger($.Event('show.ac.form', { serialized: data }))
 
     this.data = data
     this.$element[0].reset()
@@ -31,7 +31,7 @@
       this.sourceData    = null
     }, this))
 
-    this.$element.trigger($.Event('shown.adcom.form', { serialized: data }))
+    this.$element.trigger($.Event('shown.ac.form', { serialized: data }))
   }
 
   Form.prototype.submit = function () {
@@ -42,7 +42,7 @@
       sourceData:    this.sourceData
     })
 
-    this.$element.trigger($.Event('submitted.adcom.form', attributes))
+    this.$element.trigger($.Event('submitted.ac.form', attributes))
   }
 
   Form.prototype.serialize = function () {
@@ -63,15 +63,15 @@
   }
 
   Form.prototype.validate = function () {
-    this.$element.trigger($.Event('validate.adcom.form'))
+    this.$element.trigger($.Event('validate.ac.form'))
 
     if (!this.$element[0].checkValidity()) {
       var existing_submit = this.$element[0].find('input[type="submit"]')
       if (!existing_submit[0]) this.$element.append(new_submit = $('<input style="display: none;" type="submit">'))
       $(existing_submit[0] || new_submit[0]).trigger('click');
-      this.$element.trigger($.Event('validate.adcom.form', {isValid: false}))
+      this.$element.trigger($.Event('validate.ac.form', {isValid: false}))
     }
-    this.$element.trigger($.Event('validate.adcom.form', {isValid: true}))
+    this.$element.trigger($.Event('validate.ac.form', {isValid: true}))
   }
 
   Form.prototype.reset = function () {
@@ -79,13 +79,13 @@
   }
 
   Form.prototype.destroy = function (data) {
-    this.$element.off('.adcom.form').removeData('adcom.form')
+    this.$element.off('.ac.form').removeData('ac.form')
   }
 
   // Data accessor
 
   Form.data = function (name) {
-    var attr = "adcom.form"
+    var attr = "ac.form"
     if (name) attr = attr + "." + name
     var el = closestWithData($(this), attr)
     if (el) return el.data(attr)
@@ -99,14 +99,14 @@
     if (option == 'data') return Form.data.apply(this, args)
     return this.each(function () {
       var $this = $(this)
-      var data  = $this.data('adcom.form')
+      var data  = $this.data('ac.form')
 
       // Reset the form if we call the constructor again with options
       if (typeof option == 'object' && option && data) data = false
 
       var options = $.extend({}, Form.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
-      if (!data) $this.data('adcom.form', (data = new Form(this, options)))
+      if (!data) $this.data('ac.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
       else if (options.show) data.show(options.serialized === 'string' ? JSON.parse(options.serialized) : options.serialized)
     })
