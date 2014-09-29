@@ -1,16 +1,16 @@
 <div class="bs-docs-section">
-  <h1 id="index" class="page-header">Lists <small>index.js</small></h1>
+  <h1 id="list" class="page-header">Lists <small>list.js</small></h1>
 
   <p>Lists are a convention-based, flexible system for rendering an array of objects as html. While defaults are provided, the HTML used to render the list is largely left up to you. The power of lists comes in a set of actions that can be performed on the list, triggered via data-apis, allowing you to display dynamic lists by writing minimal JavaScript.</p>
 
-  <div class="bs-callout bs-callout-info" id="index-filtering-multiple">
+  <div class="bs-callout bs-callout-info" id="list-filtering-multiple">
     <h4>Override hooks</h4>
     <p>Templates can be overridden using either strings with the data-api or a compiled template function using the JavaScript API.</p>
     <p>Most other overridable logic occurs in the private <code>.getCurrentItems</code> method. This method is called to generate a sorted, fitered and paginated list of items to render using the default or your custom template.</p>
     <p>It calls the following functions in order if they are turned on, each of which has a default implementation and can be overridden by setting your own function: <code>.getFilteredItems</code>, <code>.getSortedItems</code>, <code>.getPaginatedItems</code>. You can also override <code>.getCurrentItems</code> entirely to set your own logic while retaining the build-in rendering logic.</p>
   </div>
 
-  <h2 id="index-examples">Examples</h2>
+  <h2 id="list-examples">Examples</h2>
 
   <h3>Static</h3>
   <p>A list rendered by specifying the content as serialized JSON in a data attribute. This uses the default template to render each row, which renders a table row for each item with the data for each field specified in <code>data-fields</code>.</p>
@@ -22,7 +22,7 @@
           <th>Name</th>
         </tr>
       </thead>
-      <tbody id="myIndex" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+      <tbody id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
     </table>
   </div><!-- /example -->
 
@@ -34,7 +34,7 @@
       <th>Name</th>
     </tr>
   </thead>
-  <tbody id="myIndex" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+  <tbody id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
 </table>
 {% endhighlight %}
 
@@ -42,12 +42,12 @@
   <p>The default template will work for simple displays, but you can always override what gets rendered for each item. The only requirement is that the template is wrapped in a single outer element, which is what events and data is bound to.</p>
 
   <div class="bs-example">
-    <ol id="myIndex" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name" data-template="<li data-field='name'></li>"></ol>
+    <ol id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name" data-template="<li data-field='name'></li>"></ol>
   </div><!-- /example -->
 
 {% highlight html %}
-<ol id="myIndex"
-    data-control="index"
+<ol id="myList"
+    data-control="list"
     data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
     data-fields="id,name"
     data-template="<li data-field='name'></li>"></ol>
@@ -56,16 +56,16 @@
   <p>Note that the template doesn't use a specific rendering engine's syntax for including dynamic attributes in the element. Any element with a <code>data-field</code> attribute will be populated with the corresponding value using jQuery's <code>.html()</code> method.</p>
   <p>You can also specify the template inline inside the container element using normal HTML. If no <code>template</code> <code>fields</code> attributes are specified, then the value of the container's <code>.html()</code> method will be used as the template.</p>
   <div class="bs-example">
-    <ol id="myIndex"
-        data-control="index"
+    <ol id="myList"
+        data-control="list"
         data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'>
       <li data-field='name'></li>
     </ol>
   </div><!-- /example -->
 
 {% highlight html %}
-<ol id="myIndex"
-    data-control="index"
+<ol id="myList"
+    data-control="list"
     data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'>
   <li data-field='name'></li>
 </ol>
@@ -74,28 +74,28 @@
   <p>If you do require a more advanced templating engine, you can specify the source template as a string, and set a second configuration option, <code>templateEngine</code>, to your template compilation function. Because you are passing a JavaScript function, this must be done using the JavaScript API.</p>
 
   <div class="bs-example">
-    <ul id="myIndexUnderscore" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name" data-template="<li><%= id %>: <%= name %></li>"></ul>
+    <ul id="myListUnderscore" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name" data-template="<li><%= id %>: <%= name %></li>"></ul>
     <script>
-      $(document).ready(function() { $('#myIndexUnderscore').index({'templateEngine': _.template}) });
+      $(document).ready(function() { $('#myListUnderscore').list({'templateEngine': _.template}) });
     </script>
   </div><!-- /example -->
 
 {% highlight html %}
-<ul id="myIndexUnderscore"
+<ul id="myListUnderscore"
     data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
     data-fields="id,name"
     data-template="<li><%= id %>: <%= name %></li>"></ul>
 <script>
-  $('#myIndexUnderscore').index({'templateEngine': _.template});
+  $('#myListUnderscore').list({'templateEngine': _.template});
 </script>
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-info" id="index-custom-templates">
+  <div class="bs-callout bs-callout-info" id="list-custom-templates">
     <h4>Custom template settings</h4>
     <p>The only requirement of the <code>templateEngine</code> function is that it accept the raw template as a string, and return a compiled template function that accepts an item to be rendered.</p>
     <p>When using existing templating libraries, you can wrap their compilation functions to pass custom settings:</p>
 {% highlight js %}
-$('#myIndex').index({templateEngine: function(t) {
+$('#myList').list({templateEngine: function(t) {
   return _.template(t, { ... })
 }});
 {% endhighlight %}
@@ -104,7 +104,7 @@ $('#myIndex').index({templateEngine: function(t) {
   </div>
 
 
-  <h2 id="index-filtering">Filtering</h3>
+  <h2 id="list-filtering">Filtering</h3>
 
   <p>Index.js also provides a convention around filtering the list of items before it is rendered, and lets you trigger those filters without JavaScript by using the data-api. Configure the filter using the <code>data-filter</code> and <code>data-match</code> attributes, which specify the comma-separated field and the value to match against. If any given field matches the value (using a fairly tolerant, case insensitive match), then the item will be included.</p>
 
@@ -112,42 +112,42 @@ $('#myIndex').index({templateEngine: function(t) {
 
   <div class="bs-example">
     <div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-primary active" data-filter="id" data-target="#myIndexFiltering">
+      <label class="btn btn-primary active" data-filter="id" data-target="#myListFiltering">
         <input type="radio" name="id">All
       </label>
-      <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myIndexFiltering">
+      <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListFiltering">
         <input type="radio" name="id">ID is 1
       </label>
-      <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myIndexFiltering">
+      <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListFiltering">
         <input type="radio" name="id">ID is 2
       </label>
     </div>
-    <table class="table table-condensed" id="myIndexFiltering" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+    <table class="table table-condensed" id="myListFiltering" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
   </div><!-- /example -->
 
 {% highlight html %}
 <div class="btn-group" data-toggle="buttons">
-  <label class="btn btn-primary active" data-filter="id" data-target="#myIndexFiltering">
+  <label class="btn btn-primary active" data-filter="id" data-target="#myListFiltering">
     <input type="radio" name="id">All
   </label>
-  <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myIndexFiltering">
+  <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListFiltering">
     <input type="radio" name="id">ID is 1
   </label>
-  <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myIndexFiltering">
+  <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListFiltering">
     <input type="radio" name="id">ID is 2
   </label>
 </div>
-<table class="table table-condensed" id="myIndexFiltering" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+<table class="table table-condensed" id="myListFiltering" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-info" id="index-filtering-multiple">
+  <div class="bs-callout bs-callout-info" id="list-filtering-multiple">
     <h4>Using multiple filters</h4>
     <p>Filters are stored internally as a hash keyed by the value of <code>data-filter</code>. This scopes multiple filters on a specific field so that only one is active at any given time. However, you can have filters on multiple fields active at once.</p>
   </div>
-  <div class="bs-callout bs-callout-info" id="index-filtering-override">
+  <div class="bs-callout bs-callout-info" id="list-filtering-override">
     <h4>Setting a custom filter function</h4>
     <p>Additionally, you can set your own filtering function by calling <code>.setFilter()</code> on the element. Your filter function should return true to include the item, false to reject it.</p>
-    <code>$("#myIndex").index('setFilter', 'myFilterID', function(item) { ... })</code>
+    <code>$("#myList").list('setFilter', 'myFilterID', function(item) { ... })</code>
   </div>
 
   <h3>Dynamic Filters</h3>
@@ -155,23 +155,23 @@ $('#myIndex').index({templateEngine: function(t) {
   <p>By attaching a <code>data-filter</code> trigger to an input element, you can filter based on dynamic user input. Input elements use their <code>.val()</code> value instead of their <code>data-match</code> value.</p>
 
   <div class="bs-example">
-    <input type="text" class="form-control" data-filter="id,name" data-target="#myIndexSearching" data-trigger="keyup" placeholder="Search">
-    <table class="table table-condensed" id="myIndexSearching" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+    <input type="text" class="form-control" data-filter="id,name" data-target="#myListSearching" data-trigger="keyup" placeholder="Search">
+    <table class="table table-condensed" id="myListSearching" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
   </div><!-- /example -->
 
 {% highlight html %}
-<input type="text" class="btn btn-primary" data-filter="id,name" data-target="#myIndexSearching" data-trigger="keyup" placeholder="Search">
+<input type="text" class="btn btn-primary" data-filter="id,name" data-target="#myListSearching" data-trigger="keyup" placeholder="Search">
 
-<table class="table table-condensed" id="myIndexSearching" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+<table class="table table-condensed" id="myListSearching" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-info" id="index-filtering-triggers">
+  <div class="bs-callout bs-callout-info" id="list-filtering-triggers">
     <h4>Custom event triggers</h4>
     <p>By default, filters are applied when a user clicks on a static trigger, or the value of a user input changes. But you can change the event that Index.js listens for on the given element with a <code>data-trigger</code> attribute. This lets us update the list more or less frequently.</p>
     <code>&lt;input type="text" ... data-trigger="keyup"&gt;</code>
   </div>
 
-  <h2 id="index-sorting">Sorting</h3>
+  <h2 id="list-sorting">Sorting</h3>
 
   <p>Any element can become a trigger for sorting your list of items. Each requires a <code>data-sort</code> and a <code>data-target</code>. Include the <code>sort-control</code> class to render feedback about which sort state is active.</p>
   <p>The sort's status is kept track of by the trigger cycling through the <code>sort-ascending</code> and <code>sort-descending</code> classes. Include either one to initialize the sort. Only one sort for an Index can be active at a time.</p>
@@ -180,11 +180,11 @@ $('#myIndex').index({templateEngine: function(t) {
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th class="sort-control sort-ascending" data-sort="id" data-target="#myIndexSorting">ID (click me)</th>
-          <th class="sort-control" data-sort="name" data-target="#myIndexSorting">Name (click me)</th>
+          <th class="sort-control sort-ascending" data-sort="id" data-target="#myListSorting">ID (click me)</th>
+          <th class="sort-control" data-sort="name" data-target="#myListSorting">Name (click me)</th>
         </tr>
       </thead>
-      <tbody id="myIndexSorting" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+      <tbody id="myListSorting" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
     </table>
 
   </div><!-- /example -->
@@ -194,22 +194,22 @@ $('#myIndex').index({templateEngine: function(t) {
   <thead>
     <tr>
       <th class="sort sort-control sort-ascending"
-          data-sort="id" data-target="#myIndex">ID (click me)</th>
+          data-sort="id" data-target="#myList">ID (click me)</th>
       <th class="sort sort-control"
-          data-sort="name" data-target="#myIndex">Name (click me)</th>
+          data-sort="name" data-target="#myList">Name (click me)</th>
     </tr>
   </thead>
-  <tbody id="myIndex" data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+  <tbody id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
 </table>
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-info" id="index-sort-override">
+  <div class="bs-callout bs-callout-info" id="list-sort-override">
     <h4>Setting a custom sort function</h4>
     <p>Internally, when you click on a trigger element, Index.js creates a sort function based on the field specified with <code>data-source</code> and which direction you are sorting in, and saves it as the sort function. You can also set your own sort function by calling <code>.setSort()</code> on the element:</p>
-    <code>$("#myIndex").index('setSort', function(a, b) { ... })</code>
+    <code>$("#myList").list('setSort', function(a, b) { ... })</code>
   </div>
 
-  <h2 id="index-pagination">Pagination</h2>
+  <h2 id="list-pagination">Pagination</h2>
   <style>.pg-link { margin: 0 8px 8px 0; width: 40px; }</style>
 
   <p>When your list of items gets too long, you'll want to start paginating your data.</p>
@@ -218,8 +218,8 @@ $('#myIndex').index({templateEngine: function(t) {
 
   <div class="bs-example">
     <div class="row">
-      <div id="myIndexPagination" class="col-sm-6 col-xs-12"
-        data-control="index"
+      <div id="myListPagination" class="col-sm-6 col-xs-12"
+        data-control="list"
         data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}, {"id": 7}, {"id": 8}, {"id": 9}, {"id": 10}]'
         data-template="<span class='btn btn-default disabled pg-link' data-field='id'>"
         data-pagination="on"
@@ -234,15 +234,15 @@ $('#myIndex').index({templateEngine: function(t) {
     <script>
       $(document).ready(function() {
         $('#changePagination').on('keyup', function(e) {
-          $('#myIndexPagination').index({pageSize: $(e.target).val()});
+          $('#myListPagination').list({pageSize: $(e.target).val()});
         });
       });
     </script>
   </div><!-- /example -->
 
 {% highlight html %}
-<div id="myIndexPagination"
-  data-control="index"
+<div id="myListPagination"
+  data-control="list"
   data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}, {"id": 7}, {"id": 8}, {"id": 9}, {"id": 10}]'
   data-template="<span class='btn btn-default disabled' data-field='id'>"
   data-pagination="on"
@@ -252,25 +252,25 @@ $('#myIndex').index({templateEngine: function(t) {
 <script>
   $(document).ready(function() {
     $('#changePagination').on('keyup', function(e) {
-      $('#myIndexPagination').index({pageSize: $(e.target).val()});
+      $('#myListPagination').list({pageSize: $(e.target).val()});
     });
   });
 </script>
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-info" id="index-sort-override">
+  <div class="bs-callout bs-callout-info" id="list-sort-override">
     <h4>Rendering page controls</h4>
-    <p>It's up to you to render any sort of pagination controls you want to navigate over your list. Use the <code>paginated.adcom.index</code> event described below to retrieve information on page count / current page / etc, and then use the <code>page</code> instance method to update the current page.</p>
+    <p>It's up to you to render any sort of pagination controls you want to navigate over your list. Use the <code>paginated.adcom.list</code> event described below to retrieve information on page count / current page / etc, and then use the <code>page</code> instance method to update the current page.</p>
 
   </div>
 
-  <h2 id="index-selection">Selection</h2>
+  <h2 id="list-selection">Selection</h2>
 
-  <p>Many lists have some concept of selecting one or more items. Index.js handles these cases by giving each item in the index a boolean state of true or false. If you render a <code>data-toggle="select"</code> into a list element, it will serve as a toggle between those two states. Reflect the status by setting a <code>data-selected-class</code> to apply to 'active' element.</p>
+  <p>Many lists have some concept of selecting one or more items. Index.js handles these cases by giving each item in the list a boolean state of true or false. If you render a <code>data-toggle="select"</code> into a list element, it will serve as a toggle between those two states. Reflect the status by setting a <code>data-selected-class</code> to apply to 'active' element.</p>
 
   <div class="bs-example">
-    <div id="myIndexSelection"
-      data-control="index"
+    <div id="myListSelection"
+      data-control="list"
       data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}]'
       data-selected-class="active btn-primary"
       data-template="<span class='btn btn-default pg-link' data-toggle='select' data-field='id'>">
@@ -278,8 +278,8 @@ $('#myIndex').index({templateEngine: function(t) {
   </div><!-- /example -->
 
 {% highlight html %}
-<div id="myIndexSelection"
-  data-control="index"
+<div id="myListSelection"
+  data-control="list"
   data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}]'
   data-selected-class="active btn-primary"
   data-template="<span class='btn btn-default' data-toggle='select' data-field='id'>">
@@ -288,25 +288,25 @@ $('#myIndex').index({templateEngine: function(t) {
 
   <p>Events are triggered when any element is selected or unselected.</p>
 
-  <h2 id="index-usage">Usage</h2>
+  <h2 id="list-usage">Usage</h2>
 
-  <p>The index plugin centers around an element that has a single array of items attached to it, and knows how to render out that list at any time. You can control the content of the list, and the template it renders with.</p>
+  <p>The list plugin centers around an element that has a single array of items attached to it, and knows how to render out that list at any time. You can control the content of the list, and the template it renders with.</p>
 
   <h3>Via data attributes</h3>
-  <p>Render a list without writing JavaScript. Set <code>data-control="index"</code> on your list container element to trigger it automatically, along with a <code>data-items</code> attribute containing a serialized array of items.</p>
+  <p>Render a list without writing JavaScript. Set <code>data-control="list"</code> on your list container element to trigger it automatically, along with a <code>data-items</code> attribute containing a serialized array of items.</p>
 {% highlight html %}
-<table data-control="index" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'></table>
+<table data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'></table>
 {% endhighlight %}
 
   <h3>Via JavaScript</h3>
-  <p>Render a list by calling <code>.index()</code> on a container element.</p>
+  <p>Render a list by calling <code>.list()</code> on a container element.</p>
 
-  {% highlight js %}$('#myIndex').index(options){% endhighlight %}
+  {% highlight js %}$('#myList').list(options){% endhighlight %}
 
   <h3>Options</h3>
   <p>Options can be passed via data attributes or JavaScript. For data attributes, append the option name to <code>data-</code>, as in <code>data-items=""</code>.</p>
 
-  <h4>The index container</h4>
+  <h4>The list container</h4>
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
@@ -334,7 +334,7 @@ $('#myIndex').index({templateEngine: function(t) {
          <td>template</td>
          <td>string, function</td>
          <td>table row, use with <code>fields</code></td>
-         <td>Compiled or uncompiled template function used to render each item in the index. Use in conjunction with <code>template-engine</code> if using special syntax.</td>
+         <td>Compiled or uncompiled template function used to render each item in the list. Use in conjunction with <code>template-engine</code> if using special syntax.</td>
        </tr>
        <tr>
          <td>template-engine</td>
@@ -346,19 +346,19 @@ $('#myIndex').index({templateEngine: function(t) {
          <td>filtering</td>
          <td>on or off</td>
          <td>on</td>
-         <td>Turn filtering on. Uses <code>$('#index').data('adcom.index').getFilteredItems</code>, which can be overridden.</td>
+         <td>Turn filtering on. Uses <code>$('#list').data('adcom.list').getFilteredItems</code>, which can be overridden.</td>
        </tr>
        <tr>
          <td>sorting</td>
          <td>on or off</td>
          <td>on</td>
-         <td>Turn sorting on. Uses <code>$('#index').data('adcom.index').getSortedItems</code>, which can be overridden.</td>
+         <td>Turn sorting on. Uses <code>$('#list').data('adcom.list').getSortedItems</code>, which can be overridden.</td>
        </tr>
        <tr>
          <td>pagination</td>
          <td>on or off</td>
          <td>off</td>
-         <td>Turn pagination on. Uses <code>$('#index').data('adcom.index').getPaginatedItems</code>, which can be overridden. If off, then every visible item will be rendered.</td>
+         <td>Turn pagination on. Uses <code>$('#list').data('adcom.list').getPaginatedItems</code>, which can be overridden. If off, then every visible item will be rendered.</td>
        </tr>
        <tr>
          <td>page-size</td>
@@ -394,7 +394,7 @@ $('#myIndex').index({templateEngine: function(t) {
          <td>remote</td>
          <td>path</td>
          <td>false</td>
-         <td>If a remote URL is provided, <strong>content will be loaded one time</strong> via jQuery's <code>.getJSON</code> method and stored as the Index's <code>items</code>. If <code>show</code> is <code>true</code>, index will not be rendered until after content is loaded. You can thus use the original contents of the container element as a loading indicator.</td>
+         <td>If a remote URL is provided, <strong>content will be loaded one time</strong> via jQuery's <code>.getJSON</code> method and stored as the Index's <code>items</code>. If <code>show</code> is <code>true</code>, list will not be rendered until after content is loaded. You can thus use the original contents of the container element as a loading indicator.</td>
        </tr>
       </tbody>
     </table>
@@ -464,64 +464,64 @@ $('#myIndex').index({templateEngine: function(t) {
 
   <h3>Methods</h3>
 
-  <h4>.index(options)</h4>
-  <p>Activates your content as an index. Accepts an optional options <code>object</code>.</p>
+  <h4>.list(options)</h4>
+  <p>Activates your content as a list. Accepts an optional options <code>object</code>.</p>
 {% highlight js %}
-$('#myIndex').index({
+$('#myList').list({
   pagination: 'off'
 })
 {% endhighlight %}
 
-  <h4>.index('show')</h4>
+  <h4>.list('show')</h4>
   <p>Calculates the list of visible items and renders them into it's container element.</p>
-  {% highlight js %}$('#myIndex').index('show'){% endhighlight %}
+  {% highlight js %}$('#myList').list('show'){% endhighlight %}
 
-  <h4>.index('setFilter', key, function)</h4>
+  <h4>.list('setFilter', key, function)</h4>
   <p>Manually sets a filter function to be applied. Can be used multiple times with different keys. Pass <code>undefined</code> as the final argument to remove an existing filter.</p>
-  {% highlight js %}$('#myIndex').index('setFilter', function(item) { ... }){% endhighlight %}
+  {% highlight js %}$('#myList').list('setFilter', function(item) { ... }){% endhighlight %}
 
-  <h4>.index('setSort', function)</h4>
+  <h4>.list('setSort', function)</h4>
   <p>Manually sets a sort function. Only one sort function can exist at a time. Pass <code>undefined</code> as the function to remove an existing filter.</p>
-  {% highlight js %}$('#myIndex').index('setSort', function(a, b) { ... }){% endhighlight %}
+  {% highlight js %}$('#myList').list('setSort', function(a, b) { ... }){% endhighlight %}
 
-  <h4>.index('setCurrentPage', Integer)</h4>
+  <h4>.list('setCurrentPage', Integer)</h4>
   <p>Manually sets the current page of the list.</p>
-  {% highlight js %}$('#myIndex').index('setCurrentPage', 2){% endhighlight %}
+  {% highlight js %}$('#myList').list('setCurrentPage', 2){% endhighlight %}
 
-  <h4>.index('page', Integer)</h4>
-  <p>Calls setCurrentPage and re-renders the index.</p>
-  {% highlight js %}$('#myIndex').index('page', 2){% endhighlight %}
+  <h4>.list('page', Integer)</h4>
+  <p>Calls setCurrentPage and re-renders the list.</p>
+  {% highlight js %}$('#myList').list('page', 2){% endhighlight %}
 
-  <h4>.index('select', selector || Integer)</h4>
+  <h4>.list('select', selector || Integer)</h4>
   <p>Changes the state of the items represented by the selector, or at the specified index, to <code>true</code>. You can also pass an array of indices. Triggers the <code>toggle</code> events.</p>
-  {% highlight js %}$('#myIndex').index('select', 2)
-$('$myIndex').index('select', $('.selectedItem')){% endhighlight %}
+  {% highlight js %}$('#myList').list('select', 2)
+$('$myList').list('select', $('.selectedItem')){% endhighlight %}
 
-  <h4>.index('deselect', selector || Integer)</h4>
+  <h4>.list('deselect', selector || Integer)</h4>
   <p>Changes the state of the items represented by the selector, or at the specified index, to <code>false</code>. You can also pass an array of indices. Triggers the <code>toggle</code> events.</p>
-  {% highlight js %}$('#myIndex').index('deselect', 2)
-$('$myIndex').index('deselect', $('.deselectedItem')){% endhighlight %}
+  {% highlight js %}$('#myList').list('deselect', 2)
+$('$myList').list('deselect', $('.deselectedItem')){% endhighlight %}
 
-  <h4>.index('toggle', selector || Integer)</h4>
+  <h4>.list('toggle', selector || Integer)</h4>
   <p>Reverses the state of the items represented by the selector, or at the specified index. You can also pass an array of indices. Triggers the <code>toggle</code> events.</p>
-  {% highlight js %}$('#myIndex').index('toggle', 2)
-$('$myIndex').index('toggle', $('.item')){% endhighlight %}
+  {% highlight js %}$('#myList').list('toggle', 2)
+$('$myList').list('toggle', $('.item')){% endhighlight %}
 
-  <h4>.index('updateItemAtIndex', idx, item)</h4>
+  <h4>.list('updateItemAtIndex', idx, item)</h4>
   <p>Replaces the item at index <code>idx</code> with the passed <code>item</code>, and rerenders that element in the container element if it's visible.</p>
-  {% highlight js %}$('#myIndex').index('updateItemAtIndex', 0, {"id": 1}){% endhighlight %}
+  {% highlight js %}$('#myList').list('updateItemAtIndex', 0, {"id": 1}){% endhighlight %}
 
-  <h4>.index('deleteItemAtIndex', idx)</h4>
+  <h4>.list('deleteItemAtIndex', idx)</h4>
   <p>Deletes the item at index <code>idx</code>.</p>
-  {% highlight js %}$('#myIndex').index('deleteItemAtIndex', 0){% endhighlight %}
+  {% highlight js %}$('#myList').list('deleteItemAtIndex', 0){% endhighlight %}
 
-  <h4>.index('updateItems', items)</h4>
-  <p>Replaces the index's items with those passed in. The internal states (selected or unselected) are reset as well.</p>
-  {% highlight js %}$('#myIndex').index('updateItems', 0, {"id": 1}){% endhighlight %}
+  <h4>.list('updateItems', items)</h4>
+  <p>Replaces the lists's items with those passed in. The internal states (selected or unselected) are reset as well.</p>
+  {% highlight js %}$('#myList').list('updateItems', 0, {"id": 1}){% endhighlight %}
 
 
   <h3>Events</h3>
-  <p>Adcom's index class exposes a few events for hooking into modal functionality.</p>
+  <p>Adcom's list class exposes a few events for hooking into modal functionality.</p>
   <div class="table-responsive">
     <table class="table table-bordered table-striped">
       <thead>
@@ -532,58 +532,58 @@ $('$myIndex').index('toggle', $('.item')){% endhighlight %}
       </thead>
       <tbody>
        <tr>
-         <td>show.adcom.index</td>
+         <td>show.adcom.list</td>
          <td>This event is fired immediately when the <code>show</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>shown.adcom.index</td>
+         <td>shown.adcom.list</td>
          <td>This event is fired when the visible items have been rendered and inserted into the container element. The list of rendered items is available as the <code>items</code> property of the event.</td>
        </tr>
        <tr>
-         <td>toggle.adcom.index</td>
+         <td>toggle.adcom.list</td>
          <td>This event is fired when the status of an item is about to be updated. The item whose state has been updated is available as the <code>item</code> property of the event, along with it's <code>index</code> and updated <code>state</code>. If rendered, the item's element is available as the <code>target</code> property of the event.</td>
        </tr>
        <tr>
-         <td>toggled.adcom.index</td>
+         <td>toggled.adcom.list</td>
          <td>This event is fired when the status of an item has been updated. The item whose state has been updated is available as the <code>item</code> property of the event, along with it's <code>index</code> and updated <code>state</code>. If rendered, the item's element is available as the <code>target</code> property of the event.</td>
        </tr>
        <tr>
-         <td>sortChange.adcom.index</td>
+         <td>sortChange.adcom.list</td>
          <td>This event is fired immediately when the <code>setSort</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>sortChanged.adcom.index</td>
-         <td>This event is fired when the sort function for the index has been changed or removed. The new sort function is available as the <code>function</code> property of the event.</td>
+         <td>sortChanged.adcom.list</td>
+         <td>This event is fired when the sort function for the list has been changed or removed. The new sort function is available as the <code>function</code> property of the event.</td>
        </tr>
        <tr>
-         <td>filterChange.adcom.index</td>
+         <td>filterChange.adcom.list</td>
          <td>This event is fired immediately when the <code>setFilter</code> instance method has been called. The key for this filter function is available as the <code>key</code> property of the event.</td>
        </tr>
        <tr>
-         <td>filterChanged.adcom.index</td>
-         <td>This event is fired when one of the filter functions for the index has been changed or removed. The key for this filter function is available as the <code>key</code> property of the event, and the new filter function is available as <code>function</code>.</td>
+         <td>filterChanged.adcom.list</td>
+         <td>This event is fired when one of the filter functions for the list has been changed or removed. The key for this filter function is available as the <code>key</code> property of the event, and the new filter function is available as <code>function</code>.</td>
        </tr>
        <tr>
-         <td>pageChange.adcom.index</td>
+         <td>pageChange.adcom.list</td>
          <td>This event is fired immediately when the <code>setCurrentPage</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>pageChanged.adcom.index</td>
-         <td>This event is fired when the current page index has been changed. The new current page is available as the <code>page</code> property of the event.</td>
+         <td>pageChanged.adcom.list</td>
+         <td>This event is fired when the current page has been changed. The new current page is available as the <code>page</code> property of the event.</td>
        </tr>
        <tr>
-         <td>paginated.adcom.index</td>
+         <td>paginated.adcom.list</td>
          <td>This event is fired when the rendered list of items has been paginated in preparation for rendering. <strong>Fires before the items have been rendered or inserted into the container element.</strong> The current <code>page</code>, number of <code>pages</code>, the <code>count</code> of items, the <code>items</code>, and the <code>start</code> and <code>end</code> positions of the current page are available as properties of the event.</td>
        </tr>
        <tr>
-         <td>loaded.adcom.index</td>
-         <td>This event is fired when the index has loaded content using the remote option.</td>
+         <td>loaded.adcom.list</td>
+         <td>This event is fired when the list has loaded content using the remote option.</td>
        </tr>
       </tbody>
     </table>
   </div><!-- /.table-responsive -->
 {% highlight js %}
-$('#myIndex').on('shown.adcom.index', function (e) {
+$('#myList').on('shown.adcom.list', function (e) {
   // do something...
 })
 {% endhighlight %}

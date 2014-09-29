@@ -1,10 +1,10 @@
 +function ($) {
   'use strict';
 
-  // INDEX CLASS DEFINITION
-  // ======================
+  // LIST CLASS DEFINITION
+  // =====================
 
-  var Index = function (element, options) {
+  var List = function (element, options) {
     var $this = this
     this.options  = options
     this.$element = $(element)
@@ -26,16 +26,16 @@
       $.getJSON(this.options.remote, function(items) {
         $this.$items = items
         if ($this.options.show) $this.show()
-        $this.$element.trigger($.Event('loaded.adcom.index', { items: items }))
+        $this.$element.trigger($.Event('loaded.adcom.list', { items: items }))
       })
     }
   }
 
-  Index.VERSION = '0.1.0'
+  List.VERSION = '0.1.0'
 
-  Index.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.index.data-api" }).join(' ')
+  List.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".adcom.list.data-api" }).join(' ')
 
-  Index.DEFAULTS = {
+  List.DEFAULTS = {
     show: true,
     items: [],
     states: [],
@@ -49,10 +49,10 @@
 
   // Orchestration
 
-  Index.prototype.show = function () {
+  List.prototype.show = function () {
     var $this = this
 
-    $this.$element.trigger('show.adcom.index')
+    $this.$element.trigger('show.adcom.list')
 
     var items = $this.getCurrentItems()
 
@@ -64,55 +64,55 @@
       $($this.$element).append($this.renderItem(item))
     })
 
-    $this.$element.trigger($.Event('shown.adcom.index', { items: items }))
+    $this.$element.trigger($.Event('shown.adcom.list', { items: items }))
   }
 
   // Actions
   // selector can be a jQuery selector, item index, or an array of item indices
 
-  Index.prototype.select = function (selector) {
+  List.prototype.select = function (selector) {
     var $this = this
     selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) { $this.changeState(el, true) })
   }
 
-  Index.prototype.deselect = function (selector) {
+  List.prototype.deselect = function (selector) {
     var $this = this
     selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) { $this.changeState(el, false) })
   }
 
-  Index.prototype.toggle = function (selector) {
+  List.prototype.toggle = function (selector) {
     var $this = this
     selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) {
-      var idx = (typeof el == 'number') ? el : $(el).data('adcom.index.idx')
+      var idx = (typeof el == 'number') ? el : $(el).data('adcom.list.idx')
       $this.changeState(el, $this.states[idx] ? false : true)
     })
   }
 
   // Helpers
 
-  Index.prototype.changeState = function (el, state) {
+  List.prototype.changeState = function (el, state) {
     if (typeof el === 'number') {
       var item   = this.$items[el]
       var idx    = el
       var target = this.rendered[idx]
     } else {
       var target = $(el)
-      var item   = target.data('adcom.index.item')
-      var idx    = target.data('adcom.index.idx')
+      var item   = target.data('adcom.list.item')
+      var idx    = target.data('adcom.list.idx')
     }
 
-    this.$element.trigger($.Event('toggle.adcom.index', { item: item, target: target, index: idx, state: state }))
+    this.$element.trigger($.Event('toggle.adcom.list', { item: item, target: target, index: idx, state: state }))
 
     this.states[idx] = state
     if (state) { target.addClass(this.options.selectedClass) } else { target.removeClass(this.options.selectedClass) }
 
-    this.$element.trigger($.Event('toggled.adcom.index', { item: item, target: target, index: idx, state: state }))
+    this.$element.trigger($.Event('toggled.adcom.list', { item: item, target: target, index: idx, state: state }))
   }
 
-  Index.prototype.getSelected = function () {
+  List.prototype.getSelected = function () {
     var selected = []
     var $this = this
     $.each(this.$items, function (idx, item) {
@@ -121,7 +121,7 @@
     return selected
   }
 
-  Index.prototype.setInitialState = function () {
+  List.prototype.setInitialState = function () {
     var $this = this
     this.toggleFilter($('.active[data-filter][data-target]'))
 
@@ -137,19 +137,19 @@
 
   // Templates
 
-  Index.prototype.parseTemplate = function (template) {
+  List.prototype.parseTemplate = function (template) {
     if (typeof template === 'function') return template
     if (typeof template === 'string')   return this.compileTemplate(template)
     if (this.options.fields) return this.defaultTemplate()
     return this.compileTemplate(unescapeString(this.$element.html()))
   }
 
-  Index.prototype.compileTemplate = function (template) {
+  List.prototype.compileTemplate = function (template) {
     if (this.options.templateEngine) return this.options.templateEngine(template)
     return function() { return template }
   }
 
-  Index.prototype.defaultTemplate = function () {
+  List.prototype.defaultTemplate = function () {
     var fields = typeof this.options.fields === 'string' ? this.options.fields.split(/,\s*/) : this.options.fields
     var templateString = ''
 
@@ -186,15 +186,15 @@
   //
   // These functions accept simple inputs (such as an attribute and value)
   // and create a single sort or filter function. This function is then saved
-  // into index.sort or index.filter.
+  // into list.sort or list.filter.
   //
   // To create a more complex sorting function, set your own to those variables
-  // and it will be used instead from index.getCurrentItems.
+  // and it will be used instead from list.getCurrentItems.
   //
   // For even more control, write your own .getCurrentItems function, which is
   // called to retrieve the list of items to render in the current view.
 
-  Index.prototype.getSort = function (field, reverse) {
+  List.prototype.getSort = function (field, reverse) {
     var factor = reverse ? -1 : 1
 
     if (field === null || field === undefined) return null
@@ -211,7 +211,7 @@
     }
   }
 
-  Index.prototype.getFilter = function (key, value) {
+  List.prototype.getFilter = function (key, value) {
     if (typeof value === 'function' || value === undefined) return value
 
     // Use the built-in filter generator if value is not undefined (delete) or
@@ -233,38 +233,38 @@
     }
   }
 
-  Index.prototype.setSort = function (field, reverse) {
-    this.$element.trigger($.Event('sortChange.adcom.index', { }))
+  List.prototype.setSort = function (field, reverse) {
+    this.$element.trigger($.Event('sortChange.adcom.list', { }))
     this.sort = this.getSort(field, reverse)
     this.currentPage = 1
-    this.$element.trigger($.Event('sortChanged.adcom.index', { function: this.sort }))
+    this.$element.trigger($.Event('sortChanged.adcom.list', { function: this.sort }))
   }
 
-  Index.prototype.setFilter = function (key, filter) {
-    this.$element.trigger($.Event('filterChange.adcom.index', { key: key }))
+  List.prototype.setFilter = function (key, filter) {
+    this.$element.trigger($.Event('filterChange.adcom.list', { key: key }))
 
     if (filter === undefined) {
       delete this.filters[key]
     } else this.filters[key] = this.getFilter(key, filter)
 
     this.currentPage = 1
-    this.$element.trigger($.Event('filterChanged.adcom.index', { key: key, function: filter }))
+    this.$element.trigger($.Event('filterChanged.adcom.list', { key: key, function: filter }))
   }
 
-  Index.prototype.setCurrentPage = function (page) {
-    this.$element.trigger($.Event('pageChange.adcom.index', { }))
+  List.prototype.setCurrentPage = function (page) {
+    this.$element.trigger($.Event('pageChange.adcom.list', { }))
     this.currentPage = parseInt(page)
-    this.$element.trigger($.Event('pageChanged.adcom.index', { page: this.currentPage }))
+    this.$element.trigger($.Event('pageChanged.adcom.list', { page: this.currentPage }))
   }
 
-  Index.prototype.page = function (page) {
+  List.prototype.page = function (page) {
     this.setCurrentPage(page)
     this.show()
   }
 
   // Modeled after PourOver's .getCurrentItems. Should return the items in a
   // collection which have been filtered, sorted, and paged.
-  Index.prototype.getCurrentItems = function () {
+  List.prototype.getCurrentItems = function () {
     var visibleItems = this.$items.slice(0) // dup
 
     // filter
@@ -279,7 +279,7 @@
     return visibleItems
   }
 
-  Index.prototype.getFilteredItems = function (items) {
+  List.prototype.getFilteredItems = function (items) {
     var $this = this
     if (!$.isEmptyObject(this.filters)) {
       var filtered = []
@@ -295,11 +295,11 @@
     return items
   }
 
-  Index.prototype.getSortedItems = function (items) {
+  List.prototype.getSortedItems = function (items) {
     return this.sort ? items.sort(this.sort) : items
   }
 
-  Index.prototype.getPaginatedItems = function (items) {
+  List.prototype.getPaginatedItems = function (items) {
     var count    = items.length
     var pages    = Math.ceil(count / this.pageSize)
     var startIdx = (this.currentPage - 1) * this.pageSize
@@ -309,13 +309,13 @@
 
     items = items.slice(startIdx, endIdx)
 
-    this.$element.trigger($.Event('paginated.adcom.index', { page: this.currentPage, pages: pages, count: count, items: items, start: start, end: end }))
+    this.$element.trigger($.Event('paginated.adcom.list', { page: this.currentPage, pages: pages, count: count, items: items, start: start, end: end }))
     return items
   }
 
   // Rendering
 
-  Index.prototype.renderItem = function (item) {
+  List.prototype.renderItem = function (item) {
     var $this    = this
     var $item    = item
     var $idx     = this.$items.indexOf(item)
@@ -332,10 +332,10 @@
       $(fieldContainer).html(String(value || ''))
     })
 
-    el.data('adcom.index.item', $item)
-    el.data('adcom.index.idx', $idx)
-    el.on('update.adcom.index', function (e) {
-      $this.updateItemAtIndex($idx, e.item)
+    el.data('adcom.list.item', $item)
+    el.data('adcom.list.idx', $idx)
+    el.on('update.adcom.list', function (e) {
+      $this.update(el, e.item)
     })
 
     $this.rendered[$idx] = el[0]
@@ -344,11 +344,8 @@
   }
 
   // Updates
-  // experimental
-  // TODO: How to (optionally) re-render automatically based on inserted
-  // or deleted items.
 
-  Index.prototype.add = function (data, opts) {
+  List.prototype.add = function (data, opts) {
     opts = opts || {}
     opts.idx = opts.idx == undefined ? this.$items.length - 1 : opts.idx
 
@@ -359,8 +356,8 @@
     this.show()
   }
 
-  Index.prototype.update = function (item, data, opts) {
-    var idx = typeof item == 'number' ? item : $(item).data('adcom.index.idx')
+  List.prototype.update = function (item, data, opts) {
+    var idx = typeof item == 'number' ? item : $(item).data('adcom.list.idx')
     this.$items[idx] = data
 
     if (this.rendered[idx]) {
@@ -373,8 +370,8 @@
     this.show()
   }
 
-  Index.prototype.delete = function (item, opts) {
-    var idx = typeof item == 'number' ? item : $(item).data('adcom.index.idx')
+  List.prototype.delete = function (item, opts) {
+    var idx = typeof item == 'number' ? item : $(item).data('adcom.list.idx')
     this.$items.splice(idx, 1)
     this.states.splice(idx, 1)
     this.rendered.splice(idx, 1)
@@ -382,42 +379,8 @@
     this.show()
   }
 
-
-
-  // Index.prototype.updateItems = function (items, opts) {
-  //   this.states = []
-  //   this.rendered = []
-  //   this.$items = items
-  //   if ((opts || {}).show != false) this.show()
-  // }
-
-  // Index.prototype.deleteItemAtIndex = function (idx, opts) {
-  //   this.$items.splice(idx, 1)
-  //   this.states.splice(idx, 1)
-  //   this.rendered.splice(idx, 1)
-  //   if ((opts || {}).show != false) this.show()
-  // }
-
-  // Index.prototype.addItemAtIndex = function (idx, item, opts) {
-  //   this.$items.splice(idx, 0, item)
-  //   this.states.splice(idx, 0, undefined)
-  //   this.rendered.splice(idx, 0, undefined)
-  //   if ((opts || {}).show != false) this.show()
-  // }
-
-  // Index.prototype.addItem = function (item, opts) {
-  //   this.addItemAtIndex(this.$items.length - 1, item)
-  //   if ((opts || {}).show != false) this.show()
-  // }
-
-  // Index.prototype.updateItemAtIndex = function (idx, item, opts) {
-  //   this.$items[idx] = item
-  //   delete this.rendered[idx]
-  //   if ((opts || {}).show != false) this.show()
-  // }
-
-  Index.prototype.destroy = function () {
-    this.$element.off('.adcom.index').removeData('adcom.index')
+  List.prototype.destroy = function () {
+    this.$element.off('.adcom.list').removeData('adcom.list')
     this.$element.empty()
     this.states = []
     this.rendered = []
@@ -425,7 +388,7 @@
 
   // Trigger definitions
 
-  Index.prototype.toggleSort = function (el) {
+  List.prototype.toggleSort = function (el) {
     var $this = this
     el.each(function () {
       var $el = $(this)
@@ -436,7 +399,7 @@
       var states = ($el.data('states') || 'ascending,descending').split(/,\s*/)
 
       // Cycle between sorted, reversed, and not sorted.
-      // Clear all other sorts on this index.
+      // Clear all other sorts on this list.
       var state = ($el.attr('class').match(/[\^\s]sort-(ascending|descending)/) || [])[1]
       var stateIdx = states.indexOf(state)
       var nextState = states[(stateIdx + 1) % states.length]
@@ -448,7 +411,7 @@
     })
   }
 
-  Index.prototype.toggleFilter = function (el) {
+  List.prototype.toggleFilter = function (el) {
     var $this = this
     el.each(function () {
       var $el     = $(this)
@@ -465,49 +428,49 @@
 
   // Data accessor
 
-  Index.data = function (name) {
-    var attr = "adcom.index"
+  List.data = function (name) {
+    var attr = "adcom.list"
     if (name) attr = attr + "." + name
     var el = closestWithData($(this), attr)
     if (el) return el.data(attr)
   }
 
-  // INDEX PLUGIN DEFINITION
-  // =======================
+  // LIST PLUGIN DEFINITION
+  // ======================
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
-    if (option == 'data') return Index.data.apply(this, args)
+    if (option == 'data') return List.data.apply(this, args)
     return this.each(function () {
       var $this   = $(this)
-      var data    = $this.data('adcom.index')
+      var data    = $this.data('adcom.list')
 
-      // Reset the index if we call the constructor again with options
+      // Reset the list if we call the constructor again with options
       if (typeof option == 'object' && option && data) data = false
 
-      var options = $.extend({}, Index.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
+      var options = $.extend({}, List.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
-      if (!data) $this.data('adcom.index', (data = new Index(this, options)))
+      if (!data) $this.data('adcom.list', (data = new List(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
       else if (options.show && !options.remote) data.show()
     })
   }
 
-  $.fn.index             = Plugin
-  $.fn.index.Constructor = Index
+  $.fn.list             = Plugin
+  $.fn.list.Constructor = List
 
 
-  // INDEX NO CONFLICT
-  // =================
+  // LIST NO CONFLICT
+  // ================
 
-  $.fn.index.noConflict = function () {
-    $.fn.index = old
+  $.fn.list.noConflict = function () {
+    $.fn.list = old
     return this
   }
 
 
-  // INDEX DATA-API
-  // ==============
+  // LIST DATA-API
+  // =============
 
   function closestWithData (el, attr) {
     return $.makeArray(el).concat($.makeArray($(el).parents())).reduce(function (previous, current) {
@@ -516,19 +479,19 @@
     }, null)
   }
 
-  $(document).on(Index.EVENTS, '[data-toggle="select"]', function (e) {
+  $(document).on(List.EVENTS, '[data-toggle="select"]', function (e) {
     var $this    = $(this).closest('[data-toggle="select"]')
     var triggers = ($this.attr('data-trigger') || 'click').split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
 
-    var item    = closestWithData($this, 'adcom.index.item')
-    var $target = closestWithData($this, 'adcom.index')
+    var item    = closestWithData($this, 'adcom.list.item')
+    var $target = closestWithData($this, 'adcom.list')
 
     Plugin.call($target, 'toggle', item)
   })
 
-  $(document).on('click.adcom.index.data-api', '[data-sort]', function (e) {
+  $(document).on('click.adcom.list.data-api', '[data-sort]', function (e) {
     var $this   = $(this).closest('[data-sort]')
     var $target = $($this.data('target'))
 
@@ -536,7 +499,7 @@
     Plugin.call($target, 'show')
   })
 
-  $(document).on(Index.EVENTS, '[data-filter]', function (e) {
+  $(document).on(List.EVENTS, '[data-filter]', function (e) {
     var $this        = $(this).closest('[data-filter]')
     var $target      = $($this.data('target'))
     var defaultEvent = $this.is(':input') ? 'change' : 'click'
@@ -548,7 +511,7 @@
     Plugin.call($target, 'show')
   })
 
-  $(document).on('click.adcom.index.data-api', '[data-page]', function (e) {
+  $(document).on('click.adcom.list.data-api', '[data-page]', function (e) {
     var $this    = $(this).closest('[data-page]')
     var $target  = $($this.data('target'))
 
@@ -557,7 +520,7 @@
   })
 
   $(window).on('load', function () {
-    $('[data-control="index"]').each(function () {
+    $('[data-control="list"]').each(function () {
       Plugin.call($(this))
     })
   })

@@ -10,7 +10,7 @@ module.exports = function (grunt) {
     concat: {
       adcom: {
         src: [
-          'js/index.js',
+          'js/list.js',
           'js/form.js',
           'js/state.js'
         ],

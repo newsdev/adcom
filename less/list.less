@@ -17,8 +17,8 @@
 }
 
 // Container for individual items (not necessarily controls)
-.index {
-  .index-item {
+.list {
+  .list-item {
     padding: 10px 6px 10px 0;
     margin: 0;
     position: relative;
@@ -26,15 +26,15 @@
     &:not(tr) { display: inline-block; }
   }
 
-  a.index-item {
+  a.list-item {
     text-decoration: none;
     display: block;
     color: #111;
   }
-  a.index-item:hover {
+  a.list-item:hover {
     cursor: pointer;
   }
-  .index-item-meta {
+  .list-item-meta {
     font-size: 0.8em;
     color: #888;
 
@@ -43,27 +43,27 @@
   }
 }
 
-.index-bordered {
-  .index-item {
-    border-bottom: 1px solid @index-border-color;
+.list-bordered {
+  .list-item {
+    border-bottom: 1px solid @list-border-color;
   }
-  .index-item:last-child {
+  .list-item:last-child {
     border-bottom: none;
   }
 }
 
-.index-compact {
-  .index-item {
+.list-compact {
+  .list-item {
     padding: 0px 4px 0 0;
     margin: 0;
   }
 }
 
-.index-toggle {
-  .index-item {
+.list-toggle {
+  .list-item {
     padding: 0.4em 0.4em 0.4em 2em;
   }
-  .index-item.active > :first-child::before {
+  .list-item.active > :first-child::before {
     content: '';
     position: absolute;
     border-color: #009933;
@@ -79,38 +79,38 @@
   }
 }
 
-.index-hover {
-  :not(tr).index-item,
-  tr.index-item > td:first-child {
-    // padding-left: @index-item-border-padding;
+.list-hover {
+  :not(tr).list-item,
+  tr.list-item > td:first-child {
+    // padding-left: @list-item-border-padding;
   }
-  :not(tr).index-item:hover,
-  tr.index-item:hover > td {
+  :not(tr).list-item:hover,
+  tr.list-item:hover > td {
     background-color: darken(@item-default-bg, 5%);
   }
-  :not(tr).index-item:hover,
-  tr.index-item:hover > td:first-child {
+  :not(tr).list-item:hover,
+  tr.list-item:hover > td:first-child {
     border-left-color: darken(@item-default-border, 5%);
   }
 }
 
-.index-state {
-  &.index-hover {
-    :not(tr).index-item,
-    tr.index-item > td:first-child {
-      padding-left: @index-item-border-padding;
-      border-left-width: @index-item-border-width;
+.list-state {
+  &.list-hover {
+    :not(tr).list-item,
+    tr.list-item > td:first-child {
+      padding-left: @list-item-border-padding;
+      border-left-width: @list-item-border-width;
       border-left-style: solid;
       border-left-color: transparent;
     }
 
-    :not(tr).index-item.default:hover,
-    tr.index-item.default:hover > td:first-child {
+    :not(tr).list-item.default:hover,
+    tr.list-item.default:hover > td:first-child {
       border-left-color: @item-default-border;
     }
   }
 
-  .index-item {
+  .list-item {
     &.default,
     &.active,
     &.warning,
@@ -118,8 +118,8 @@
     &.danger,
     &.success {
       &:not(tr), & > td:first-child {
-        padding-left: @index-item-border-padding;
-        border-left-width: @index-item-border-width;
+        padding-left: @list-item-border-padding;
+        border-left-width: @list-item-border-width;
         border-left-style: solid;
         border-left-color: transparent;
       }
@@ -133,34 +133,34 @@
   }
 }
 
-.index-item-variant(@state; @border; @background) {
-  .index-hover {
-    :not(tr).index-item.@{state}:hover,
-    tr.index-item.@{state}:hover > td {
+.list-item-variant(@state; @border; @background) {
+  .list-hover {
+    :not(tr).list-item.@{state}:hover,
+    tr.list-item.@{state}:hover > td {
       background-color: darken(@background, 5%);
     }
-    :not(tr).index-item.@{state}:hover,
-    tr.index-item.@{state}:hover > td:first-child {
+    :not(tr).list-item.@{state}:hover,
+    tr.list-item.@{state}:hover > td:first-child {
       border-left-color: darken(@border, 5%);
     }
   }
-  .index-state {
-    :not(tr).index-item.@{state},
-    tr.index-item.@{state} > td:first-child {
+  .list-state {
+    :not(tr).list-item.@{state},
+    tr.list-item.@{state} > td:first-child {
       border-left-color: @border;
     }
   }
-  .index-state-bg {
-    :not(tr).index-item.@{state},
-    tr.index-item.@{state} > td:first-child {
+  .list-state-bg {
+    :not(tr).list-item.@{state},
+    tr.list-item.@{state} > td:first-child {
       background-color: @background;
     }
   }
 }
 
-.index-item-variant(default, transparent, @item-default-bg);
-.index-item-variant(active, @item-active-border, @item-active-bg);
-.index-item-variant(info, @item-info-border, @item-info-bg);
-.index-item-variant(danger, @item-danger-border, @item-danger-bg);
-.index-item-variant(warning, @item-warning-border, @item-warning-bg);
-.index-item-variant(success, @item-success-border, @item-success-bg);
+.list-item-variant(default, transparent, @item-default-bg);
+.list-item-variant(active, @item-active-border, @item-active-bg);
+.list-item-variant(info, @item-info-border, @item-info-bg);
+.list-item-variant(danger, @item-danger-border, @item-danger-bg);
+.list-item-variant(warning, @item-warning-border, @item-warning-bg);
+.list-item-variant(success, @item-success-border, @item-success-bg);

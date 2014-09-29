@@ -29,12 +29,12 @@
 
   <h3>Use a form with multiple objects</h3>
   <p>Forms are most useful when they are associated with a collection of items, for example a form that can edit any item in a list.</p>
-  <p>It uses the data available at the trigger's <code>data-serialized</code> attribute by default, but you can override that with any data attribute key. Because Index.js stores each item's data on it's rendered element, you're able to link forms to lists without JavaScript.</p>
+  <p>It uses the data available at the trigger's <code>data-serialized</code> attribute by default, but you can override that with any data attribute key. Because List.js stores each item's data on it's rendered element, you're able to link forms to lists without JavaScript.</p>
 
-  <div class="bs-callout bs-callout-info" id="form-index-integration">
-    <h4>Use a form with an Index</h4>
-    <p>Specify <code>data-source="adcom.index.item"</code> on a trigger element within an Index.js item to populate a form with that item's data.</p>
-    {% highlight html %}<button data-toggle="form" data-target="#myForm" data-source="adcom.index.item">Click me</button>{% endhighlight %}
+  <div class="bs-callout bs-callout-info" id="form-list-integration">
+    <h4>Use a form with a List</h4>
+    <p>Specify <code>data-source="adcom.list.item"</code> on a trigger element within a List.js item to populate a form with that item's data.</p>
+    {% highlight html %}<button data-toggle="form" data-target="#myForm" data-source="adcom.list.item">Click me</button>{% endhighlight %}
   </div>
 
   <div class="bs-example">
@@ -46,14 +46,14 @@
           <th></th>
         </tr>
       </thead>
-      <tbody data-control="index"
+      <tbody data-control="list"
              data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
              data-template="
              <tr>
                <td data-field='id'></td>
                <td data-field='name'></td>
                <td>
-                 <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.index.item'>Populate Form</button>
+                 <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.list.item'>Populate Form</button>
                </td>
              </tr>
         "></tbody>
@@ -83,14 +83,14 @@
       <th></th>
     </tr>
   </thead>
-  <tbody data-control="index"
+  <tbody data-control="list"
          data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
          data-template="
          <tr>
            <td data-field='id'></td>
            <td data-field='name'></td>
            <td>
-             <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.index.item'>Populate Form</button>
+             <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='adcom.list.item'>Populate Form</button>
            </td>
          </tr>
     "></tbody>
@@ -123,10 +123,10 @@ $('#myForm').on('submitted.adcom.form', function(e) {
 {% endhighlight %}
   </div>
 
-  <div class="bs-callout bs-callout-info" id="form-source-updates-index">
-    <h4>Update objects from Index.js</h4>
-    <p>When you update an object from an Index.js list, you'll want to make sure the changes you've made are persisted to the index, and that those changes are rendered. Trigger the <code>update.adcom.index</code> event on the item's container element to do so:</p>
-    {% highlight js %}$(itemContainer).trigger('update.adcom.index', newData);{% endhighlight %}
+  <div class="bs-callout bs-callout-info" id="form-source-updates-list">
+    <h4>Update objects from List.js</h4>
+    <p>When you update an object from an List.js list, you'll want to make sure the changes you've made are persisted to the list, and that those changes are rendered. Call the <code>update</code> method on the index to update the data for that item.</p>
+    {% highlight js %}$('#myIndex').index('update', itemElement, newData);{% endhighlight %}
   </div>
 
   <div class="bs-example">
@@ -138,7 +138,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
           <th></th>
         </tr>
       </thead>
-      <tbody data-control="index" id="myIndexUpdate"
+      <tbody data-control="list" id="myListUpdate"
              data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
              data-template="
              <tr>
@@ -148,7 +148,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
                  <button class='btn btn-default'
                    data-toggle='form'
                    data-target='#myFormUpdate'
-                   data-source='adcom.index.item'>Populate Form</button>
+                   data-source='adcom.list.item'>Populate Form</button>
                </td>
              </tr>
         "></tbody>
@@ -171,7 +171,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
     <script>
       $(document).ready(function() {
         $('#myFormUpdate').on('submitted.adcom.form', function(e) {
-          $(e.sourceElement).trigger($.Event('update.adcom.index', { item: $.extend({}, e.sourceData, e.object) }));
+          $('#myListUpdate').list('update', e.sourceElement, $.extend({}, e.sourceData, e.object));
         });
       });
     </script>
@@ -181,7 +181,7 @@ $('#myForm').on('submitted.adcom.form', function(e) {
 <script>
   $(document).ready(function() {
     $('#myFormUpdate').on('submitted.adcom.form', function(e) {
-      $(e.sourceElement).trigger($.Event('update.adcom.index', { item: $.extend({}, e.sourceData, e.object) }));
+      $('#myListUpdate').list('update', e.sourceElement, $.extend({}, e.sourceData, e.object));
     });
   });
 </script>
@@ -294,23 +294,23 @@ $('#myForm').on('submitted.adcom.form', function(e) { ... });
       </thead>
       <tbody>
        <tr>
-         <td>show.adcom.index</td>
+         <td>show.adcom.form</td>
          <td>This event is fired immediately when the <code>show</code> instance method has been called. The serialized data to be displayed is available as the <code>serialized</code> property of the event.</td>
        </tr>
        <tr>
-         <td>shown.adcom.index</td>
+         <td>shown.adcom.form</td>
          <td>This event is fired when the serialized data has been inserted into the form. The data is available as the <code>serialized</code> property of the event.</td>
        </tr>
        <tr>
-         <td>validate.adcom.index</td>
+         <td>validate.adcom.form</td>
          <td>This event is fired immediately when the <code>validate</code> instance method has been called.</td>
        </tr>
        <tr>
-         <td>validated.adcom.index</td>
+         <td>validated.adcom.form</td>
          <td>This event is fired when the form validation has completed. If any errors were detected, they will have been displayed to the user by this point. The validity of the form is available as the <code>isValid</code> property of the event.</td>
        </tr>
        <tr>
-         <td>submitted.adcom.index</td>
+         <td>submitted.adcom.form</td>
          <td>This data is fired when the form has been submitted. <strong><code>data-control="form"</code> must be present on the form element in order for Form.js to override the default submit handling of the form and fire this event instead.</strong> The form data is available in two ways: serialized into an object as the <code>object</code> property of the event, and as a raw array of input fields as <code>array</code>.</td>
        </tr>
       </tbody>

@@ -1,0 +1,297 @@
+<div class="bs-docs-section">
+  <h1 id="list" class="page-header">List</h1>
+
+  <p class="lead">Render a collection of items into a clear, compact list that supports common requirements like active states and metadata. All of these style sets work with the List.js plugin.</p>
+
+  <p>The main classes you need to apply are <code>list</code> to the container element, and <code>list-item</code> to each item in the collection. By itself, Adcom some very light adjustments to padding and margin to ready your list for a stacked list of items that can contain one or several rows of text.</p>
+
+  <h4 id="list-primary">Primary</h4>
+  <p>This list is suited well for a main index page of objects: when you want more control than a table, more content than a title, and want to associate multiple actions with an item. Display metadata about the item within <code>list-item-meta</code>. Use the <code>list-bordered</code> class to add borders between the items.</p>
+
+  <div class="bs-example">
+    <div class="list list-bordered">
+      <div class="list-item">
+        <h4><a href="#">First Item</a></h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
+
+        <div class="list-item-meta">
+          <span>3 pages.</span>
+          <span>Source: <strong>The New York Times</strong>.</span>
+          <span>Created: <strong>Jul 8, 2014</strong>.</span>
+          <span class="label label-primary">Special</span>
+        </div>
+      </div>
+      <div class="list-item">
+        <h4><a href="#">Second Item</a></h4>
+        <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
+
+        <div class="list-item-meta">
+          <span>3 pages.</span>
+          <span>Source: <strong>The New York Times</strong>.</span>
+          <span>Created: <strong>Jul 8, 2014</strong>.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+{% highlight html %}
+<div class="list list-bordered">
+  <div class="list-item">
+    <h4><a href="#">First Item</a></h4>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque malesuada dapibus lacus, quis placerat ligula blandit at.</p>
+
+    <div class="list-item-meta">
+      <span>3 pages.</span>
+      <span>Source: <strong>The New York Times</strong>.</span>
+      <span>Created: <strong>Jul 8, 2014</strong>.</span>
+      <span class="label label-primary">Special</span>
+    </div>
+  </div>
+  <div class="list-item">
+    <h4><a href="#">Second Item</a></h4>
+    <p>Nulla ut suscipit ex, ac tempor lorem. Phasellus eleifend viverra ex, et sollicitudin mauris vehicula et.</p>
+
+    <div class="list-item-meta">
+      <span>3 pages.</span>
+      <span>Source: <strong>The New York Times</strong>.</span>
+      <span>Created: <strong>Jul 8, 2014</strong>.</span>
+    </div>
+  </div>
+</div>
+{% endhighlight %}
+
+  <h4>Contextual classes</h4>
+  <p>Use contextual classes along with the <code>table-state</code> class on the list to add partial highlighting to select items in your list.</p>
+
+  <div class="bs-example">
+    <div class="list list-bordered list-state">
+      <div class="list-item">
+        <h4>No class</h4>
+      </div>
+      <div class="list-item default">
+        <h4>Default</h4>
+      </div>
+      <div class="list-item active">
+        <h4>Active</h4>
+      </div>
+      <div class="list-item success">
+        <h4>Success</h4>
+      </div>
+      <div class="list-item info">
+        <h4>Info</h4>
+      </div>
+      <div class="list-item warning">
+        <h4>Warning</h4>
+      </div>
+      <div class="list-item danger">
+        <h4>Danger</h4>
+      </div>
+    </div>
+  </div>
+{% highlight html %}
+<div class="list table-bordered list-state">
+  <div class="list-item">...</div>
+  <div class="list-item default">...</div>
+  <div class="list-item active">...</div>
+  <div class="list-item success">...</div>
+  <div class="list-item info">...</div>
+  <div class="list-item warning">...</div>
+  <div class="list-item danger">...</div>
+</div>
+{% endhighlight %}
+
+  <h4>Compact version</h4>
+  <p>A more compact version of the list is available by applying the <code>.list-compact</code> class to the container element.</p>
+  <p>Left padding is applied to all items that have an explicit state defined.</p>
+  <div class="bs-example">
+    <div class="list list-bordered list-compact list-state">
+      <div class="list-item">
+        <h5>No class</h5>
+      </div>
+      <div class="list-item default">
+        <h5>Default</h5>
+      </div>
+      <div class="list-item active">
+        <h5>Active</h5>
+      </div>
+      <div class="list-item success">
+        <h5>Success</h5>
+      </div>
+      <div class="list-item info">
+        <h5>Info</h5>
+      </div>
+      <div class="list-item warning">
+        <h5>Warning</h5>
+      </div>
+      <div class="list-item danger">
+        <h5>Danger</h5>
+      </div>
+    </div>
+  </div>
+{% highlight html %}
+<div class="list list-bordered list-compact list-state">
+  <div class="list-item">...</div>
+  <div class="list-item default">...</div>
+  <div class="list-item active">...</div>
+  <div class="list-item success">...</div>
+  <div class="list-item info">...</div>
+  <div class="list-item warning">...</div>
+  <div class="list-item danger">...</div>
+</div>
+{% endhighlight %}
+
+  <h4>Hover state</h4>
+  <p>Add a hover state to your list items by adding the <code>list-hover</code> class to your container element. This is useful for treating the entire item as a selectable element. It's up to you to use an <code>&lt;a&gt;</code> tag for the item or specify the cursor hover state another way.</p>
+  <p>Left padding is added to all items.</p>
+
+  <div class="bs-example">
+    <div class="row">
+      <div class="list list-compact list-hover col-sm-3">
+        <h6><code></code></h6>
+        <div class="list-item">
+          <h5>No class</h5>
+        </div>
+        <div class="list-item default">
+          <h5>Default</h5>
+        </div>
+        <div class="list-item active">
+          <h5>Active</h5>
+        </div>
+        <div class="list-item success">
+          <h5>Success</h5>
+        </div>
+        <div class="list-item info">
+          <h5>Info</h5>
+        </div>
+        <div class="list-item warning">
+          <h5>Warning</h5>
+        </div>
+        <div class="list-item danger">
+          <h5>Danger</h5>
+        </div>
+      </div>
+      <div class="list list-compact list-state list-hover col-sm-3">
+        <h6><code>list-state</code></h6>
+        <div class="list-item">
+          <h5>No class</h5>
+        </div>
+        <div class="list-item default">
+          <h5>Default</h5>
+        </div>
+        <div class="list-item active">
+          <h5>Active</h5>
+        </div>
+        <div class="list-item success">
+          <h5>Success</h5>
+        </div>
+        <div class="list-item info">
+          <h5>Info</h5>
+        </div>
+        <div class="list-item warning">
+          <h5>Warning</h5>
+        </div>
+        <div class="list-item danger">
+          <h5>Danger</h5>
+        </div>
+      </div>
+      <div class="list list-compact list-state-bg list-hover col-sm-3">
+        <h6><code>list-state-bg</code></h6>
+        <div class="list-item">
+          <h5>No class</h5>
+        </div>
+        <div class="list-item default">
+          <h5>Default</h5>
+        </div>
+        <div class="list-item active">
+          <h5>Active</h5>
+        </div>
+        <div class="list-item success">
+          <h5>Success</h5>
+        </div>
+        <div class="list-item info">
+          <h5>Info</h5>
+        </div>
+        <div class="list-item warning">
+          <h5>Warning</h5>
+        </div>
+        <div class="list-item danger">
+          <h5>Danger</h5>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <h6><code>list-state + &lt;table&gt;</code></h6>
+        <table class="list list-hover list-state" style="width: 100%;">
+          <tr class="list-item">
+            <td>No class</td>
+          </tr>
+          <tr class="list-item default">
+            <td>Default</td>
+          </tr>
+          <tr class="list-item active">
+            <td>Active</td>
+          </tr>
+          <tr class="list-item success">
+            <td>Success</td>
+          </tr>
+          <tr class="list-item info">
+            <td>Info</td>
+          </tr>
+          <tr class="list-item warning">
+            <td>Warning</td>
+          </tr>
+          <tr class="list-item danger">
+            <td>Danger</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+{% highlight html %}
+<div class="list list-bordered list-compact list-hover">
+  <div class="list-item">...</div>
+  <div class="list-item default">...</div>
+  <div class="list-item active">...</div>
+  <div class="list-item success">...</div>
+  <div class="list-item info">...</div>
+  <div class="list-item warning">...</div>
+  <div class="list-item danger">...</div>
+</div>
+
+<div class="list list-bordered list-compact list-hover list-state">
+  <div class="list-item">...</div>
+  <div class="list-item default">...</div>
+  <div class="list-item active">...</div>
+  <div class="list-item success">...</div>
+  <div class="list-item info">...</div>
+  <div class="list-item warning">...</div>
+  <div class="list-item danger">...</div>
+</div>
+{% endhighlight %}
+
+  <h2 id="list-toggle">Toggle</h2>
+  <p>A set of lightweight styles to show a single row of text that represents items to be toggled on and off.</p>
+
+  <div class="bs-example" id="list-toggle-example">
+    <div class="list list-toggle">
+      <a href="#" class="list-item active"><span>First Item</span></a>
+      <a href="#" class="list-item"><span>Second Item</span></a>
+      <a href="#" class="list-item active"><span>Third Item</span></a>
+    </div>
+  </div>
+  <script>
+    $('#list-toggle-example a').on('click', function(e) { $(this).toggleClass('active'); });
+  </script>
+{% highlight html %}
+<div class="list list-toggle">
+  <a href="#" class="list-item active"><span>First Item</span></a>
+  <a href="#" class="list-item"><span>Second Item</span></a>
+  <a href="#" class="list-item active"><span>Third Item</span></a>
+</div>
+<script>
+  $('#list-toggle-example a').on('click', function(e) {
+    $(this).toggleClass('active');
+  });
+</script>
+{% endhighlight %}
+
+</div>
