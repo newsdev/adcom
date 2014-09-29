@@ -465,12 +465,16 @@ $('#myList').list({templateEngine: function(t) {
   <h3>Methods</h3>
 
   <h4>.list(options)</h4>
-  <p>Activates your content as a list. Accepts an optional options <code>object</code>.</p>
+  <p>Activates your content as a list. Accepts an optional options <code>object</code>. You may re-initialize the list by calling this method again with an Object, and the new options will be merged into the existing options.</p>
 {% highlight js %}
 $('#myList').list({
   pagination: 'off'
 })
 {% endhighlight %}
+
+  <h4>.list('destroy')</h4>
+  <p>Removes the list and all associated data. Call this before re-instantiating if you wish to start fresh.</p>
+  {% highlight js %}$('#myList').list('destroy'){% endhighlight %}
 
   <h4>.list('show')</h4>
   <p>Calculates the list of visible items and renders them into it's container element.</p>
@@ -503,17 +507,23 @@ $('$myList').list('deselect', $('.deselectedItem')){% endhighlight %}
   {% highlight js %}$('#myList').list('toggle', 2)
 $('$myList').list('toggle', $('.item')){% endhighlight %}
 
-  <h4>.list('updateItemAtIndex', idx, item)</h4>
-  <p>Replaces the item at index <code>idx</code> with the passed <code>item</code>, and rerenders that element in the container element if it's visible.</p>
-  {% highlight js %}$('#myList').list('updateItemAtIndex', 0, {"id": 1}){% endhighlight %}
+  <h4>.list('add', Object, options)</h4>
+  <p>Adds the passed Object as an item to the list. If <code>options</code> includes an <code>{index: Integer}</code> property, the item will be inserted at that index in the list.</p>
+  {% highlight js %}$('#myList').list('add', {"id": 1}){% endhighlight %}
 
-  <h4>.list('deleteItemAtIndex', idx)</h4>
-  <p>Deletes the item at index <code>idx</code>.</p>
-  {% highlight js %}$('#myList').list('deleteItemAtIndex', 0){% endhighlight %}
+  <h4>.list('update', idx || element, Object)</h4>
+  <p>Replaces the item at index <code>idx</code> or represented by the <code>element</code> with the passed Object, and rerenders that element in the container element.</p>
+{% highlight js %}
+$('#myList').list('update', $('#specialListItem'), {"id": 1})
+$('#myList').list('update', 0, {"id": 1})
+{% endhighlight %}
 
-  <h4>.list('updateItems', items)</h4>
-  <p>Replaces the lists's items with those passed in. The internal states (selected or unselected) are reset as well.</p>
-  {% highlight js %}$('#myList').list('updateItems', 0, {"id": 1}){% endhighlight %}
+  <h4>.list('delete', idx || element)</h4>
+  <p>Deletes the item at index <code>idx</code> or represented by the <code>element</code>.</p>
+{% highlight js %}
+$('#myList').list('delete', $('#specialListItem'), {"id": 1})
+$('#myList').list('delete', 0, {"id": 1})
+{% endhighlight %}
 
 
   <h3>Events</h3>
