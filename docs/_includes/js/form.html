@@ -171,7 +171,7 @@ $('#myForm').on('submitted.ac.form', function(e) {
     <script>
       $(document).ready(function() {
         $('#myFormUpdate').on('submitted.ac.form', function(e) {
-          $('#myListUpdate').list('update', e.sourceElement, $.extend({}, e.sourceData, e.object));
+          $('#myListUpdate').list('update', e.sourceElement, e.object);
         });
       });
     </script>
@@ -181,7 +181,7 @@ $('#myForm').on('submitted.ac.form', function(e) {
 <script>
   $(document).ready(function() {
     $('#myFormUpdate').on('submitted.ac.form', function(e) {
-      $('#myListUpdate').list('update', e.sourceElement, $.extend({}, e.sourceData, e.object));
+      $('#myListUpdate').list('update', e.sourceElement, e.object);
     });
   });
 </script>
