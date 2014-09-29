@@ -97,7 +97,7 @@
     if (typeof el === 'number') {
       var item   = this.$items[el]
       var idx    = el
-      var target = this.rendered[idx]
+      var target = $(this.rendered[idx])
     } else {
       var target = $(el)
       var item   = target.data('ac.list.item')
@@ -107,7 +107,7 @@
     this.$element.trigger($.Event('toggle.ac.list', { item: item, target: target, index: idx, state: state }))
 
     this.states[idx] = state
-    if (state) { target.addClass(this.options.selectedClass) } else { target.removeClass(this.options.selectedClass) }
+    if (target) target[state ? 'addClass' : 'removeClass'](this.options.selectedClass)
 
     this.$element.trigger($.Event('toggled.ac.list', { item: item, target: target, index: idx, state: state }))
   }
