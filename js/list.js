@@ -86,8 +86,8 @@
     var $this = this
     selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) {
-      var idx = (typeof el == 'number') ? el : $(el).data('adcom.list.idx')
-      $this.changeState(el, $this.states[idx] ? false : true)
+      var index = (typeof el == 'number') ? el : $(el).data('adcom.list.index')
+      $this.changeState(el, $this.states[index] ? false : true)
     })
   }
 
@@ -101,7 +101,7 @@
     } else {
       var target = $(el)
       var item   = target.data('adcom.list.item')
-      var idx    = target.data('adcom.list.idx')
+      var idx    = target.data('adcom.list.index')
     }
 
     this.$element.trigger($.Event('toggle.adcom.list', { item: item, target: target, index: idx, state: state }))
@@ -328,7 +328,7 @@
     })
 
     el.data('adcom.list.item', $item)
-    el.data('adcom.list.idx', $idx)
+    el.data('adcom.list.index', $idx)
     el.on('update.adcom.list', function (e) {
       $this.update(el, e.item)
     })
@@ -342,34 +342,34 @@
 
   List.prototype.add = function (data, opts) {
     opts = opts || {}
-    opts.idx = opts.idx == undefined ? this.$items.length - 1 : opts.idx
+    opts.index = opts.index == undefined ? this.$items.length - 1 : opts.index
 
-    this.$items.splice(opts.idx, 0, data)
-    this.states.splice(opts.idx, 0, undefined)
-    this.rendered.splice(opts.idx, 0, undefined)
+    this.$items.splice(opts.index, 0, data)
+    this.states.splice(opts.index, 0, undefined)
+    this.rendered.splice(opts.index, 0, undefined)
 
     this.show()
   }
 
   List.prototype.update = function (item, data, opts) {
-    var idx = typeof item == 'number' ? item : $(item).data('adcom.list.idx')
-    this.$items[idx] = data
+    var index = typeof item == 'number' ? item : $(item).data('adcom.list.index')
+    this.$items[index] = data
 
-    if (this.rendered[idx]) {
-      var original    = $(this.rendered[idx])
+    if (this.rendered[index]) {
+      var original    = $(this.rendered[index])
       var replacement = this.renderItem(data)
       original.replaceWith(replacement)
-      this.rendered[idx] = replacement[0]
+      this.rendered[index] = replacement[0]
     }
 
     this.show()
   }
 
   List.prototype.delete = function (item, opts) {
-    var idx = typeof item == 'number' ? item : $(item).data('adcom.list.idx')
-    this.$items.splice(idx, 1)
-    this.states.splice(idx, 1)
-    this.rendered.splice(idx, 1)
+    var index = typeof item == 'number' ? item : $(item).data('adcom.list.index')
+    this.$items.splice(index, 1)
+    this.states.splice(index, 1)
+    this.rendered.splice(index, 1)
 
     this.show()
   }
