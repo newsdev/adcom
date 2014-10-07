@@ -342,7 +342,7 @@
 
   List.prototype.getItemIndex = function (item) {
     if (typeof item == 'number') return item
-    if (item instanceof HTMLElement) return $(item).data('ac.list.index')
+    if ($(item)[0] instanceof HTMLElement) return $(item).data('ac.list.index')
     return this.$items.indexOf(item)
   }
 
