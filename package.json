@@ -15,6 +15,5 @@
     "grunt-csscomb": "~3.0.0",
     "load-grunt-tasks": "~0.6.0"
   },
-  "less": "less/bootstrap.less",
   "private": true
 }
