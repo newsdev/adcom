@@ -291,33 +291,7 @@
 }
 .act-default.act-fill {
   color: #fff;
-  background: #b5b5b5;
-}
-.dropdown.open .act-default.dropdown-toggle:hover,
-.act-default:not(.disabled):hover,
-.dropdown.open .act-default.dropdown-toggle:active,
-.act-default:not(.disabled):active {
-  color: #aaa;
-  border-color: #aaa;
-}
-.dropdown.open .act-default.dropdown-toggle:hover.act-fill,
-.act-default:not(.disabled):hover.act-fill,
-.dropdown.open .act-default.dropdown-toggle:active.act-fill,
-.act-default:not(.disabled):active.act-fill,
-.dropdown.open .act-default.dropdown-toggle:hover.act-bordered,
-.act-default:not(.disabled):hover.act-bordered,
-.dropdown.open .act-default.dropdown-toggle:active.act-bordered,
-.act-default:not(.disabled):active.act-bordered {
-  color: #fff;
-  background: #919191;
-  border-color: #848484;
-}
-.dropdown.open .act-default.dropdown-toggle {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-
-       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  background: #9d9d9d;
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-default {
   border-color: #e3e3e3;
@@ -327,7 +301,49 @@
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-default.act-fill {
   background: #9d9d9d;
-  border-color: #919191;
+  border-color: #848484;
+}
+.act-scope:hover .dropdown.open .act-default.dropdown-toggle:not(.disabled),
+* .dropdown.open .act-default.dropdown-toggle:not(.disabled),
+.act-scope:hover .act-default:hover:not(.disabled),
+* .act-default:hover:not(.disabled),
+.act-scope:hover .act-default.active:not(.disabled),
+* .act-default.active:not(.disabled),
+.act-scope:hover .act-default:active:not(.disabled),
+* .act-default:active:not(.disabled) {
+  color: #aaa;
+  border-color: #aaa;
+}
+.act-scope:hover .dropdown.open .act-default.dropdown-toggle:not(.disabled).act-fill,
+* .dropdown.open .act-default.dropdown-toggle:not(.disabled).act-fill,
+.act-scope:hover .act-default:hover:not(.disabled).act-fill,
+* .act-default:hover:not(.disabled).act-fill,
+.act-scope:hover .act-default.active:not(.disabled).act-fill,
+* .act-default.active:not(.disabled).act-fill,
+.act-scope:hover .act-default:active:not(.disabled).act-fill,
+* .act-default:active:not(.disabled).act-fill {
+  color: #fff;
+  background: #919191;
+  border-color: #9d9d9d;
+}
+.act-scope:hover .dropdown.open .act-default.dropdown-toggle:not(.disabled).act-bordered,
+* .dropdown.open .act-default.dropdown-toggle:not(.disabled).act-bordered,
+.act-scope:hover .act-default:hover:not(.disabled).act-bordered,
+* .act-default:hover:not(.disabled).act-bordered,
+.act-scope:hover .act-default.active:not(.disabled).act-bordered,
+* .act-default.active:not(.disabled).act-bordered,
+.act-scope:hover .act-default:active:not(.disabled).act-bordered,
+* .act-default:active:not(.disabled).act-bordered {
+  color: #fff;
+  background: #777;
+  border-color: #848484;
+}
+.dropdown.open .act-default.dropdown-toggle {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+
+       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 .act-primary {
   color: #357ebd;
@@ -337,33 +353,7 @@
 }
 .act-primary.act-fill {
   color: #fff;
-  background: #5b9ad1;
-}
-.dropdown.open .act-primary.dropdown-toggle:hover,
-.act-primary:not(.disabled):hover,
-.dropdown.open .act-primary.dropdown-toggle:active,
-.act-primary:not(.disabled):active {
-  color: #357ebd;
-  border-color: #357ebd;
-}
-.dropdown.open .act-primary.dropdown-toggle:hover.act-fill,
-.act-primary:not(.disabled):hover.act-fill,
-.dropdown.open .act-primary.dropdown-toggle:active.act-fill,
-.act-primary:not(.disabled):active.act-fill,
-.dropdown.open .act-primary.dropdown-toggle:hover.act-bordered,
-.act-primary:not(.disabled):hover.act-bordered,
-.dropdown.open .act-primary.dropdown-toggle:active.act-bordered,
-.act-primary:not(.disabled):active.act-bordered {
-  color: #fff;
-  background: #3071a9;
-  border-color: #245682;
-}
-.dropdown.open .act-primary.dropdown-toggle {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-
-       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  background: #357ebd;
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-primary {
   border-color: #bcd4e9;
@@ -373,7 +363,49 @@
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-primary.act-fill {
   background: #357ebd;
-  border-color: #2a6496;
+  border-color: #245682;
+}
+.act-scope:hover .dropdown.open .act-primary.dropdown-toggle:not(.disabled),
+* .dropdown.open .act-primary.dropdown-toggle:not(.disabled),
+.act-scope:hover .act-primary:hover:not(.disabled),
+* .act-primary:hover:not(.disabled),
+.act-scope:hover .act-primary.active:not(.disabled),
+* .act-primary.active:not(.disabled),
+.act-scope:hover .act-primary:active:not(.disabled),
+* .act-primary:active:not(.disabled) {
+  color: #357ebd;
+  border-color: #357ebd;
+}
+.act-scope:hover .dropdown.open .act-primary.dropdown-toggle:not(.disabled).act-fill,
+* .dropdown.open .act-primary.dropdown-toggle:not(.disabled).act-fill,
+.act-scope:hover .act-primary:hover:not(.disabled).act-fill,
+* .act-primary:hover:not(.disabled).act-fill,
+.act-scope:hover .act-primary.active:not(.disabled).act-fill,
+* .act-primary.active:not(.disabled).act-fill,
+.act-scope:hover .act-primary:active:not(.disabled).act-fill,
+* .act-primary:active:not(.disabled).act-fill {
+  color: #fff;
+  background: #3071a9;
+  border-color: #3071a9;
+}
+.act-scope:hover .dropdown.open .act-primary.dropdown-toggle:not(.disabled).act-bordered,
+* .dropdown.open .act-primary.dropdown-toggle:not(.disabled).act-bordered,
+.act-scope:hover .act-primary:hover:not(.disabled).act-bordered,
+* .act-primary:hover:not(.disabled).act-bordered,
+.act-scope:hover .act-primary.active:not(.disabled).act-bordered,
+* .act-primary.active:not(.disabled).act-bordered,
+.act-scope:hover .act-primary:active:not(.disabled).act-bordered,
+* .act-primary:active:not(.disabled).act-bordered {
+  color: #fff;
+  background: #245682;
+  border-color: #245682;
+}
+.dropdown.open .act-primary.dropdown-toggle {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+
+       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 .act-info {
   color: #46b8da;
@@ -383,33 +415,7 @@
 }
 .act-info.act-fill {
   color: #fff;
-  background: #71c8e2;
-}
-.dropdown.open .act-info.dropdown-toggle:hover,
-.act-info:not(.disabled):hover,
-.dropdown.open .act-info.dropdown-toggle:active,
-.act-info:not(.disabled):active {
-  color: #46b8da;
-  border-color: #46b8da;
-}
-.dropdown.open .act-info.dropdown-toggle:hover.act-fill,
-.act-info:not(.disabled):hover.act-fill,
-.dropdown.open .act-info.dropdown-toggle:active.act-fill,
-.act-info:not(.disabled):active.act-fill,
-.dropdown.open .act-info.dropdown-toggle:hover.act-bordered,
-.act-info:not(.disabled):hover.act-bordered,
-.dropdown.open .act-info.dropdown-toggle:active.act-bordered,
-.act-info:not(.disabled):active.act-bordered {
-  color: #fff;
-  background: #31b0d5;
-  border-color: #2390b0;
-}
-.dropdown.open .act-info.dropdown-toggle {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-
-       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  background: #46b8da;
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-info {
   border-color: #c1e7f3;
@@ -419,7 +425,49 @@
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-info.act-fill {
   background: #46b8da;
-  border-color: #28a1c5;
+  border-color: #2390b0;
+}
+.act-scope:hover .dropdown.open .act-info.dropdown-toggle:not(.disabled),
+* .dropdown.open .act-info.dropdown-toggle:not(.disabled),
+.act-scope:hover .act-info:hover:not(.disabled),
+* .act-info:hover:not(.disabled),
+.act-scope:hover .act-info.active:not(.disabled),
+* .act-info.active:not(.disabled),
+.act-scope:hover .act-info:active:not(.disabled),
+* .act-info:active:not(.disabled) {
+  color: #46b8da;
+  border-color: #46b8da;
+}
+.act-scope:hover .dropdown.open .act-info.dropdown-toggle:not(.disabled).act-fill,
+* .dropdown.open .act-info.dropdown-toggle:not(.disabled).act-fill,
+.act-scope:hover .act-info:hover:not(.disabled).act-fill,
+* .act-info:hover:not(.disabled).act-fill,
+.act-scope:hover .act-info.active:not(.disabled).act-fill,
+* .act-info.active:not(.disabled).act-fill,
+.act-scope:hover .act-info:active:not(.disabled).act-fill,
+* .act-info:active:not(.disabled).act-fill {
+  color: #fff;
+  background: #31b0d5;
+  border-color: #31b0d5;
+}
+.act-scope:hover .dropdown.open .act-info.dropdown-toggle:not(.disabled).act-bordered,
+* .dropdown.open .act-info.dropdown-toggle:not(.disabled).act-bordered,
+.act-scope:hover .act-info:hover:not(.disabled).act-bordered,
+* .act-info:hover:not(.disabled).act-bordered,
+.act-scope:hover .act-info.active:not(.disabled).act-bordered,
+* .act-info.active:not(.disabled).act-bordered,
+.act-scope:hover .act-info:active:not(.disabled).act-bordered,
+* .act-info:active:not(.disabled).act-bordered {
+  color: #fff;
+  background: #2390b0;
+  border-color: #2390b0;
+}
+.dropdown.open .act-info.dropdown-toggle {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+
+       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 .act-danger {
   color: #d43f3a;
@@ -429,33 +477,7 @@
 }
 .act-danger.act-fill {
   color: #fff;
-  background: #de6a66;
-}
-.dropdown.open .act-danger.dropdown-toggle:hover,
-.act-danger:not(.disabled):hover,
-.dropdown.open .act-danger.dropdown-toggle:active,
-.act-danger:not(.disabled):active {
-  color: #d43f3a;
-  border-color: #d43f3a;
-}
-.dropdown.open .act-danger.dropdown-toggle:hover.act-fill,
-.act-danger:not(.disabled):hover.act-fill,
-.dropdown.open .act-danger.dropdown-toggle:active.act-fill,
-.act-danger:not(.disabled):active.act-fill,
-.dropdown.open .act-danger.dropdown-toggle:hover.act-bordered,
-.act-danger:not(.disabled):hover.act-bordered,
-.dropdown.open .act-danger.dropdown-toggle:active.act-bordered,
-.act-danger:not(.disabled):active.act-bordered {
-  color: #fff;
-  background: #c9302c;
-  border-color: #a02622;
-}
-.dropdown.open .act-danger.dropdown-toggle {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-
-       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  background: #d43f3a;
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-danger {
   border-color: #f1bfbd;
@@ -465,7 +487,49 @@
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-danger.act-fill {
   background: #d43f3a;
-  border-color: #b52b27;
+  border-color: #a02622;
+}
+.act-scope:hover .dropdown.open .act-danger.dropdown-toggle:not(.disabled),
+* .dropdown.open .act-danger.dropdown-toggle:not(.disabled),
+.act-scope:hover .act-danger:hover:not(.disabled),
+* .act-danger:hover:not(.disabled),
+.act-scope:hover .act-danger.active:not(.disabled),
+* .act-danger.active:not(.disabled),
+.act-scope:hover .act-danger:active:not(.disabled),
+* .act-danger:active:not(.disabled) {
+  color: #d43f3a;
+  border-color: #d43f3a;
+}
+.act-scope:hover .dropdown.open .act-danger.dropdown-toggle:not(.disabled).act-fill,
+* .dropdown.open .act-danger.dropdown-toggle:not(.disabled).act-fill,
+.act-scope:hover .act-danger:hover:not(.disabled).act-fill,
+* .act-danger:hover:not(.disabled).act-fill,
+.act-scope:hover .act-danger.active:not(.disabled).act-fill,
+* .act-danger.active:not(.disabled).act-fill,
+.act-scope:hover .act-danger:active:not(.disabled).act-fill,
+* .act-danger:active:not(.disabled).act-fill {
+  color: #fff;
+  background: #c9302c;
+  border-color: #c9302c;
+}
+.act-scope:hover .dropdown.open .act-danger.dropdown-toggle:not(.disabled).act-bordered,
+* .dropdown.open .act-danger.dropdown-toggle:not(.disabled).act-bordered,
+.act-scope:hover .act-danger:hover:not(.disabled).act-bordered,
+* .act-danger:hover:not(.disabled).act-bordered,
+.act-scope:hover .act-danger.active:not(.disabled).act-bordered,
+* .act-danger.active:not(.disabled).act-bordered,
+.act-scope:hover .act-danger:active:not(.disabled).act-bordered,
+* .act-danger:active:not(.disabled).act-bordered {
+  color: #fff;
+  background: #a02622;
+  border-color: #a02622;
+}
+.dropdown.open .act-danger.dropdown-toggle {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+
+       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 .act-warning {
   color: #eea236;
@@ -475,33 +539,7 @@
 }
 .act-warning.act-fill {
   color: #fff;
-  background: #f2b866;
-}
-.dropdown.open .act-warning.dropdown-toggle:hover,
-.act-warning:not(.disabled):hover,
-.dropdown.open .act-warning.dropdown-toggle:active,
-.act-warning:not(.disabled):active {
-  color: #eea236;
-  border-color: #eea236;
-}
-.dropdown.open .act-warning.dropdown-toggle:hover.act-fill,
-.act-warning:not(.disabled):hover.act-fill,
-.dropdown.open .act-warning.dropdown-toggle:active.act-fill,
-.act-warning:not(.disabled):active.act-fill,
-.dropdown.open .act-warning.dropdown-toggle:hover.act-bordered,
-.act-warning:not(.disabled):hover.act-bordered,
-.dropdown.open .act-warning.dropdown-toggle:active.act-bordered,
-.act-warning:not(.disabled):active.act-bordered {
-  color: #fff;
-  background: #ec971f;
-  border-color: #c77c11;
-}
-.dropdown.open .act-warning.dropdown-toggle {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-
-       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  background: #eea236;
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-warning {
   border-color: #f9e0bc;
@@ -511,7 +549,49 @@
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-warning.act-fill {
   background: #eea236;
-  border-color: #df8a13;
+  border-color: #c77c11;
+}
+.act-scope:hover .dropdown.open .act-warning.dropdown-toggle:not(.disabled),
+* .dropdown.open .act-warning.dropdown-toggle:not(.disabled),
+.act-scope:hover .act-warning:hover:not(.disabled),
+* .act-warning:hover:not(.disabled),
+.act-scope:hover .act-warning.active:not(.disabled),
+* .act-warning.active:not(.disabled),
+.act-scope:hover .act-warning:active:not(.disabled),
+* .act-warning:active:not(.disabled) {
+  color: #eea236;
+  border-color: #eea236;
+}
+.act-scope:hover .dropdown.open .act-warning.dropdown-toggle:not(.disabled).act-fill,
+* .dropdown.open .act-warning.dropdown-toggle:not(.disabled).act-fill,
+.act-scope:hover .act-warning:hover:not(.disabled).act-fill,
+* .act-warning:hover:not(.disabled).act-fill,
+.act-scope:hover .act-warning.active:not(.disabled).act-fill,
+* .act-warning.active:not(.disabled).act-fill,
+.act-scope:hover .act-warning:active:not(.disabled).act-fill,
+* .act-warning:active:not(.disabled).act-fill {
+  color: #fff;
+  background: #ec971f;
+  border-color: #ec971f;
+}
+.act-scope:hover .dropdown.open .act-warning.dropdown-toggle:not(.disabled).act-bordered,
+* .dropdown.open .act-warning.dropdown-toggle:not(.disabled).act-bordered,
+.act-scope:hover .act-warning:hover:not(.disabled).act-bordered,
+* .act-warning:hover:not(.disabled).act-bordered,
+.act-scope:hover .act-warning.active:not(.disabled).act-bordered,
+* .act-warning.active:not(.disabled).act-bordered,
+.act-scope:hover .act-warning:active:not(.disabled).act-bordered,
+* .act-warning:active:not(.disabled).act-bordered {
+  color: #fff;
+  background: #c77c11;
+  border-color: #c77c11;
+}
+.dropdown.open .act-warning.dropdown-toggle {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+
+       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 .act-success {
   color: #4cae4c;
@@ -521,33 +601,7 @@
 }
 .act-success.act-fill {
   color: #fff;
-  background: #72c172;
-}
-.dropdown.open .act-success.dropdown-toggle:hover,
-.act-success:not(.disabled):hover,
-.dropdown.open .act-success.dropdown-toggle:active,
-.act-success:not(.disabled):active {
-  color: #4cae4c;
-  border-color: #4cae4c;
-}
-.dropdown.open .act-success.dropdown-toggle:hover.act-fill,
-.act-success:not(.disabled):hover.act-fill,
-.dropdown.open .act-success.dropdown-toggle:active.act-fill,
-.act-success:not(.disabled):active.act-fill,
-.dropdown.open .act-success.dropdown-toggle:hover.act-bordered,
-.act-success:not(.disabled):hover.act-bordered,
-.dropdown.open .act-success.dropdown-toggle:active.act-bordered,
-.act-success:not(.disabled):active.act-bordered {
-  color: #fff;
-  background: #449d44;
-  border-color: #357935;
-}
-.dropdown.open .act-success.dropdown-toggle {
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-
-       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  background: #4cae4c;
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-success {
   border-color: #c3e4c3;
@@ -557,7 +611,49 @@
 }
 .act-scope:hover .act:not(:hover):not(.disabled).act-success.act-fill {
   background: #4cae4c;
-  border-color: #3d8b3d;
+  border-color: #357935;
+}
+.act-scope:hover .dropdown.open .act-success.dropdown-toggle:not(.disabled),
+* .dropdown.open .act-success.dropdown-toggle:not(.disabled),
+.act-scope:hover .act-success:hover:not(.disabled),
+* .act-success:hover:not(.disabled),
+.act-scope:hover .act-success.active:not(.disabled),
+* .act-success.active:not(.disabled),
+.act-scope:hover .act-success:active:not(.disabled),
+* .act-success:active:not(.disabled) {
+  color: #4cae4c;
+  border-color: #4cae4c;
+}
+.act-scope:hover .dropdown.open .act-success.dropdown-toggle:not(.disabled).act-fill,
+* .dropdown.open .act-success.dropdown-toggle:not(.disabled).act-fill,
+.act-scope:hover .act-success:hover:not(.disabled).act-fill,
+* .act-success:hover:not(.disabled).act-fill,
+.act-scope:hover .act-success.active:not(.disabled).act-fill,
+* .act-success.active:not(.disabled).act-fill,
+.act-scope:hover .act-success:active:not(.disabled).act-fill,
+* .act-success:active:not(.disabled).act-fill {
+  color: #fff;
+  background: #449d44;
+  border-color: #449d44;
+}
+.act-scope:hover .dropdown.open .act-success.dropdown-toggle:not(.disabled).act-bordered,
+* .dropdown.open .act-success.dropdown-toggle:not(.disabled).act-bordered,
+.act-scope:hover .act-success:hover:not(.disabled).act-bordered,
+* .act-success:hover:not(.disabled).act-bordered,
+.act-scope:hover .act-success.active:not(.disabled).act-bordered,
+* .act-success.active:not(.disabled).act-bordered,
+.act-scope:hover .act-success:active:not(.disabled).act-bordered,
+* .act-success:active:not(.disabled).act-bordered {
+  color: #fff;
+  background: #357935;
+  border-color: #357935;
+}
+.dropdown.open .act-success.dropdown-toggle {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+
+       -o-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 .dropdown .act ~ ul.dropdown-menu > li > a {
   padding: 2px 20px;
