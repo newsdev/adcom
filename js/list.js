@@ -56,7 +56,7 @@
 
     var items = $this.getCurrentItems()
 
-    $($this.$element).empty()
+    $this.$element.empty()
     $this.rendered = []
 
     $.each(items, function (idx, item) {
@@ -340,6 +340,12 @@
 
   // Updates
 
+  List.prototype.getItemIndex = function (item) {
+    if (typeof item == 'number') return item
+    if (item instanceof HTMLElement) return $(item).data('ac.list.index')
+    return this.$items.indexOf(item)
+  }
+
   List.prototype.add = function (data, opts) {
     opts = opts || {}
     opts.index = opts.index == undefined ? this.$items.length - 1 : opts.index
@@ -352,7 +358,7 @@
   }
 
   List.prototype.update = function (item, data, opts) {
-    var index = typeof item == 'number' ? item : $(item).data('ac.list.index')
+    var index = this.getItemIndex(item)
     this.$items[index] = data
 
     if (this.rendered[index]) {
@@ -366,7 +372,7 @@
   }
 
   List.prototype.delete = function (item, opts) {
-    var index = typeof item == 'number' ? item : $(item).data('ac.list.index')
+    var index = this.getItemIndex(item)
     this.$items.splice(index, 1)
     this.states.splice(index, 1)
     this.rendered.splice(index, 1)
