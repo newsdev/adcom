@@ -34,7 +34,13 @@
     this.$element.trigger($.Event('shown.ac.form', { serialized: data }))
   }
 
-  Form.prototype.submit = function () {
+  Form.prototype.submit = function (opts) {
+    var $this = this
+    if (opts && opts.validate)
+      return this.$element.one('validated.ac.form', function(e) {
+        if (e.isValid) $this.submit({validate: false})
+      }).form('validate.ac.form')
+
     var attributes = this.serialize()
     $.extend(attributes, {
       relatedTarget: this.$element,
@@ -62,16 +68,33 @@
     return { object: data, array: array }
   }
 
+  // Encapsulates the default browser validate, any custom validation via the
+  // validate.ac.form event, and triggers a display of any invalidation
+  // messages if necessary.
   Form.prototype.validate = function () {
-    this.$element.trigger($.Event('validate.ac.form'))
+    var e = $.Event('validate.ac.form', this.serialize())
+    this.$element.trigger(e)
+    if (e.isDefaultPrevented()) return
+
+    this.$element.one('validated.ac.form', $.proxy(this.displayValidity, this))
+      .trigger($.Event('validated.ac.form', {isValid: this.$element[0].checkValidity()}))
+  }
+
+  // If the form is invalid according to the DOM's native validity checker,
+  // trigger the browser's default invalidation display.
+  // If overridden (via event) we should find a way to pass the invalid
+  // message hash to the event.
+  Form.prototype.displayValidity = function () {
+    var e = $.Event('displayValidity.ac.form')
+    this.$element.trigger(e)
+    if (e.isDefaultPrevented()) return
 
     if (!this.$element[0].checkValidity()) {
-      var existing_submit = this.$element[0].find('input[type="submit"]')
+      var existing_submit = this.$element.find('input[type="submit"]')
+      var new_submit      = null
       if (!existing_submit[0]) this.$element.append(new_submit = $('<input style="display: none;" type="submit">'))
       $(existing_submit[0] || new_submit[0]).trigger('click');
-      this.$element.trigger($.Event('validate.ac.form', {isValid: false}))
     }
-    this.$element.trigger($.Event('validate.ac.form', {isValid: true}))
   }
 
   Form.prototype.reset = function () {
@@ -148,9 +171,18 @@
     Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized})
   })
 
+  $(document).on('click', '[data-toggle="submit"]', function (e) {
+    var $this    = $(this).closest('[data-toggle="submit"]')
+    var $target  = $($this.data('target') || $this.closest('form'))
+    var validate = $target.data('validate') || true
+
+    Plugin.call($target, 'submit', {validate: validate})
+  })
+
   $(document).on('submit', 'form[data-control="form"]', function (e) {
     e.preventDefault()
-    $(e.target).form('submit')
+    var validate = $(e.target).data('validate') || true
+    Plugin.call($(e.target), 'submit', {validate: validate})
   })
 
   $(window).on('load', function () {
