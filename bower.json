@@ -1,8 +1,7 @@
 {
   "name": "adcom",
-  "version": "0.1.0",
   "authors": [
-    "michael.strickland@nytimes.com"
+    { "name": "Michael Strickland", "email": "michael.strickland@nytimes.com" }
   ],
   "description": "Front end framework for building iterative admin interfaces for the web.",
   "keywords": [
