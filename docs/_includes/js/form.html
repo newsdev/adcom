@@ -171,6 +171,7 @@ $('#myForm').on('submitted.ac.form', function(e) {
     <script>
       $(document).ready(function() {
         $('#myFormUpdate').on('submitted.ac.form', function(e) {
+          console.log('callback', e);
           $('#myListUpdate').list('update', e.sourceElement, e.object);
         });
       });
@@ -303,7 +304,7 @@ $('#myForm').on('submitted.ac.form', function(e) { ... });
        </tr>
        <tr>
          <td>validate.ac.form</td>
-         <td>This event is fired immediately when the <code>validate</code> instance method has been called.</td>
+         <td>This event is fired immediately when the <code>validate</code> instance method has been called. The current serialized values in the form are available through the <code>object</code> and <code>array</code> properties of the event.</td>
        </tr>
        <tr>
          <td>validated.ac.form</td>

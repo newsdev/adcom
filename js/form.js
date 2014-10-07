@@ -39,7 +39,7 @@
     if (opts && opts.validate)
       return this.$element.one('validated.ac.form', function(e) {
         if (e.isValid) $this.submit({validate: false})
-      }).form('validate.ac.form')
+      }).form('validate')
 
     var attributes = this.serialize()
     $.extend(attributes, {
