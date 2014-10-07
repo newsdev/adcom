@@ -88,7 +88,7 @@
 
   State.prototype.update = function (state, trigger) {
     this.$element.trigger($.Event('update.ac.state', { state: state, trigger: trigger }))
-    this.state = state
+    this.state = $.clone(state)
     this.$element.trigger($.Event('updated.ac.state', { state: state, trigger: trigger }))
   }
 
