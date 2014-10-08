@@ -262,10 +262,12 @@
 
   // Warning: see note at top re: data-toggle
   $(document).on(State.EVENTS, '[data-toggle="state"], [data-nav="state"]', function (e) {
-    var $this    = $(this)
+    var $this    = $(this).closest('[data-toggle="state"], [data-nav="state"]')
     var triggers = ($this.attr('data-trigger') || 'click').split(' ')
     var merge    = $this.attr('data-merge') == 'false' ? false : true
     var action   = $this.attr('data-action')
+
+    if ($this.is('a')) e.preventDefault()
 
     if (triggers.indexOf(e.type) == -1) return
 
