@@ -733,6 +733,9 @@
 }(jQuery);
 
 +function ($) {
+  // Warning: data-toggle may be replaced by data-nav to allow use
+  // along with other data-api actions, such as data-toggle="modal"
+
   'use strict';
 
   // STATE CLASS DEFINITION
@@ -840,6 +843,8 @@
         serialized += state[attr]
       }
       delete state[attr]
+    } else {
+      serialized = window.location.pathname
     }
 
     switch (this.options.format) {
@@ -883,12 +888,15 @@
 
   State.prototype.triggerState = function (e) {
     var setState = function (parents, state) {
+      if (!state) return
+
       var prefix = [].concat(['state'], parents).join('-')
       $.each(state, function (key, value) {
         if (typeof value === "object") {
           setState([].concat(parents, [key]), value)
         } else {
-          var matches = $('[data-toggle="state"][' + prefix + '-' + key + '="' + value + '"]')
+          // Warning: see note at top re: data-toggle
+          var matches = $('[data-toggle="state"][' + prefix + '-' + key + '="' + value + '"], [data-nav="state"][' + prefix + '-' + key + '="' + value + '"]')
           matches.each(function (idx, el) {
             $(el).trigger($(el).data('trigger') || 'click')
           })
@@ -986,7 +994,8 @@
   // STATE DATA-API
   // ==============
 
-  $(document).on(State.EVENTS, '[data-toggle="state"]', function (e) {
+  // Warning: see note at top re: data-toggle
+  $(document).on(State.EVENTS, '[data-toggle="state"], [data-nav="state"]', function (e) {
     var $this    = $(this)
     var triggers = ($this.attr('data-trigger') || 'click').split(' ')
     var merge    = $this.attr('data-merge') == 'false' ? false : true
