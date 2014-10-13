@@ -22,12 +22,14 @@
     this.$element.trigger($.Event('show.ac.form', { serialized: data }))
 
     var formData = {}
+    var disabled = this.$element.find(':disabled').removeAttr('disabled')
     this.$element.serializeArray().forEach(function (input) {
-      formData[input.name] = selectn(input.name, data)
+      var val = selectn(input.name, data)
+      if (val) formData[input.name] = val
     })
-
     this.$element[0].reset()
     this.$element.deserialize(formData)
+    disabled.attr('disabled', 'disabled')
 
     meta = meta || {}
     this.sourceElement = meta.sourceElement
@@ -160,11 +162,12 @@
 
   $(document).on('click', '[data-toggle="form"]', function (e) {
     var $this      = $(this).closest('[data-toggle="form"]')
-    var $target    = $($this.data('target'))
+    var $target    = $($($this.data('target'))[0])
     var $sourceKey = $this.data('source') || 'serialized'
 
     var source     = closestWithData($this, $sourceKey)
     var serialized = source.data($sourceKey)
+    serialized === 'string' ? JSON.parse(serialized) : serialized
 
     $target.form({show: false})
 
