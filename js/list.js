@@ -15,7 +15,7 @@
     this.states   = this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
     this.rendered = []
 
-    this.sort        = null
+    this.sort        = this.options.sort ? this.getSort.apply(this, $.map([this.options.sort], function (n) { return n })) : null
     this.filters     = {}
     this.currentPage = parseInt(this.options.currentPage || 1)
     this.pageSize    = parseInt(this.options.pageSize || 1)
