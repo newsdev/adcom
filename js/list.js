@@ -12,7 +12,7 @@
     this.$items   = typeof this.options.items === 'string' ? JSON.parse(this.options.items) : this.options.items
     this.template = this.parseTemplate(this.options.template)
 
-    this.states   = this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
+    this.states   = typeof this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
     this.rendered = []
 
     this.sort        = this.options.sort ? this.getSort.apply(this, $.map([this.options.sort], function (n) { return n })) : null
