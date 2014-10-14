@@ -214,20 +214,7 @@
    * Copyright (c) 2013 Wil Moore III
    * Licensed under the MIT license.
    * https://github.com/wilmoore/selectn
+   * Adapted slightly.
    */
-  function selectn(query) {
-    var parts = query.replace(/\[([-_\w]+)\]/g, '.$1').split('.')
-
-    function accessor(object) {
-      var ref = object || (1, eval)('this')
-      var len = parts.length
-      var idx = 0
-
-      for (; idx < len; idx += 1) {
-        if (ref) ref = ref[parts[idx]]
-      }
-      return ref
-    }
-    return arguments.length > 1 ? accessor(arguments[1]) : accessor
-  }
+  function selectn(a){function c(a){for(var c=a||(1,eval)("this"),d=b.length,e=0;d>e;e+=1)c&&(c=c[b[e]]);return c}var b=a.replace(/\[([-_\w]+)\]/g,".$1").split(".");return arguments.length>1?c(arguments[1]):c}
 }(jQuery);

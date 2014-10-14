@@ -202,8 +202,10 @@
 
     // default sort function based on single attribute and direction
     return function (a, b) {
-      var left  = (typeof a[field] === 'function' ? a[field]() : a[field]) || ''
-      var right = (typeof b[field] === 'function' ? b[field]() : b[field]) || ''
+      var aVal = selectn(field, a),
+          bVal = selectn(field, b)
+      var left  = (typeof aVal === 'function' ? aVal() : aVal) || ''
+      var right = (typeof bVal === 'function' ? bVal() : bVal) || ''
 
       if (left < right) return factor * -1
       if (left > right) return factor * 1
@@ -220,14 +222,13 @@
     fields = $.isArray(fields) ? fields : [fields]
     return function (item) {
       var matches = false
-      var match_all_fields = fields === null
       value = value.toLowerCase()
 
-      $.each(item, function (field, fieldValue) {
-        if (!matches && (match_all_fields || fields.indexOf(field) > -1)) {
-          var itemValue = typeof item[field] === 'function' ? item[field]() : item[field]
-          if (String(itemValue).toLowerCase().indexOf(value) > -1) matches = true
-        }
+      $.each(fields, function (idx, field) {
+        if (matches) return
+        var val = selectn(field, item)
+        if (typeof val === 'function') val = val()
+        if (String(val).toLowerCase().indexOf(value) > -1) matches = true
       })
       return matches
     }
@@ -525,5 +526,13 @@
       Plugin.call($(this))
     })
   })
+
+  /*
+   * Copyright (c) 2013 Wil Moore III
+   * Licensed under the MIT license.
+   * https://github.com/wilmoore/selectn
+   * Adapted slightly.
+   */
+  function selectn(a){function c(a){for(var c=a||(1,eval)("this"),d=b.length,e=0;d>e;e+=1)c&&(c=c[b[e]]);return c}var b=a.replace(/\[([-_\w]+)\]/g,".$1").split(".");return arguments.length>1?c(arguments[1]):c}
 
 }(jQuery);
