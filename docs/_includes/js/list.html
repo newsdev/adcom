@@ -507,22 +507,23 @@ $('$myList').list('deselect', $('.deselectedItem')){% endhighlight %}
   {% highlight js %}$('#myList').list('toggle', 2)
 $('$myList').list('toggle', $('.item')){% endhighlight %}
 
-  <h4>.list('add', Object, options)</h4>
-  <p>Adds the passed Object as an item to the list. If <code>options</code> includes an <code>{index: Integer}</code> property, the item will be inserted at that index in the list.</p>
+  <h4>.list('add', Object[, index])</h4>
+  <p>Adds the passed Object as an item to the list. If you also pass an optional <code>index</code>, the item will be inserted at that index in the list.</p>
   {% highlight js %}$('#myList').list('add', {"id": 1}){% endhighlight %}
 
-  <h4>.list('update', idx || element, Object)</h4>
-  <p>Replaces the item at index <code>idx</code> or represented by the <code>element</code> with the passed Object, and rerenders that element in the container element.</p>
+  <h4>.list('update', index || element || Object, Object)</h4>
+  <p>Updates an item in the list, and rerenders that element in the container element. You can specify the item to update by passing either the item's <code>index</code>, current DOM <code>element</code>, or the underlying data <code>Object</code>.</p>
 {% highlight js %}
 $('#myList').list('update', $('#specialListItem'), {"id": 1})
 $('#myList').list('update', 0, {"id": 1})
 {% endhighlight %}
 
-  <h4>.list('delete', idx || element)</h4>
-  <p>Deletes the item at index <code>idx</code> or represented by the <code>element</code>.</p>
+  <h4>.list('delete', index || element || Object)</h4>
+  <p>Deletes the item at index <code>index</code> or represented by the <code>element</code>.</p>
+  <p>Deletes an item in the list, and removes that element from the container element. You can specify the item to delete by passing either the item's <code>index</code>, current DOM <code>element</code>, or the underlying data <code>Object</code>.</p>
 {% highlight js %}
-$('#myList').list('delete', $('#specialListItem'), {"id": 1})
-$('#myList').list('delete', 0, {"id": 1})
+$('#myList').list('delete', $('#specialListItem'))
+$('#myList').list('delete', 0)
 {% endhighlight %}
 
 

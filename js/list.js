@@ -347,18 +347,17 @@
     return this.$items.indexOf(item)
   }
 
-  List.prototype.add = function (data, opts) {
-    opts = opts || {}
-    opts.index = opts.index == undefined ? this.$items.length - 1 : opts.index
+  List.prototype.add = function (data, index) {
+    index = index == undefined ? this.$items.length - 1 : index
 
-    this.$items.splice(opts.index, 0, data)
-    this.states.splice(opts.index, 0, undefined)
-    this.rendered.splice(opts.index, 0, undefined)
+    this.$items.splice(index, 0, data)
+    this.states.splice(index, 0, undefined)
+    this.rendered.splice(index, 0, undefined)
 
     this.show()
   }
 
-  List.prototype.update = function (item, data, opts) {
+  List.prototype.update = function (item, data) {
     var index = this.getItemIndex(item)
     this.$items[index] = data
 
@@ -372,7 +371,7 @@
     this.show()
   }
 
-  List.prototype.delete = function (item, opts) {
+  List.prototype.delete = function (item) {
     var index = this.getItemIndex(item)
     this.$items.splice(index, 1)
     this.states.splice(index, 1)
