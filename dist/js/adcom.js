@@ -558,7 +558,9 @@
   }
 
   Form.prototype.show = function (data, meta) {
-    this.$element.trigger($.Event('show.ac.form', { serialized: data }))
+    var e = $.Event('show.ac.form', { serialized: data })
+    this.$element.trigger(e)
+    if (e.isDefaultPrevented()) return
 
     var formData = {}
     var disabled = this.$element.find(':disabled').removeAttr('disabled')
