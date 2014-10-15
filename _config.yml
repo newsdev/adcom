@@ -14,10 +14,10 @@ baseurl:          /
 encoding:         UTF-8
 
 # Custom vars
-current_version:  0.1.0-rc6
+current_version:  0.1.0-rc8
 repo:             https://github.com/newsdev/adcom
 homepage:         /adcom/
 
 download:
-  source:         https://github.com/newsdev/adcom/archive/v0.1.0-rc6.zip
-  dist:           https://github.com/newsdev/adcom/releases/download/v0.1.0-rc6/adcom-0.1.0-rc6-dist.zip
+  source:         https://github.com/newsdev/adcom/archive/v0.1.0-rc8.zip
+  dist:           https://github.com/newsdev/adcom/releases/download/v0.1.0-rc8/adcom-0.1.0-rc8-dist.zip
