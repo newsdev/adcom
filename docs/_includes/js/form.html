@@ -296,7 +296,7 @@ $('#myForm').on('submitted.ac.form', function(e) { ... });
       <tbody>
        <tr>
          <td>show.ac.form</td>
-         <td>This event is fired immediately when the <code>show</code> instance method has been called. The serialized data to be displayed is available as the <code>serialized</code> property of the event.</td>
+         <td>This event is fired immediately when the <code>show</code> instance method has been called. The serialized data to be displayed is available as the <code>serialized</code> property of the event. Call <code>.preventDefault()</code> on the event to stop showing the data.</td>
        </tr>
        <tr>
          <td>shown.ac.form</td>
@@ -304,7 +304,7 @@ $('#myForm').on('submitted.ac.form', function(e) { ... });
        </tr>
        <tr>
          <td>validate.ac.form</td>
-         <td>This event is fired immediately when the <code>validate</code> instance method has been called. The current serialized values in the form are available through the <code>object</code> and <code>array</code> properties of the event.</td>
+         <td>This event is fired immediately when the <code>validate</code> instance method has been called. The current serialized values in the form are available through the <code>object</code> and <code>array</code> properties of the event. Call <code>.preventDefault()</code> on the event to stop validation.</td>
        </tr>
        <tr>
          <td>validated.ac.form</td>
