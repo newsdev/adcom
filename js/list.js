@@ -359,6 +359,7 @@
 
   List.prototype.update = function (item, data) {
     var index = this.getItemIndex(item)
+    if (index == -1) throw "Item not found in List, and could not be updated."
 
     this.$items[index] = data
 
@@ -374,6 +375,7 @@
 
   List.prototype.delete = function (item) {
     var index = this.getItemIndex(item)
+    if (index == -1) throw "Item not found in List, and could not be deleted."
 
     this.$items.splice(index, 1)
     this.states.splice(index, 1)
