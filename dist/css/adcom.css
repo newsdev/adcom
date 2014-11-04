@@ -1,12 +1,12 @@
 .sort-control:hover {
   cursor: pointer;
 }
-.sort-control.sort-descending:after {
+.sort-control.sort-descending::after {
   padding-left: 4px;
   font-size: .8em;
   content: "▼";
 }
-.sort-control.sort-ascending:after {
+.sort-control.sort-ascending::after {
   padding-left: 4px;
   font-size: .8em;
   content: "▲";
@@ -19,6 +19,7 @@
 }
 .list .list-item:not(tr) {
   display: inline-block;
+  vertical-align: top;
 }
 .list a.list-item {
   display: block;
