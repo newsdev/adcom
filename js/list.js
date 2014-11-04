@@ -348,7 +348,7 @@
   }
 
   List.prototype.add = function (data, index) {
-    index = index == undefined ? this.$items.length - 1 : index
+    index = index == undefined ? this.$items.length : index
 
     this.$items.splice(index, 0, data)
     this.states.splice(index, 0, undefined)
@@ -359,6 +359,7 @@
 
   List.prototype.update = function (item, data) {
     var index = this.getItemIndex(item)
+
     this.$items[index] = data
 
     if (this.rendered[index]) {
@@ -373,6 +374,7 @@
 
   List.prototype.delete = function (item) {
     var index = this.getItemIndex(item)
+
     this.$items.splice(index, 1)
     this.states.splice(index, 1)
     this.rendered.splice(index, 1)
