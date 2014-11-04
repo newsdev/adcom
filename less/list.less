@@ -1,15 +1,15 @@
 //
-// Index
+// List
 // --------------------------------------------------
 
 .sort-control {
   &:hover { cursor: pointer; }
-  &.sort-descending:after {
+  &.sort-descending::after {
     content: "▼";
     font-size: 0.8em;
     padding-left: 4px;
   }
-  &.sort-ascending:after {
+  &.sort-ascending::after {
     content: "▲";
     font-size: 0.8em;
     padding-left: 4px;
@@ -23,7 +23,10 @@
     margin: 0;
     position: relative;
     width: 100%;
-    &:not(tr) { display: inline-block; }
+    &:not(tr) {
+      display: inline-block;
+      vertical-align: top;
+    }
   }
 
   a.list-item {
