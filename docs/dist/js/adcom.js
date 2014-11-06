@@ -560,8 +560,8 @@
     serialized: {}
   }
 
-  Form.prototype.show = function (data, meta) {
-    var e = $.Event('show.ac.form', { serialized: data })
+  Form.prototype.show = function (data, meta, _relatedTarget) {
+    var e = $.Event('show.ac.form', { serialized: data, relatedTarget: _relatedTarget })
     this.$element.trigger(e)
     if (e.isDefaultPrevented()) return
 
@@ -583,7 +583,7 @@
       this.sourceData    = null
     }, this))
 
-    this.$element.trigger($.Event('shown.ac.form', { serialized: data }))
+    this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget }))
   }
 
   Form.prototype.submit = function (opts) {
@@ -705,7 +705,7 @@
   }
 
   $(document).on('click', '[data-toggle="form"]', function (e) {
-    var $this      = $(this).closest('[data-toggle="form"]')
+    var $this      = $($(this).closest('[data-toggle="form"]')[0])
     var $target    = $($($this.data('target'))[0])
     var $sourceKey = $this.data('source') || 'serialized'
 
@@ -715,7 +715,7 @@
 
     $target.form({show: false})
 
-    Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized})
+    Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized}, $this[0])
   })
 
   $(document).on('click', '[data-toggle="submit"]', function (e) {
