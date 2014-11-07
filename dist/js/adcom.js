@@ -709,7 +709,9 @@
     var $target    = $($($this.data('target'))[0])
     var $sourceKey = $this.data('source') || 'serialized'
 
-    var source     = closestWithData($this, $sourceKey)
+    var source = closestWithData($this, $sourceKey)
+    if (!source) return
+
     var serialized = source.data($sourceKey)
     serialized === 'string' ? JSON.parse(serialized) : serialized
 
