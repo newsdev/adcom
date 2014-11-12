@@ -113,6 +113,16 @@ module.exports = function (grunt) {
         dest: 'docs/assets/css/example.min.css'
       }
     },
+    watch: {
+      src: {
+        files: 'js/*.js',
+        tasks: ['dist-js']
+      },
+      less: {
+        files: 'less/**/*.less',
+        tasks: 'less'
+      }
+    },
     copy: {
       docs: {
         src: 'dist/*/*',
