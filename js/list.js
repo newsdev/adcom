@@ -315,12 +315,26 @@
     var $this    = this
     var $item    = item
     var $idx     = this.$items.indexOf(item)
-    var compiled = this.template($item)
-    var el       = $(compiled)
+    var rendered = $(this.template($item))
 
-    if (this.states[$idx]) el.addClass(this.options.selectedClass)
+    // Ensure that el is a single top-level element (since the rendered element
+    // is the canonical data source for parts of this item, we need a single
+    // element as the container).
+    //
+    // Ignore nodes that are not ELEMENT_NODE, TEXT_NODE, DOCUMENT_FRAGMENT_NODE,
+    // or empty text nodes.
+    var renderedChildren = $.grep($.makeArray(rendered), function (val) {
+      if ([1,3,11].indexOf(val.nodeType) == -1) return false
+      if (val.nodeType == 3 && val.nodeValue.match(/^\s*$/)) return false
+      return true
+    })
+    if (renderedChildren.length > 1)
+      console.error("[ac.list] Templates for Adcom List can have only one top-level element. It currently has " + renderedChildren.length + ".", $this.$element[0], renderedChildren)
+    var el = renderedChildren[0]
 
-    var dynamicElements = el.data('field') === undefined ? el.find('[data-field]') : el
+    if (this.states[$idx]) $(el).addClass(this.options.selectedClass)
+
+    var dynamicElements = $(el).data('field') === undefined ? $(el).find('[data-field]') : $(el)
 
     dynamicElements.each(function (idx, fieldContainer) {
       var field = $(fieldContainer).attr('data-field')
@@ -328,15 +342,15 @@
       $(fieldContainer).html(String(value || ''))
     })
 
-    el.data('ac.list.item', $item)
-    el.data('ac.list.index', $idx)
-    el.on('update.ac.list', function (e) {
-      $this.update(el, e.item)
+    $(el).data('ac.list.item', $item)
+    $(el).data('ac.list.index', $idx)
+    $(el).on('update.ac.list', function (e) {
+      $this.update($(el), e.item)
     })
 
-    $this.rendered[$idx] = el[0]
+    $this.rendered[$idx] = el
 
-    return el[0]
+    return el
   }
 
   // Updates
