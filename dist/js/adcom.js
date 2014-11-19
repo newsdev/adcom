@@ -581,9 +581,11 @@
 
     var formData = {}
     var disabled = this.$element.find(':disabled').removeAttr('disabled')
-    this.$element.serializeArray().forEach(function (input) {
-      var val = selectn(input.name, data)
-      if (val) formData[input.name] = val
+    this.$element.find(':input:not([type=submit])').each(function (idx, input) {
+      var name = input.name || $(input).attr('name')
+      var val = selectn(name, data)
+      if (val) formData[name] = val
+      if ($(input).attr('type') === 'checkbox') formData[name] = {'on': 'on', true: 'on'}[val] || 'off'
     })
     this.$element[0].reset()
     this.$element.deserialize(formData)
