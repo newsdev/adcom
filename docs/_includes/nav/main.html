@@ -17,9 +17,11 @@
         <li{% if page.slug == "js" %} class="active"{% endif %}>
           <a href="{{ page.link_prefix }}javascript/">JavaScript</a>
         </li>
+        {% if false %}
         <li{% if page.slug == "components" %} class="active"{% endif %}>
           <a href="{{ page.link_prefix }}components/">Components</a>
         </li>
+        {% endif %}
         <li{% if page.slug == "examples" %} class="active"{% endif %}>
           <a href="{{ page.link_prefix }}examples/">Examples</a>
         </li>
