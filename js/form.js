@@ -43,7 +43,7 @@
       this.sourceData    = null
     }, this))
 
-    this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget }))
+    this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget, sourceElement: this.sourceElement, sourceData: this.sourceData}))
   }
 
   Form.prototype.submit = function (opts) {
@@ -137,7 +137,7 @@
 
       if (!data) $this.data('ac.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
-      else if (options.show) data.show(options.serialized === 'string' ? JSON.parse(options.serialized) : options.serialized)
+      else if (options.show) data.show(options.serialized === 'string' ? JSON.parse(options.serialized) : options.serialized, args[0] || {})
     })
   }
 
