@@ -34,16 +34,6 @@ module.exports = function (grunt) {
           'docs/assets/js/src/application.js'
         ],
         dest: 'docs/assets/js/docs.min.js'
-      },
-      examplesJs: {
-        src: [
-          'docs/assets/js/vendor/highlight.js',
-          'docs/assets/js/vendor/ast.js',
-          'docs/assets/js/vendor/beautify.js',
-          'docs/assets/js/vendor/beautify-html.js',
-          'docs/assets/js/src/example.js'
-        ],
-        dest: 'docs/assets/js/example.min.js'
       }
     },
     less: {
@@ -103,14 +93,6 @@ module.exports = function (grunt) {
           'docs/assets/css/src/pygments-manni.css'
         ],
         dest: 'docs/assets/css/docs.min.css'
-      },
-      examples: {
-        src: [
-          'docs/assets/css/src/default.css',
-          'docs/assets/css/src/docco.min.css',
-          'docs/assets/css/src/example.css'
-        ],
-        dest: 'docs/assets/css/example.min.css'
       }
     },
     watch: {
@@ -152,9 +134,9 @@ module.exports = function (grunt) {
   grunt.registerTask('dist', ['clean:dist', 'dist-css', 'dist-js', 'dist-css']);
 
   // Docs task.
-  grunt.registerTask('docs-css', ['csscomb:docs', 'cssmin:docs', 'cssmin:examples']);
+  grunt.registerTask('docs-css', ['csscomb:docs', 'cssmin:docs']);
   grunt.registerTask('lint-docs-css', ['csslint:docs']);
-  grunt.registerTask('docs-js', ['uglify:docsJs', 'uglify:examplesJs']);
+  grunt.registerTask('docs-js', ['uglify:docsJs']);
   grunt.registerTask('docs', ['docs-css', 'lint-docs-css', 'docs-js', 'clean:docs', 'copy:docs', 'copy:docs_license']);
 
   // Default task.
