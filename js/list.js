@@ -514,6 +514,8 @@
     var $this   = $(this).closest('[data-sort]')
     var $target = $($this.data('target'))
 
+    if ($this.is('a')) e.preventDefault()
+
     Plugin.call($target, 'toggleSort', $this)
     Plugin.call($target, 'show')
   })
@@ -525,6 +527,7 @@
     var triggers     = ($this.attr('data-trigger') || defaultEvent).split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
+    if ($this.is('a') && e.type === 'click') e.preventDefault()
 
     Plugin.call($target, 'toggleFilter', $this)
     Plugin.call($target, 'show')
@@ -533,6 +536,8 @@
   $(document).on('click.ac.list.data-api', '[data-page]', function (e) {
     var $this    = $(this).closest('[data-page]')
     var $target  = $($this.data('target'))
+
+    if ($this.is('a')) e.preventDefault()
 
     Plugin.call($target, 'page', $this.data('page'))
     Plugin.call($target, 'show')
