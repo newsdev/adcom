@@ -14,8 +14,7 @@
   Form.VERSION = '0.1.0'
 
   Form.DEFAULTS = {
-    show: true,
-    serialized: {}
+    show: true
   }
 
   Form.prototype.show = function (data, meta, _relatedTarget) {
@@ -137,7 +136,7 @@
 
       if (!data) $this.data('ac.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
-      else if (options.show) data.show(options.serialized === 'string' ? JSON.parse(options.serialized) : options.serialized, args[0] || {})
+      else if (options.show && options.serialized !== undefined) data.show(options.serialized === 'string' ? JSON.parse(options.serialized) : options.serialized, args[0] || {})
     })
   }
 
