@@ -25,7 +25,7 @@
 
     var formData = {}
     var disabled = this.$element.find(':disabled').removeAttr('disabled')
-    this.$element.find(':input:not([type=submit])').each(function (idx, input) {
+    this.$element.find(':input[name]').each(function (idx, input) {
       var name = input.name || $(input).attr('name')
       var val = selectn(name, data)
       if (val) formData[name] = val
