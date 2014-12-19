@@ -296,11 +296,11 @@ $('#myForm').on('submitted.ac.form', function(e) { ... });
       <tbody>
        <tr>
          <td>show.ac.form</td>
-         <td>This event is fired immediately when the <code>show</code> instance method has been called. The serialized data to be displayed is available as the <code>serialized</code> property of the event. Call <code>.preventDefault()</code> on the event to stop showing the data.</td>
+         <td>This event is fired immediately when the <code>show</code> instance method has been called. The serialized data to be displayed is available as the <code>serialized.array</code> and <code>serialized.object</code> properties of the event. If the form was triggered via a button, that button will be available as <code>relatedTarget</code>. Call <code>.preventDefault()</code> on the event to stop showing the data.</td>
        </tr>
        <tr>
          <td>shown.ac.form</td>
-         <td>This event is fired when the serialized data has been inserted into the form. The data is available as the <code>serialized</code> property of the event.</td>
+         <td>This event is fired when the serialized data has been inserted into the form. The data is available as the <code>serialized.array</code> and <code>serialized.object</code> properties of the event. If the form was triggered via a button, that button will be available as <code>relatedTarget</code>, the element containing that data is <code>sourceElement</code>, and a reference to the data itself is <code>sourceData</code>.</td>
        </tr>
        <tr>
          <td>validate.ac.form</td>
