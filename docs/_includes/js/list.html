@@ -140,10 +140,6 @@ $('#myList').list({templateEngine: function(t) {
 <table class="table table-condensed" id="myListFiltering" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
 {% endhighlight %}
 
-  <div class="bs-callout bs-callout-info" id="list-filtering-multiple">
-    <h4>Using multiple filters</h4>
-    <p>Filters are stored internally as a hash keyed by the value of <code>data-filter</code>. This scopes multiple filters on a specific field so that only one is active at any given time. However, you can have filters on multiple fields active at once.</p>
-  </div>
   <div class="bs-callout bs-callout-info" id="list-filtering-override">
     <h4>Setting a custom filter function</h4>
     <p>Additionally, you can set your own filtering function by calling <code>.setFilter()</code> on the element. Your filter function should return true to include the item, false to reject it.</p>
@@ -165,11 +161,106 @@ $('#myList').list({templateEngine: function(t) {
 <table class="table table-condensed" id="myListSearching" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
 {% endhighlight %}
 
+  <div class="bs-callout bs-callout-info" id="list-filtering-multiple">
+    <h4>Multiple Filters</h4>
+    <p>Filters are stored internally as a hash keyed by the value of <code>data-filter</code>. For simplicity, all filters are always applied on top of one another - an item must match every filter to be included.</p>
+    <p>If you want more complex filtering logic, specify your own filtering function with <code>.list('setFilter, ...')</code> below.</p>
+  </div>
+
+  <p>The table at right shows the active filters at any given moment. The button filters have <code>data-filter="id"</code>, and the search box has <code>data-filter="id, name"</code>; they're different, so two filters will be created.</p>
+
+  <div class="bs-example">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary active" data-filter="id" data-target="#myListMultiple">
+            <input type="radio" name="id">All
+          </label>
+          <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListMultiple">
+            <input type="radio" name="id">ID is 1
+          </label>
+          <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListMultiple">
+            <input type="radio" name="id">ID is 2
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" data-filter="id, name" data-target="#myListMultiple" data-trigger="keyup" placeholder="Search">
+      </div>
+      <div class="col-sm-4">
+        <h6>Current filters</h6>
+        <table id="current-filters" class="table table-condensed table-bordered table-striped">
+          <tbody></tbody>
+        </table>
+        <script>
+          $(document).ready(function() {
+            $('#myListMultiple').on('filterChanged.ac.list', function(e) {
+              var row = $('#current-filters tr[data-key="' + e.key + '"]');
+              if (row.length == 0) {
+                row = $('<tr data-key="' + e.key + '"><td>' + e.key + '</td><td></td></tr>');
+                $('#current-filters').append(row);
+              }
+
+              if (e.filter !== undefined) {
+                row.find('td:last-child').html(e.filter);
+              } else row.remove();
+            });
+          });
+        </script>
+      </div>
+    </div>
+    <table class="table table-condensed" id="myListMultiple" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+  </div><!-- /example -->
+
+{% highlight html %}
+<div class="row">
+  <div class="col-sm-4">
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-primary active" data-filter="id" data-target="#myListMultiple">
+        <input type="radio" name="id">All
+      </label>
+      <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListMultiple">
+        <input type="radio" name="id">ID is 1
+      </label>
+      <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListMultiple">
+        <input type="radio" name="id">ID is 2
+      </label>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <input type="text" class="form-control" data-filter="id, name" data-target="#myListMultiple" data-trigger="keyup" placeholder="Search">
+  </div>
+  <div class="col-sm-4">
+    <h6>Current filters</h6>
+    <table id="current-filters" class="table table-condensed table-bordered table-striped">
+      <tbody></tbody>
+    </table>
+    <script>
+      $(document).ready(function() {
+        $('#myListMultiple').on('filterChanged.ac.list', function(e) {
+          var row = $('#current-filters tr[data-key="' + e.key + '"]');
+          if (row.length == 0) {
+            row = $('<tr data-key="' + e.key + '"><td>' + e.key + '</td><td></td></tr>');
+            $('#current-filters').append(row);
+          }
+
+          if (e.filter !== undefined) {
+            row.find('td:last-child').html(e.filter);
+          } else row.remove();
+        });
+      });
+    </script>
+  </div>
+</div>
+<table class="table table-condensed" id="myListMultiple" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+{% endhighlight %}
+
   <div class="bs-callout bs-callout-info" id="list-filtering-triggers">
     <h4>Custom event triggers</h4>
     <p>By default, filters are applied when a user clicks on a static trigger, or the value of a user input changes. But you can change the event that Index.js listens for on the given element with a <code>data-trigger</code> attribute. This lets us update the list more or less frequently.</p>
     <code>&lt;input type="text" ... data-trigger="keyup"&gt;</code>
   </div>
+
 
   <h2 id="list-sorting">Sorting</h3>
 
@@ -564,11 +655,11 @@ $('#myList').list('delete', 0)
        </tr>
        <tr>
          <td>filterChange.ac.list</td>
-         <td>This event is fired immediately when the <code>setFilter</code> instance method has been called. The key for this filter function is available as the <code>key</code> property of the event.</td>
+         <td>This event is fired immediately when the <code>setFilter</code> instance method has been called. The key for this filter function is available as the <code>key</code> property of the event. The value of the filter (undefined to delete, string or function) is <code>filter</code>.</td>
        </tr>
        <tr>
          <td>filterChanged.ac.list</td>
-         <td>This event is fired when one of the filter functions for the list has been changed or removed. The key for this filter function is available as the <code>key</code> property of the event, and the new filter function is available as <code>function</code>.</td>
+         <td>This event is fired when one of the filter functions for the list has been changed or removed. The key for this filter function is available as the <code>key</code> property of the event, the value of the filter (undefined to delete, string or function) is <code>filter</code>, and the new filter function is available as <code>function</code>.</td>
        </tr>
        <tr>
          <td>pageChange.ac.list</td>
