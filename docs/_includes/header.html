@@ -10,8 +10,6 @@
   {% endif %}
 </title>
 
-<script type="text/javascript" src="http://typeface.nytimes.com/zam5nzz.js"></script>
-
 <!-- Bootstrap core CSS -->
 {% if site.github %}
 <link href="{{ site.homepage }}dist/css/bootstrap.min.css" rel="stylesheet">
@@ -30,7 +28,11 @@
 {% endif %}
 <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <script src="{{ site.homepage }}assets/js/ie-emulation-modes-warning.js"></script>
+{% if site.github %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{% else %}
+<script src="{{ site.homepage }}assets/js/jquery.js"></script>
+{% endif %}
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
