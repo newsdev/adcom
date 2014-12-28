@@ -242,14 +242,14 @@
   }
 
   List.prototype.setFilter = function (key, filter) {
-    this.$element.trigger($.Event('filterChange.ac.list', { key: key }))
+    this.$element.trigger($.Event('filterChange.ac.list', { key: key, filter: filter }))
 
     if (filter === undefined) {
       delete this.filters[key]
     } else this.filters[key] = this.getFilter(key, filter)
 
     this.currentPage = 1
-    this.$element.trigger($.Event('filterChanged.ac.list', { key: key, function: filter }))
+    this.$element.trigger($.Event('filterChanged.ac.list', { key: key, filter: filter, function: filter }))
   }
 
   List.prototype.setCurrentPage = function (page) {
