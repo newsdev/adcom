@@ -132,7 +132,7 @@
       var field = el.data('sort')
       if (el.hasClass('sort-ascending')) $this.setSort(field, false)
       if (el.hasClass('sort-descending')) $this.setSort(field, true)
-    });
+    })
   }
 
   // Templates
@@ -172,7 +172,7 @@
       '&quot;': '"',
       '&#x27;': "'",
       '&#x60;': '`'
-    };
+    }
     var escaper = function (match) { return map[match] }
     var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
     var testRegexp = RegExp(source)
@@ -222,13 +222,14 @@
     fields = $.isArray(fields) ? fields : [fields]
     return function (item) {
       var matches = false
-      value = value.toLowerCase()
+      // Must this be done inside this function?
+      value = value.toLowerCase().trim()
 
       $.each(fields, function (idx, field) {
         if (matches) return
         var val = selectn(field, item)
         if (typeof val === 'function') val = val()
-        if (String(val).toLowerCase().indexOf(value) > -1) matches = true
+        if (String(val).toLowerCase().trim().indexOf(value) > -1) matches = true
       })
       return matches
     }
@@ -249,7 +250,7 @@
     } else this.filters[key] = this.getFilter(key, filter)
 
     this.currentPage = 1
-    this.$element.trigger($.Event('filterChanged.ac.list', { key: key, filter: filter, function: filter }))
+    this.$element.trigger($.Event('filterChanged.ac.list', { key: key, filter: filter, function: this.filters[key] }))
   }
 
   List.prototype.setCurrentPage = function (page) {

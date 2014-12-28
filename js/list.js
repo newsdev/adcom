@@ -222,13 +222,14 @@
     fields = $.isArray(fields) ? fields : [fields]
     return function (item) {
       var matches = false
-      value = value.toLowerCase()
+      // Must this be done inside this function?
+      value = value.toLowerCase().trim()
 
       $.each(fields, function (idx, field) {
         if (matches) return
         var val = selectn(field, item)
         if (typeof val === 'function') val = val()
-        if (String(val).toLowerCase().indexOf(value) > -1) matches = true
+        if (String(val).toLowerCase().trim().indexOf(value) > -1) matches = true
       })
       return matches
     }
