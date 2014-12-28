@@ -275,7 +275,7 @@ $('#myList').list({templateEngine: function(t) {
           <th class="sort-control" data-sort="name" data-target="#myListSorting">Name (click me)</th>
         </tr>
       </thead>
-      <tbody id="myListSorting" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+      <tbody id="myListSorting" data-control="list" data-items='[{"id": 1, "name": "A"}, {"id": 1, "name": "B"}, {"id": 1, "name": "a"}, {"id": 1, "name": "b"}]' data-fields="id,name"></tbody>
     </table>
 
   </div><!-- /example -->
@@ -296,7 +296,8 @@ $('#myList').list({templateEngine: function(t) {
 
   <div class="bs-callout bs-callout-info" id="list-sort-override">
     <h4>Setting a custom sort function</h4>
-    <p>Internally, when you click on a trigger element, Index.js creates a sort function based on the field specified with <code>data-source</code> and which direction you are sorting in, and saves it as the sort function. You can also set your own sort function by calling <code>.setSort()</code> on the element:</p>
+    <p>When you click on a trigger element, Index.js creates a sort function based on the field specified with <code>data-source</code> and the direction you are sorting in, and saves it as the sort function. To provide some sensible defaults, sorting is case-insensitive.</p>
+    <p>You can also set your own sort function by calling <code>.setSort()</code> on the element:</p>
     <code>$("#myList").list('setSort', function(a, b) { ... })</code>
   </div>
 

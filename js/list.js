@@ -207,6 +207,9 @@
       var left  = (typeof aVal === 'function' ? aVal() : aVal) || ''
       var right = (typeof bVal === 'function' ? bVal() : bVal) || ''
 
+      if (typeof left == 'string')  left  = left.toLowerCase()
+      if (typeof right == 'string') right = right.toLowerCase()
+
       if (left < right) return factor * -1
       if (left > right) return factor * 1
       return 0
