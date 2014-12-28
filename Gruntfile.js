@@ -98,11 +98,11 @@ module.exports = function (grunt) {
     watch: {
       src: {
         files: 'js/*.js',
-        tasks: ['dist-js']
+        tasks: ['dist-js', 'docs']
       },
       less: {
         files: 'less/**/*.less',
-        tasks: 'less'
+        tasks: ['less', 'docs']
       }
     },
     copy: {
