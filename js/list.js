@@ -132,7 +132,7 @@
       var field = el.data('sort')
       if (el.hasClass('sort-ascending')) $this.setSort(field, false)
       if (el.hasClass('sort-descending')) $this.setSort(field, true)
-    });
+    })
   }
 
   // Templates
@@ -172,7 +172,7 @@
       '&quot;': '"',
       '&#x27;': "'",
       '&#x60;': '`'
-    };
+    }
     var escaper = function (match) { return map[match] }
     var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
     var testRegexp = RegExp(source)
