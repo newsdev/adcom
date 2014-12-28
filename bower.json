@@ -5,13 +5,16 @@
   ],
   "description": "Front end framework for building iterative admin interfaces for the web.",
   "keywords": [
-    "css",
     "js",
-    "less",
     "front-end",
     "framework",
     "web",
-    "admin"
+    "admin",
+    "nyt",
+    "nytimes",
+    "new",
+    "york",
+    "times"
   ],
   "license": "MIT",
   "private": false,
@@ -20,7 +23,6 @@
     "jquery": ">= 1.9.0"
   },
   "main": [
-    "less/adcom.less",
     "dist/css/adcom.css",
     "dist/js/adcom.js"
   ],

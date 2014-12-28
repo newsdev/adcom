@@ -8,13 +8,19 @@ module.exports = function (grunt) {
       docs: ['docs/dist/js/adcom*', 'docs/dist/css/adcom*']
     },
     concat: {
-      adcom: {
+      js: {
         src: [
           'js/list.js',
           'js/form.js',
           'js/state.js'
         ],
         dest: 'dist/js/<%= pkg.name %>.js'
+      },
+      css: {
+        src: [
+          'css/adcom.css'
+        ],
+        dest: 'dist/css/<%= pkg.name %>.css'
       }
     },
     uglify: {
@@ -22,7 +28,7 @@ module.exports = function (grunt) {
         preserveComments: 'some'
       },
       core: {
-        src: '<%= concat.adcom.dest %>',
+        src: '<%= concat.js.dest %>',
         dest: 'dist/js/<%= pkg.name %>.min.js'
       },
       docsJs: {
@@ -36,20 +42,9 @@ module.exports = function (grunt) {
         dest: 'docs/assets/js/docs.min.js'
       }
     },
-    less: {
-      compileCore: {
-        options: {
-          sourceMap: true,
-          outputMapURL: '<%= pkg.name %>.css.map',
-          sourceMapFilename: 'dist/css/<%= pkg.name %>.css.map'
-        },
-        src: 'less/adcom.less',
-        dest: 'dist/css/<%= pkg.name %>.css'
-      }
-    },
     csslint: {
       options: {
-        csslintrc: 'less/.csslintrc'
+        csslintrc: 'css/.csslintrc'
       },
       dist: [
         'dist/css/adcom.css'
@@ -64,7 +59,7 @@ module.exports = function (grunt) {
     },
     csscomb: {
       options: {
-        config: 'less/.csscomb.json'
+        config: 'css/.csscomb.json'
       },
       dist: {
         expand: true,
@@ -99,10 +94,6 @@ module.exports = function (grunt) {
       src: {
         files: 'js/*.js',
         tasks: ['dist-js', 'docs']
-      },
-      less: {
-        files: 'less/**/*.less',
-        tasks: ['less', 'docs']
       }
     },
     copy: {
@@ -124,11 +115,10 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
 
   // JS distribution task.
-  grunt.registerTask('dist-js', ['concat', 'uglify:core']);
+  grunt.registerTask('dist-js', ['concat:js', 'uglify:core']);
 
   // CSS distribution task.
-  grunt.registerTask('less-compile', ['less:compileCore']);
-  grunt.registerTask('dist-css', ['less-compile', 'csscomb:dist', 'cssmin:minifyCore']);
+  grunt.registerTask('dist-css', ['concat:css', 'csscomb:dist', 'cssmin:minifyCore']);
 
   // Full distribution task.
   grunt.registerTask('dist', ['clean:dist', 'dist-css', 'dist-js', 'dist-css']);
