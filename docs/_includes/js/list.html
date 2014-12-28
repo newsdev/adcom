@@ -306,7 +306,7 @@ $('#myList').list({templateEngine: function(t) {
 
   <p>When your list of items gets too long, you'll want to start paginating your data.</p>
 
-  <p>Show first 5 items of a 10 page list:</p>
+  <p>Use the input field to change the current page, and the items displayed at the left should update.</p>
 
   <div class="bs-example">
     <div class="row">
@@ -315,18 +315,19 @@ $('#myList').list({templateEngine: function(t) {
         data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}, {"id": 7}, {"id": 8}, {"id": 9}, {"id": 10}]'
         data-template="<span class='btn btn-default disabled pg-link' data-field='id'>"
         data-pagination="on"
-        data-page-size="5">
+        data-page-size="2">
       </div>
 
       <div class="col-sm-6 col-xs-12">
-        <input id="changePagination" class="form-control" type="number" min="0" max="10" value="5">
+        <input id="changePagination" class="form-control" type="number" min="1" max="5" value="1">
       </div>
     </div>
 
     <script>
       $(document).ready(function() {
         $('#changePagination').on('keyup', function(e) {
-          $('#myListPagination').list({pageSize: $(e.target).val()});
+          $('#myListPagination').list('setCurrentPage', $(e.target).val());
+          $('#myListPagination').list('show');
         });
       });
     </script>
@@ -344,7 +345,8 @@ $('#myList').list({templateEngine: function(t) {
 <script>
   $(document).ready(function() {
     $('#changePagination').on('keyup', function(e) {
-      $('#myListPagination').list({pageSize: $(e.target).val()});
+      $('#myListPagination').list('setCurrentPage', $(e.target).val());
+      $('#myListPagination').list('show');
     });
   });
 </script>

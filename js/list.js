@@ -543,7 +543,7 @@
 
     if ($this.is('a')) e.preventDefault()
 
-    Plugin.call($target, 'page', $this.data('page'))
+    Plugin.call($target, 'setCurrentPage', $this.data('page'))
     Plugin.call($target, 'show')
   })
 
