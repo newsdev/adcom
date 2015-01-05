@@ -30,16 +30,16 @@ body {
 
 /* Outline button for use within the docs */
 .btn-outline {
-  color: #264F92;
+  color: #264f92;
   background-color: transparent;
-  border-color: #264F92;
+  border-color: #264f92;
 }
 .btn-outline:hover,
 .btn-outline:focus,
 .btn-outline:active {
   color: #fff;
-  background-color: #264F92;
-  border-color: #264F92;
+  background-color: #264f92;
+  border-color: #264f92;
 }
 
 /* Inverted outline button (white on dark) */
@@ -51,7 +51,7 @@ body {
 .btn-outline-inverse:hover,
 .btn-outline-inverse:focus,
 .btn-outline-inverse:active {
-  color: #264F92;
+  color: #264f92;
   text-shadow: none;
   background-color: #fff;
   border-color: #fff;
@@ -64,7 +64,7 @@ body {
   color: #fff;
   text-align: center;
   cursor: default;
-  background-color: #264F92;
+  background-color: #264f92;
   border-radius: 15%;
 }
 .bs-docs-booticon-sm {
@@ -80,7 +80,7 @@ body {
   line-height: 140px;
 }
 .bs-docs-booticon-inverse {
-  color: #264F92;
+  color: #264f92;
   background-color: #fff;
 }
 .bs-docs-booticon-outline {
@@ -106,7 +106,7 @@ body {
 .bs-docs-nav .navbar-brand,
 .bs-docs-nav .navbar-nav > li > a {
   font-weight: 500;
-  color: #264F92;
+  color: #264f92;
 }
 .bs-docs-nav .navbar-nav > li > a:hover,
 .bs-docs-nav .navbar-nav > .active > a,
@@ -115,7 +115,7 @@ body {
   background-color: #f9f9f9;
 }
 .bs-docs-nav .navbar-toggle .icon-bar {
-  background-color: #264F92;
+  background-color: #264f92;
 }
 .bs-docs-nav .navbar-header .navbar-toggle {
   border-color: #fff;
@@ -226,7 +226,7 @@ body {
   color: #fff;
 }
 .bs-docs-masthead .lead {
-  margin: 0 0 0px;
+  margin: 0 0 0;
   font-size: 20px;
   color: #fff;
 }
@@ -380,19 +380,19 @@ body {
 .bs-docs-sidebar .nav > li > a:hover,
 .bs-docs-sidebar .nav > li > a:focus {
   padding-left: 19px;
-  color: #264F92;
+  color: #264f92;
   text-decoration: none;
   background-color: transparent;
-  border-left: 1px solid #264F92;
+  border-left: 1px solid #264f92;
 }
 .bs-docs-sidebar .nav > .active > a,
 .bs-docs-sidebar .nav > .active:hover > a,
 .bs-docs-sidebar .nav > .active:focus > a {
   padding-left: 18px;
   font-weight: bold;
-  color: #264F92;
+  color: #264f92;
   background-color: transparent;
-  border-left: 2px solid #264F92;
+  border-left: 2px solid #264f92;
 }
 
 /* Nav: second level (shown on .active) */
@@ -431,7 +431,7 @@ body {
 }
 .back-to-top:hover,
 .bs-docs-theme-toggle:hover {
-  color: #264F92;
+  color: #264f92;
   text-decoration: none;
 }
 .bs-docs-theme-toggle {
@@ -995,7 +995,7 @@ h1[id] {
 }
 .bs-glyphicons li:hover {
   color: #fff;
-  background-color: #264F92;
+  background-color: #264f92;
 }
 
 @media (min-width: 768px) {
@@ -1035,8 +1035,8 @@ h1[id] {
 }
 .btn-clipboard-hover {
   color: #fff;
-  background-color: #264F92;
-  border-color: #264F92;
+  background-color: #264f92;
+  border-color: #264f92;
 }
 
 @media (min-width: 768px) {
