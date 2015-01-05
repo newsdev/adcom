@@ -141,12 +141,6 @@ $(window).state('push', {key: "updated value"}[, options]);
       </thead>
       <tbody>
        <tr>
-         <td>format</td>
-         <td>humanize, condense</td>
-         <td>humanize</td>
-         <td>Format the serialized state parameters into the querystring either as a single variable (<code>condense</code>) or as a direct translation from the Page State's attributes into querystring attributes.</td>
-       </tr>
-       <tr>
          <td>initial-state</td>
          <td>native or serialized object</td>
          <td></td>
@@ -163,12 +157,6 @@ $(window).state('push', {key: "updated value"}[, options]);
          <td>string</td>
          <td></td>
          <td>A prefix that will be ignored when deserializing the path attribute from the current window location, and remove when serializing it.</td>
-       </tr>
-       <tr>
-         <td>condense-attr</td>
-         <td>string</td>
-         <td>q</td>
-         <td>When <code>format="condense"</code>, the state hash will be serialized into this top-level querystring attribute.</td>
        </tr>
        <tr>
          <td>allow-repeats</td>

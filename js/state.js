@@ -35,14 +35,10 @@
   State.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.state.data-api" }).join(' ')
 
   State.DEFAULTS = {
-    format: 'humanize',
     initialState: null,
     allowRepeats: true,
     triggerState: false,
-    path: false,
-    condense: {
-      attr: 'q'
-    }
+    path: false
   }
 
   State.prototype.getLocationState = function () {
@@ -100,7 +96,6 @@
     state = $.extend({}, state)
 
     var serialized = ''
-    var params     = ''
 
     if (this.options.path) {
       var serialized = this.options.path.base || ''
@@ -113,15 +108,7 @@
       serialized = window.location.pathname
     }
 
-    switch (this.options.format) {
-      case 'humanize':
-        var params = $.param(state)
-        break
-      case 'condense':
-        if (state && Object.keys(state).length > 0)
-          var params = this.options.condense.attr + '=' + btoa(JSON.stringify(state))
-        break
-    }
+    var params = $.param(state)
     if (params.length > 0) serialized += '?' + params
     if (serialized.length == 0) serialized = '/'
 
@@ -130,19 +117,8 @@
 
   // url => {}
   State.prototype.deserialize = function (string) {
-    var path   = string.split('?')[0]
-    var params = State.parseParams(string.split('?')[1])
-    var state  = {}
-
-    switch (this.options.format) {
-      case 'humanize':
-        state = params
-        break
-      case 'condense':
-        if (params[this.options.condense.attr])
-          state = JSON.parse(atob(params[this.options.condense.attr]))
-        break
-    }
+    var path  = string.split('?')[0]
+    var state = State.parseParams(string.split('?')[1])
 
     if (this.options.path) {
       var path_value = path.replace(this.options.path.base, '')
@@ -299,17 +275,13 @@
       var $state = $(this)
       var data   = $state.data()
 
-      data.path     = data.path     || {}
-      data.condense = data.condense || {}
-
+      data.path = data.path || {}
       data.allowRepeats = (data.allowRepeats != false) ? true : false
 
-      if (data.pathAttr)     data.path.attr     = data.pathAttr
-      if (data.pathBase)     data.path.base     = data.pathBase
-      if (data.condenseattr) data.consense.attr = data.condenseattr
+      if (data.pathAttr) data.path.attr = data.pathAttr
+      if (data.pathBase) data.path.base = data.pathBase
 
-      if ($.isEmptyObject(data.path))     delete data.path
-      if ($.isEmptyObject(data.condense)) delete data.condense
+      if ($.isEmptyObject(data.path)) delete data.path
 
       Plugin.call($(window), data)
     })
