@@ -206,15 +206,10 @@ body {
 .bs-docs-header {
   position: relative;
   padding: 30px 15px;
-  color: #cdbfe3;
-  text-shadow: 0 1px 0 rgba(0,0,0,.1);
-  background-color: #202020;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#202020), to(#303030));
-  background-image: -webkit-linear-gradient(top, #202020 0%, #303030 100%);
-  background-image:      -o-linear-gradient(top, #202020 0%, #303030 100%);
-  background-image:         linear-gradient(to bottom, #202020 0%, #303030 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202020', endColorstr='#303030', GradientType=0);
-  background-repeat: repeat-x;
+  color: #264f92;
+  /* text-shadow: 0 1px 0 rgba(0,0,0,.1);*/
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
 }
 
 /* Masthead (headings and download button) */
@@ -223,28 +218,26 @@ body {
 }
 .bs-docs-masthead h1 {
   line-height: 1;
-  color: #fff;
+  font-weight: 400;
+  color: #333;
 }
 .bs-docs-masthead .lead {
   margin: 0 0 0;
   font-size: 20px;
-  color: #fff;
+  color: #555;
 }
 .bs-docs-masthead .version {
   margin-top: 5px;
   margin-bottom: 30px;
-  color: #aaa;
+  color: #555;
 }
 .bs-docs-masthead .btn {
   width: 100%;
   padding: 15px 30px;
   font-size: 20px;
 }
-.bs-docs-masthead a {
-  color: #aaa;
-}
-.bs-docs-masthead a:hover {
-  color: #eee;
+.bs-docs-masthead a, .bs-docs-masthead a:hover {
+  color: #555;
 }
 
 @media (min-width: 480px) {
@@ -255,7 +248,7 @@ body {
 
 @media (min-width: 768px) {
   .bs-docs-masthead {
-    padding: 20px 0;
+    padding: 10px 0;
   }
   .bs-docs-masthead h1 {
     font-size: 50px;
@@ -271,7 +264,6 @@ body {
     font-size: 30px;
   }
 }
-
 
 /*
  * Page headers
