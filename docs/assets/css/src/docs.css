@@ -217,8 +217,8 @@ body {
   margin: 0 auto 30px;
 }
 .bs-docs-masthead h1 {
-  line-height: 1;
   font-weight: 400;
+  line-height: 1;
   color: #333;
 }
 .bs-docs-masthead .lead {

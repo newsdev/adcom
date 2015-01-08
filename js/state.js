@@ -221,6 +221,8 @@
     })
   }
 
+  var old = $.fn.state
+
   $.fn.state             = Plugin
   $.fn.state.Constructor = State
 

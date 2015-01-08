@@ -479,6 +479,8 @@
     })
   }
 
+  var old = $.fn.list
+
   $.fn.list             = Plugin
   $.fn.list.Constructor = List
 

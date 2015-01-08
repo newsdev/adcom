@@ -140,6 +140,8 @@
     })
   }
 
+  var old = $.fn.form
+
   $.fn.form             = Plugin
   $.fn.form.Constructor = Form
 

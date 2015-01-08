@@ -479,6 +479,8 @@
     })
   }
 
+  var old = $.fn.list
+
   $.fn.list             = Plugin
   $.fn.list.Constructor = List
 
@@ -704,6 +706,8 @@
       else if (options.show && options.serialized !== undefined) data.show(options.serialized === 'string' ? JSON.parse(options.serialized) : options.serialized, args[0] || {})
     })
   }
+
+  var old = $.fn.form
 
   $.fn.form             = Plugin
   $.fn.form.Constructor = Form
@@ -1011,6 +1015,8 @@
       if (typeof option == 'string') data[option].apply(data, args)
     })
   }
+
+  var old = $.fn.state
 
   $.fn.state             = Plugin
   $.fn.state.Constructor = State
