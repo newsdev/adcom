@@ -23,7 +23,6 @@
     if (e.isDefaultPrevented()) return
 
     var formData = {}
-    var disabled = this.$element.find(':disabled').removeAttr('disabled')
     this.$element.find(':input[name]').each(function (idx, input) {
       var name = input.name || $(input).attr('name')
       var val = selectn(name, data)
@@ -32,7 +31,6 @@
     })
     this.$element[0].reset()
     this.$element.deserialize(formData)
-    disabled.attr('disabled', 'disabled')
 
     meta = meta || {}
     this.sourceElement = meta.sourceElement
@@ -63,10 +61,8 @@
   }
 
   Form.prototype.serialize = function () {
-    var disabled = this.$element.find(':disabled').removeAttr('disabled')
     var array    = this.$element.serializeArray()
     var data     = deparam(this.$element.serialize())
-    disabled.attr('disabled', 'disabled')
 
     return { object: data, array: array }
   }
