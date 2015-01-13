@@ -125,9 +125,6 @@
       var $this = $(this)
       var data  = $this.data('ac.form')
 
-      // Reset the form if we call the constructor again with options
-      if (typeof option == 'object' && option && data) data = false
-
       var options = $.extend({}, Form.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
       if (!data) $this.data('ac.form', (data = new Form(this, options)))

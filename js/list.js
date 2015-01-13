@@ -468,9 +468,6 @@
       var $this   = $(this)
       var data    = $this.data('ac.list')
 
-      // Reset the list if we call the constructor again with options
-      if (typeof option == 'object' && option && data) data = false
-
       var options = $.extend({}, List.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
 
       if (!data) $this.data('ac.list', (data = new List(this, options)))
