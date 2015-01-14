@@ -1,11 +1,47 @@
 <div class="bs-docs-section">
   <h1 id="form">Forms <small>form.js</small></h1>
 
-  <h2 id="form-examples">Examples</h2>
-  <p>For all their complexity, the function forms serve in admins is often very repetitive. Form.js takes an existing <code>&lt;form&gt;</code> element and adds useful events hooks for serialization, deserialization and submitting.</p>
+  <p class="lead">Form.js takes an existing <code>&lt;form&gt;</code> element and adds useful event hooks for submitting, serialization / deserialization and validation.</p>
+
+  <h2 id="form-submitting">Submitting</h2>
+  <p>The native submit behavior of the form is not affected by default, and you can use Form.js to populate and serialize form data, but continue to submit the data normally.</p>
+
+  <p>If you want to handle the submit yourself, you can disable the native submit behavior, and add a hook for your own code.</p>
+
+  <h3>Disable submit</h3>
+
+  <p>You can disable submit by listening to the <code>submit</code> event on the form:</p>
+{% highlight js %}
+$(document).on('submit', '#myform', function (e) { e.preventDefault(); })
+{% endhighlight %}
+
+<p>A shortcut to this is using the <code>action</code> option over the data or JavaScript APIs:</p>
+{% highlight js %}
+$('#myForm').form({action: false})
+{% endhighlight %}
+
+{% highlight html %}
+<form data-control="form" data-submit="false">
+{% endhighlight %}
+
+  <h3>Handle submit</h3>
+
+  <p>You should continue to use the <code>submit</code> event on the form element to bind any client-side submission logic. The <code>submit.ac.form</code> event will run only if the form has passed validation.</p>
+  <div class="bs-callout bs-callout-info" id="form-source-serialized-data">
+    <h4>Access serialized form data</h4>
+    <p>The <code>submit.ac.form</code> event exposes the form's data in two ways. The event's <code>object</code> attribute contains the form's data as an object, while <code>array</code> returns a list of the input elements and their corresponding values.</p>
+    <p>You can always the form inputs themselves if you need to customize this.</p>
+  </div>
+{% highlight js %}
+$(document).on('submit.ac.form', '#myform', function (e) {
+  $.ajax({ data: e.object, ... })
+})
+{% endhighlight %}
+
+  <h2 id="form-serialization">Serialization / Deserialization</h2>
 
   <h3>Populate a form</h3>
-  <p>Most forms are fairly simple, and can be expressed with a serialized JSON object. Form.js lets you populate forms based on that JSON. This comes in handy when you have multiple items on a page that you may want to edit. Instead of rendering the form dynamically for each one, or populating the fields manually in JavaScript, you can populate the form automatically based on a source object.</p>
+  <p>Most form data is fairly simple, and can be expressed with a serialized JSON object. Form.js lets you populate forms based on that JSON. This comes in handy when you have multiple items on a page that you may want to edit. Instead of rendering the form dynamically for each one, or populating the fields manually in JavaScript, you can populate the form automatically based on a source object.</p>
 
   <div class="bs-example">
     <form id="myForm" data-control="form">
@@ -28,8 +64,8 @@
 {% endhighlight %}
 
   <h3>Use a form with multiple objects</h3>
-  <p>Forms are most useful when they are associated with a collection of items, for example a form that can edit any item in a list.</p>
-  <p>It uses the data available at the trigger's <code>data-serialized</code> attribute by default, but you can override that with any data attribute key. Because List.js stores each item's data on it's rendered element, you're able to link forms to lists without JavaScript.</p>
+  <p>Any page element with a <code>data-toggle="form"</code> attribute can populate a form. For example, if you have a form that can edit any item in a list, you can add each item's data into it's container element's <code>data-serialized</code> attribute. This attribute is checked by default for data to populate the form.</p>
+  <p>You can also use a different data attribute other than serialized, by specifying <code>data-source="string"</code>. Because List.js stores each item's data as <code>ac.list.item</code> on it's rendered element, you're able to link forms to lists without JavaScript.</p>
 
   <div class="bs-callout bs-callout-info" id="form-list-integration">
     <h4>Use a form with a List</h4>
@@ -90,7 +126,10 @@
            <td data-field='id'></td>
            <td data-field='name'></td>
            <td>
-             <button class='btn btn-default' data-toggle='form' data-target='#myFormMultipleSources' data-source='ac.list.item'>Populate Form</button>
+             <button class='btn btn-default'
+               data-toggle='form'
+               data-target='#myFormMultipleSources'
+               data-source='ac.list.item'>Populate Form</button>
            </td>
          </tr>
     "></tbody>
@@ -114,10 +153,11 @@
   <h3>Update source objects from the form</h3>
 
   <div class="bs-callout bs-callout-danger" id="form-source-updates">
-    <h4>Submitting a form doesn't do anything</h4>
-    <p>You must hook into the <code>submitted.ac.form</code> event to update your associated record on a server and / or your local copy of that object.</p>
+    <h4>Submit actions</h4>
+    <p>By default, submitting a form will cause the form's native submit action to fire, changing the page. Use the <code>action=false</code> option on the form to disable the default action.</p>
+    <p>You can then hook into the <code>submit.ac.form</code> event to update your associated record on a server and / or your local copy of that object.</p>
 {% highlight js %}
-$('#myForm').on('submitted.ac.form', function(e) {
+$('#myForm').on('submit.ac.form', function(e) {
   $.post(myUrl, e.object);
 });
 {% endhighlight %}
@@ -125,7 +165,7 @@ $('#myForm').on('submitted.ac.form', function(e) {
 
   <div class="bs-callout bs-callout-info" id="form-source-updates-list">
     <h4>Update objects from List.js</h4>
-    <p>When you update an object from an List.js list, you'll want to make sure the changes you've made are persisted to the list, and that those changes are rendered. Call the <code>update</code> method on the index to update the data for that item.</p>
+    <p>When you update an object from an List.js list, you'll want to make sure the changes you've made are A) persisted to the list, and B) rendered. Call the <code>update</code> method on the index to update the data for that item.</p>
     {% highlight js %}$('#myIndex').index('update', itemElement, newData);{% endhighlight %}
   </div>
 
@@ -154,7 +194,7 @@ $('#myForm').on('submitted.ac.form', function(e) {
         "></tbody>
     </table>
 
-    <form id="myFormUpdate" data-control="form">
+    <form id="myFormUpdate" data-control="form" data-action="false">
       <div class="row">
         <div class="form-group col-sm-5">
           <input type="text" class="form-control" name="id" placeholder="id">
@@ -170,8 +210,7 @@ $('#myForm').on('submitted.ac.form', function(e) {
 
     <script>
       $(document).ready(function() {
-        $('#myFormUpdate').on('submitted.ac.form', function(e) {
-          console.log('callback', e);
+        $('#myFormUpdate').on('submit.ac.form', function(e) {
           $('#myListUpdate').list('update', e.sourceElement, e.object);
         });
       });
@@ -179,19 +218,44 @@ $('#myForm').on('submitted.ac.form', function(e) {
   </div>
 
 {% highlight html %}
+<table class="table table-condensed">
+  ...
+</table>
+
+<form id="myFormUpdate" data-control="form" data-action="false">
+  ...
+</form>
+
 <script>
   $(document).ready(function() {
-    $('#myFormUpdate').on('submitted.ac.form', function(e) {
+    $('#myFormUpdate').on('submit.ac.form', function(e) {
       $('#myListUpdate').list('update', e.sourceElement, e.object);
     });
   });
 </script>
 {% endhighlight %}
 
+  <h2 id="form-validation">Validation</h2>
+  <p>Form.js encourages you to stay as close to the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation">HTML5 Constraint validation</a> spec as possible. That means using <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation#Validation-related_attributes">input validation attributes</a> wherever possible (such as adding <code>required</code> to note a required field) and using the browser's built-in validation feedback.</p>
+  <p>We've tried to make the functionality that Form.js adds follow the same rules that the browser's default behavior does. Additional functionality follows the same patterns. This includes:</p>
+  <ul>
+    <li>Validation runs before your <code>submit.ac.form</code> events are triggered.</li>
+    <li>Validation is on by default, and may be disabled by adding <code>novalidate</code> to the form element.</li>
+    <li>Browser native validation feedback can be disabled by calling <code>e.preventDefault()</code> on the form's <code>invalid.ac.form</code> event, instead of doing so on the individual fields.</li>
+  </ul>
+
+  <p>Form.js adds progressive enhancement by letting you use either the default validation feedback (the browser's native UI and default error messages), or a custom UI or content without changing when the validation occurs.</p>
+
+  <h3>Customization</h3>
+
+  <p>You should customize the validation of individual fields by adding change event handlers to the field in question, and calling <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation#Complex_constraints_using_HTML5_Constraint_API"><code>.setCustomValidity()</code></a> on the field, with a blank string for a valid field, and an error message for an invalid field.</p>
+  <p>If you wish to use custom display logic for individual fields, you should intercept the <code>invalid</code> event on the field and render your markup, optionally calling <code>e.preventDefault()</code> to prevent the default UI from displaying.</p>
+  <p>Form-wide error messages should be displayed using the <code>invalid.ac.form</code> event.</p>
+
   <h2 id="form-usage">Usage</h2>
 
   <h3>Via data attributes</h3>
-  <p>Trigger changes to a form without writing any JavaScript. Set <code>data-control="form"</code> on your form element, and on a second trigger element, specify the <code>data-toggle</code>, <code>data-target</code> and <code>data-serialized</code> attributes.</p>
+  <p>Trigger changes to a form without writing any JavaScript. Set <code>data-control="form"</code> on your form element, and on a second trigger element, specify the <code>data-toggle</code>, <code>data-target</code> and <code>data-serialized</code> (or <code>data-source</code>) attributes.</p>
 {% highlight html %}
 <form id="myForm" data-control="form"> ... </form>
 <button data-toggle="form"
@@ -206,7 +270,7 @@ $('#myForm').on('submitted.ac.form', function(e) {
 
 {% highlight js %}
 $('#myForm').form(options);
-$('#myForm').on('submitted.ac.form', function(e) { ... });
+$('#myForm').on('submit.ac.form', function(e) { ... });
 {% endhighlight %}
 
   <h3>Options</h3>
@@ -281,7 +345,7 @@ $('#myForm').on('submitted.ac.form', function(e) { ... });
   {% highlight js %}$('#myForm').form('show', {"id": 1}){% endhighlight %}
 
   <h4>.form('validate')</h4>
-  <p>Trigger a browser-level validation of the form. If any errors are detected, the browser's default validation UI will alert the user. Triggers <code>validated.ac.form</code> event with the result.</p>
+  <p>Trigger validation of the form. If any errors are detected, either the browser's default validation UI or your custom events will alert the user. Triggers <code>validated.ac.form</code> event with the result, and <code>invalid.ac.form</code> if the form is invalid.</p>
   {% highlight js %}$('#myForm').form('validate'){% endhighlight %}
 
   <h3>Events</h3>
@@ -307,18 +371,22 @@ $('#myForm').on('submitted.ac.form', function(e) { ... });
          <td>This event is fired immediately when the <code>validate</code> instance method has been called. The current serialized values in the form are available through the <code>object</code> and <code>array</code> properties of the event. Call <code>.preventDefault()</code> on the event to stop validation.</td>
        </tr>
        <tr>
+         <td>invalid.ac.form</td>
+         <td>This event is fired during attempted submission if the form is not valid. Use this event to display custom validation notices that apply to the form overall. Messages for individual fields should be applied using the <code>invalid</code> <a href="https://developer.mozilla.org/en-US/docs/Web/Events/invalid">event</a> on individual <code>input</code> elements.</td>
+       </tr>
+       <tr>
          <td>validated.ac.form</td>
          <td>This event is fired when the form validation has completed. If any errors were detected, they will have been displayed to the user by this point. The validity of the form is available as the <code>isValid</code> property of the event.</td>
        </tr>
        <tr>
-         <td>submitted.ac.form</td>
-         <td>This data is fired when the form has been submitted. <strong><code>data-control="form"</code> must be present on the form element in order for Form.js to override the default submit handling of the form and fire this event instead.</strong> The form data is available in two ways: serialized into an object as the <code>object</code> property of the event, and as a raw array of input fields as <code>array</code>.</td>
+         <td>submit.ac.form</td>
+         <td>This data is fired when the form has passed validation. It takes place before a native form submit may occur. The form data is available in two ways: serialized into an object as the <code>object</code> property of the event, and as a raw array of input fields as <code>array</code>.</td>
        </tr>
       </tbody>
     </table>
   </div><!-- /.table-responsive -->
 {% highlight js %}
-$('#myForm').on('submitted.ac.form', function (e) {
+$('#myForm').on('submit.ac.form', function (e) {
   // do something...
 })
 {% endhighlight %}

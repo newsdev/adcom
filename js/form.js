@@ -8,13 +8,16 @@
     this.options  = options
     this.$element = $(element)
 
+    this.$element.on('submit.ac.form', function(e) { $(this).form('submit', e) })
     this.createSubmit()
+    this.initializeValidation()
   }
 
   Form.VERSION = '0.1.0'
 
   Form.DEFAULTS = {
-    show: true
+    show: true,
+    action: true
   }
 
   Form.prototype.show = function (data, meta, _relatedTarget) {
@@ -43,26 +46,47 @@
     this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget, sourceElement: this.sourceElement, sourceData: this.sourceData}))
   }
 
-  Form.prototype.submit = function (opts) {
+  Form.prototype.submit = function (submitEvent, options) {
     var $this = this
-    if (opts && opts.validate)
-      return this.$element.one('validated.ac.form', function(e) {
-        if (e.isValid) $this.submit({validate: false})
+    options = options || {}
+
+    // Only allow the native HTML submission to go through if action = true
+    // and the form is valid. Otherwise, call submitEvent.preventDefault().
+    // If the form is invalid, call submitEvent.stopImmediatePropagation() to
+    // prevent downstream submit handlers from firing.
+    if ($this.$validate && options.validate != false) {
+      var isValid
+      this.$element.one('validated.ac.form', function(e) {
+        isValid = e.isValid
+        if (e.isValid) $this.submit(submitEvent, {validate: false})
       }).form('validate')
 
-    var attributes = this.serialize()
-    $.extend(attributes, {
+      if (!isValid) {
+        submitEvent.preventDefault()
+        submitEvent.stopImmediatePropagation()
+      }
+      return isValid
+    }
+
+    if (this.options.action) return
+    submitEvent.preventDefault()
+
+    // Add addition attributes to the submit event for use downstream
+    var attributes = $.extend(this.serialize(), {
       relatedTarget: this.$element,
       sourceElement: this.sourceElement,
       sourceData:    this.sourceData
     })
 
+    $.extend(submitEvent, attributes)
+
+    // Deprecated. Will be removed in v1.0.
     this.$element.trigger($.Event('submitted.ac.form', attributes))
   }
 
   Form.prototype.serialize = function () {
-    var array    = this.$element.serializeArray()
-    var data     = deparam(this.$element.serialize())
+    var array = this.$element.serializeArray()
+    var data  = deparam(this.$element.serialize())
 
     return { object: data, array: array }
   }
@@ -70,32 +94,57 @@
   // Encapsulates the default browser validate, any custom validation via the
   // validate.ac.form event, and triggers a display of any invalidation
   // messages if necessary.
-  Form.prototype.validate = function () {
+  Form.prototype.validate = function (submitEvent) {
     var e = $.Event('validate.ac.form', this.serialize())
     this.$element.trigger(e)
     if (e.isDefaultPrevented()) return
 
-    this.$element.one('validated.ac.form', $.proxy(this.displayValidity, this))
-      .trigger($.Event('validated.ac.form', {isValid: this.$element[0].checkValidity()}))
+    var isValid = this.$element[0].checkValidity()
+
+    this.$element.one('validated.ac.form', $.proxy(this.displayValidity, this, submitEvent, isValid))
+      .trigger($.Event('validated.ac.form', {isValid: isValid}))
   }
 
   // If the form is invalid according to the DOM's native validity checker,
   // trigger the browser's default invalidation display.
   // If overridden (via event) we should find a way to pass the invalid
   // message hash to the event.
-  Form.prototype.displayValidity = function () {
-    var e = $.Event('displayValidity.ac.form')
-    this.$element.trigger(e)
-    if (e.isDefaultPrevented()) return
+  Form.prototype.displayValidity = function (submitEvent, isValid) {
+    var $this = this
+    if (isValid) return
 
-    if (!this.$element[0].checkValidity())
-      this.$element.find('input[type="submit"]').trigger('click')
+    var e = $.Event('invalid.ac.form')
+    this.$element.trigger(e)
+
+    // Don't display native validation if we've prevented it or validation is off
+    if (e.isDefaultPrevented() || !this.$validate) return
+
+    // If this browser supports native HTML form validation, temporarily turn
+    // it back on and submit the form.
+    if (Form.nativeValidation)
+    setTimeout(function() {
+      $this.$element.removeAttr('novalidate')
+      $this.$displayNativeValidation.click()
+      $this.$element.attr('novalidate', '')
+    }, 0)
   }
 
+  // Initialization functions
+
   Form.prototype.createSubmit = function () {
-    var existing_submit = this.$element.find('input[type="submit"]')
-    var new_submit      = null
-    if (!existing_submit[0]) this.$element.append(new_submit = $('<input style="display: none;" type="submit">'))
+    this.$displayNativeValidation = $('<input style="display: none;" type="submit" onsubmit="return false;">')
+    this.$element.append(this.$displayNativeValidation)
+  }
+
+  // Add "novalidate" to the form so we have full control over the invalid
+  // and submit events.
+  Form.prototype.initializeValidation = function () {
+    if (typeof this.$element.attr('data-original-novalidate') === typeof undefined || this.$element.attr('data-original-novalidate') === null) {
+      this.$element.attr('data-original-novalidate', typeof this.$element.attr('novalidate') !== typeof undefined && this.$element.attr('novalidate') !== false)
+    }
+
+    this.$validate = !this.$element.data('original-novalidate')
+    this.$element.attr('novalidate', '')
   }
 
   Form.prototype.reset = function () {
@@ -104,6 +153,7 @@
 
   Form.prototype.destroy = function (data) {
     this.$element.off('.ac.form').removeData('ac.form')
+    this.$validate ? this.$element.removeAttr('novalidate') : this.$element.attr('novalidate', '')
   }
 
   // Data accessor
@@ -114,6 +164,21 @@
     var el = closestWithData($(this), attr)
     if (el) return el.data(attr)
   }
+
+  /*
+   * https://github.com/Modernizr/Modernizr/blob/924c7611c170ef2dc502582e5079507aff61e388/feature-detects/forms/validation.js
+   * Licensed under the MIT license.
+   */
+  Form.nativeValidation = (function () {
+    var validationSupport = false
+    var form = document.createElement('form')
+    form.innerHTML = '<input name="test" required><button></button>'
+    form.addEventListener('submit', function(e) {window.opera ? e.stopPropagation() : e.preventDefault()})
+    form.getElementsByTagName('input')[0].addEventListener('invalid', function(e) {validationSupport = true; e.preventDefault(); e.stopPropagation();})
+    form.getElementsByTagName('button')[0].click()
+    return validationSupport
+  })()
+
 
   // FORM PLUGIN DEFINITION
   // ======================
@@ -172,20 +237,6 @@
     $target.form({show: false})
 
     Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized}, $this[0])
-  })
-
-  $(document).on('click', '[data-toggle="submit"]', function (e) {
-    var $this    = $(this).closest('[data-toggle="submit"]')
-    var $target  = $($this.data('target') || $this.closest('form'))
-    var validate = $target.data('validate') || true
-
-    Plugin.call($target, 'submit', {validate: validate})
-  })
-
-  $(document).on('submit', 'form[data-control="form"]', function (e) {
-    e.preventDefault()
-    var validate = $(e.target).data('validate') || true
-    Plugin.call($(e.target), 'submit', {validate: validate})
   })
 
   $(window).on('load', function () {
