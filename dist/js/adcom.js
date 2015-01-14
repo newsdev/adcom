@@ -506,6 +506,7 @@
     var triggers = ($this.attr('data-trigger') || 'click').split(' ')
 
     if (triggers.indexOf(e.type) == -1) return
+    if ($this.is('a')) e.preventDefault()
 
     var item    = closestWithData($this, 'ac.list.item')
     var $target = closestWithData($this, 'ac.list')
