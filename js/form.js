@@ -239,7 +239,7 @@
     Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized}, $this[0])
   })
 
-  $(window).on('load', function () {
+  $(document).ready(function () {
     $('[data-control="form"]').each(function () {
       Plugin.call($(this))
     })

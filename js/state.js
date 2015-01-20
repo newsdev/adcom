@@ -272,7 +272,7 @@
   })
 
   // Init state from data attrs on html
-  $(window).on('load', function () {
+  $(document).on('ready', function () {
     $('[data-control="state"]').each(function() {
       var $state = $(this)
       var data   = $state.data()

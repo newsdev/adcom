@@ -547,7 +547,7 @@
     Plugin.call($target, 'show')
   })
 
-  $(window).on('load', function () {
+  $(document).on('ready', function () {
     $('[data-control="list"]').each(function () {
       Plugin.call($(this))
     })

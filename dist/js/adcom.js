@@ -547,7 +547,7 @@
     Plugin.call($target, 'show')
   })
 
-  $(window).on('load', function () {
+  $(document).on('ready', function () {
     $('[data-control="list"]').each(function () {
       Plugin.call($(this))
     })
@@ -804,7 +804,7 @@
     Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized}, $this[0])
   })
 
-  $(window).on('load', function () {
+  $(document).ready(function () {
     $('[data-control="form"]').each(function () {
       Plugin.call($(this))
     })
@@ -1109,7 +1109,7 @@
   })
 
   // Init state from data attrs on html
-  $(window).on('load', function () {
+  $(document).on('ready', function () {
     $('[data-control="state"]').each(function() {
       var $state = $(this)
       var data   = $state.data()
