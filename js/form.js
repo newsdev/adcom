@@ -68,7 +68,6 @@
       return isValid
     }
 
-    if (this.options.action) return
     submitEvent.preventDefault()
 
     // Add addition attributes to the submit event for use downstream
