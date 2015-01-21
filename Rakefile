@@ -74,7 +74,7 @@ task :release do
     content_type: "application/zip"
   })
 
-  # puts ""
-  # puts "Your release is available here:"
-  # puts "https://github.com/newsdev/#{app_name}/releases/new?tag=v#{next_tag}"
+  puts ""
+  puts "Your release is available here:"
+  puts "https://github.com/newsdev/#{app_name}/releases/new?tag=v#{next_tag}"
 end
