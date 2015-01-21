@@ -76,5 +76,5 @@ task :release do
 
   puts ""
   puts "Your release is available here:"
-  puts "https://github.com/newsdev/#{app_name}/releases/new?tag=v#{next_tag}"
+  puts "https://github.com/#{repo_account}/#{app_name}/releases/new?tag=v#{next_tag}"
 end
