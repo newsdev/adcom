@@ -3,7 +3,9 @@ require 'zip'
 task :release do
   raise "Your working directly must be clean before releasing." if !`git st`.match(/nothing to commit, working directory clean$/)
 
+  repo_account = 'newsdev'
   app_name = File.basename(Dir.getwd)
+
   last_tag = `git describe --abbrev=0 --tags`.chomp.sub(/^v/, '')
   default_next_tag = last_tag.gsub(/\.(\d+)$/) { |not_needed| '.' + ($1.to_i + 1).to_s }
   puts "What release version is this? (lastest release was #{last_tag}) (defaults to #{default_next_tag})"
@@ -35,8 +37,18 @@ task :release do
   puts `git add _config.yml && git commit -m "Release v#{next_tag}"`
   puts `git tag -a "v#{next_tag}" -m "v#{next_tag}"`
 
-  puts "Created release v#{next_tag}. Run the following to push to github:"
-  puts "git push origin develop --tags"
+  puts "Created tag v#{next_tag}. Run the following to push to github? (y/N)"
+  puts "git push origin --tags"
+
+  STDOUT.flush
+  resp = STDIN.gets.chomp
+  raise "Quitting." if resp.downcase != 'y'
+
+  puts `git push origin --tags`
+
+  puts "Creating release from tag .#{next_tag}."
+  github = Github.new oauth_token: ENV['GITHUB_API_TOKEN']
+  github.repos.releases.create(repo_account, app_name, tag_name: "v#{next_tag}", name: "v#{next_tag}", prerelease: true)
 
   # Files for Github
 
