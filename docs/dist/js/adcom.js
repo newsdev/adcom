@@ -573,7 +573,6 @@
     this.options  = options
     this.$element = $(element)
 
-    this.$element.on('submit.ac.form', function(e) { $(this).form('submit', e) })
     this.createSubmit()
     this.initializeValidation()
   }
@@ -633,7 +632,7 @@
       return isValid
     }
 
-    submitEvent.preventDefault()
+    if (!this.options.action) submitEvent.preventDefault()
 
     // Add addition attributes to the submit event for use downstream
     var attributes = $.extend(this.serialize(), {
@@ -776,6 +775,22 @@
     return this
   }
 
+  // FORM SPECIAL EVENTS
+  // ===================
+
+  // Uses jQuery's special events API to wrap any handlers for the `submit`
+  // event on Adcom forms.
+  $.event.special.submit = {
+    add: function (handleObj) {
+      var oldHandler = handleObj.handler
+      handleObj.handler = function (e) {
+        if ($(this).data('ac.form')) $(this).form('submit', e)
+        if (!e.isImmediatePropagationStopped()) {
+          return oldHandler.apply(this, arguments)
+        }
+      }
+    }
+  }
 
   // FORM DATA-API
   // =============
