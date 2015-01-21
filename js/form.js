@@ -8,6 +8,11 @@
     this.options  = options
     this.$element = $(element)
 
+    // Data-api shorthand for preventing default submit
+    if (!this.options.action) {
+      this.$element.on('submit', function (e) { e.preventDefault() })
+    }
+
     this.createSubmit()
     this.initializeValidation()
   }
@@ -45,41 +50,8 @@
     this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget, sourceElement: this.sourceElement, sourceData: this.sourceData}))
   }
 
-  Form.prototype.submit = function (submitEvent, options) {
-    var $this = this
-    options = options || {}
-
-    // Only allow the native HTML submission to go through if action = true
-    // and the form is valid. Otherwise, call submitEvent.preventDefault().
-    // If the form is invalid, call submitEvent.stopImmediatePropagation() to
-    // prevent downstream submit handlers from firing.
-    if ($this.$validate && options.validate != false) {
-      var isValid
-      this.$element.one('validated.ac.form', function(e) {
-        isValid = e.isValid
-        if (e.isValid) $this.submit(submitEvent, {validate: false})
-      }).form('validate')
-
-      if (!isValid) {
-        submitEvent.preventDefault()
-        submitEvent.stopImmediatePropagation()
-      }
-      return isValid
-    }
-
-    if (!this.options.action) submitEvent.preventDefault()
-
-    // Add addition attributes to the submit event for use downstream
-    var attributes = $.extend(this.serialize(), {
-      relatedTarget: this.$element,
-      sourceElement: this.sourceElement,
-      sourceData:    this.sourceData
-    })
-
-    $.extend(submitEvent, attributes)
-
-    // Deprecated. Will be removed in v1.0.
-    this.$element.trigger($.Event('submitted.ac.form', attributes))
+  Form.prototype.submit = function () {
+    this.$element.submit()
   }
 
   Form.prototype.serialize = function () {
@@ -93,23 +65,29 @@
   // validate.ac.form event, and triggers a display of any invalidation
   // messages if necessary.
   Form.prototype.validate = function (submitEvent) {
+    if (!this.$validate) return
+
     var e = $.Event('validate.ac.form', this.serialize())
     this.$element.trigger(e)
     if (e.isDefaultPrevented()) return
 
     var isValid = this.$element[0].checkValidity()
 
-    this.$element.one('validated.ac.form', $.proxy(this.displayValidity, this, submitEvent, isValid))
-      .trigger($.Event('validated.ac.form', {isValid: isValid}))
+    if (!isValid) {
+      this.invalid()
+      submitEvent.preventDefault()
+      submitEvent.stopImmediatePropagation()
+    }
+
+    this.$element.trigger($.Event('validated.ac.form', {isValid: isValid}))
   }
 
   // If the form is invalid according to the DOM's native validity checker,
   // trigger the browser's default invalidation display.
   // If overridden (via event) we should find a way to pass the invalid
   // message hash to the event.
-  Form.prototype.displayValidity = function (submitEvent, isValid) {
+  Form.prototype.invalid = function () {
     var $this = this
-    if (isValid) return
 
     var e = $.Event('invalid.ac.form')
     this.$element.trigger(e)
@@ -120,11 +98,19 @@
     // If this browser supports native HTML form validation, temporarily turn
     // it back on and submit the form.
     if (Form.nativeValidation)
-    setTimeout(function() {
-      $this.$element.removeAttr('novalidate')
-      $this.$displayNativeValidation.click()
-      $this.$element.attr('novalidate', '')
-    }, 0)
+      setTimeout(function() {
+        $this.$element.removeAttr('novalidate')
+        $this.$displayNativeValidation.click()
+        $this.$element.attr('novalidate', '')
+      }, 0)
+  }
+
+  Form.prototype.addEventAttributes = function (submitEvent) {
+    $.extend(submitEvent, this.serialize(), {
+      relatedTarget: this.$element,
+      sourceElement: this.sourceElement,
+      sourceData:    this.sourceData
+    })
   }
 
   // Initialization functions
@@ -146,7 +132,7 @@
   }
 
   Form.prototype.reset = function () {
-    this.$element[0].reset();
+    this.$element[0].reset()
   }
 
   Form.prototype.destroy = function (data) {
@@ -217,9 +203,13 @@
   // event on Adcom forms.
   $.event.special.submit = {
     add: function (handleObj) {
-      var oldHandler = handleObj.handler
+      var form, oldHandler = handleObj.handler
       handleObj.handler = function (e) {
-        if ($(this).data('ac.form')) $(this).form('submit', e)
+        if (form = $(this).data('ac.form')) {
+          form.validate(e)
+          form.addEventAttributes(e)
+        }
+
         if (!e.isImmediatePropagationStopped()) {
           return oldHandler.apply(this, arguments)
         }
