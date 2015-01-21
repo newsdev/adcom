@@ -1,4 +1,5 @@
 require 'zip'
+require 'github_api'
 
 task :release do
   raise "Your working directly must be clean before releasing." if !`git st`.match(/nothing to commit, working directory clean$/)
@@ -46,13 +47,18 @@ task :release do
 
   puts `git push origin --tags`
 
-  puts "Creating release from tag .#{next_tag}."
+  puts "Creating release from tag v#{next_tag}."
   github = Github.new oauth_token: ENV['GITHUB_API_TOKEN']
-  github.repos.releases.create(repo_account, app_name, tag_name: "v#{next_tag}", name: "v#{next_tag}", prerelease: true)
+  release = github.repos.releases.create(repo_account, app_name, "v#{next_tag}", {
+    tag_name: "v#{next_tag}",
+    name: "v#{next_tag}",
+    prerelease: true
+  })
 
   # Files for Github
 
-  Zip::File.open(File.expand_path("../dist/#{app_name}-#{next_tag}-dist.zip", __FILE__), Zip::File::CREATE) do |zipfile|
+  zip_path = File.expand_path("../dist/#{app_name}-#{next_tag}-dist.zip", __FILE__)
+  Zip::File.open(zip_path, Zip::File::CREATE) do |zipfile|
     root = File.expand_path("../dist", __FILE__)
     input_filenames = Dir.glob(File.expand_path("../dist/**/*", __FILE__)).select do |file|
       File.file?(file) && !File.basename(file).index("#{File.basename(Dir.getwd)}-")
@@ -63,7 +69,12 @@ task :release do
     end
   end
 
-  puts ""
-  puts "Then go here to create the release:"
-  puts "https://github.com/newsdev/#{app_name}/releases/new?tag=v#{next_tag}"
+  github.repos.releases.assets.upload(repo_account, app_name, release.id, zip_path, {
+    name: File.basename(zip_path),
+    content_type: "application/zip"
+  })
+
+  # puts ""
+  # puts "Your release is available here:"
+  # puts "https://github.com/newsdev/#{app_name}/releases/new?tag=v#{next_tag}"
 end
