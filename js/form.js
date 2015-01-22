@@ -8,13 +8,16 @@
     this.options  = options
     this.$element = $(element)
 
-    // Data-api shorthand for preventing default submit
-    if (!this.options.action) {
-      this.$element.on('submit', function (e) { e.preventDefault() })
-    }
-
     this.createSubmit()
     this.initializeValidation()
+
+    // Data-api shorthand for preventing default submit
+    // Attaching a submit handler to every form ensures submit's special events
+    // are fired.
+    var $this = this
+    this.$element.on('submit', function (e) {
+      if (!$this.options.action) e.preventDefault()
+    })
   }
 
   Form.VERSION = '0.1.0'
@@ -206,8 +209,9 @@
       var form, oldHandler = handleObj.handler
       handleObj.handler = function (e) {
         if (form = $(this).data('ac.form')) {
-          form.validate(e)
-          form.addEventAttributes(e)
+          if (!e.originalEvent._validated) form.validate(e)
+          if (!e._addedAttributes) form.addEventAttributes(e)
+          e.originalEvent._validated = e._addedAttributes = true
         }
 
         if (!e.isImmediatePropagationStopped()) {
