@@ -4,6 +4,9 @@ require 'github_api'
 task :release do
   raise "Your working directly must be clean before releasing." if !`git st`.match(/nothing to commit, working directory clean$/)
 
+  puts `git fetch origin`
+  puts `git pull origin develop --tags`
+
   repo_account = 'newsdev'
   app_name = File.basename(Dir.getwd)
 
@@ -20,7 +23,7 @@ task :release do
   config_path = File.expand_path("../_config.yml", __FILE__)
   config = File.read(config_path)
 
-  raise "Config file does not reflect latest version. Check it first." if config.index(last_tag) < 0
+  raise "Config file does not reflect latest version. Check it first." if !config.index(last_tag)
 
   new_config = config.gsub(last_tag, next_tag).sub(/^(last_updated:\s+)\w+ \d+, \d+/) { |not_needed| $1 + Time.now.strftime("%B %-d, %Y") }
   puts "New config will be:"
