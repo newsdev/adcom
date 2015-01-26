@@ -5,19 +5,22 @@
   // =====================
 
   var Form = function (element, options) {
+    var $this = this
     this.options  = options
     this.$element = $(element)
 
-    this.createSubmit()
-    this.initializeValidation()
+    // Note the "real" novalidate state of the form
+    if (typeof this.$element.attr('data-original-novalidate') === typeof undefined || this.$element.attr('data-original-novalidate') === null) {
+      this.$element.attr('data-original-novalidate', typeof this.$element.attr('novalidate') !== typeof undefined && this.$element.attr('novalidate') !== false)
+    }
+    this.$element.attr('novalidate', '')
+    this.$validate = !this.$element.data('original-novalidate')
+    this.$nativeValidation = supportsNativeValidation()
 
-    // Data-api shorthand for preventing default submit
-    // Attaching a submit handler to every form ensures submit's special events
-    // are fired.
-    var $this = this
-    this.$element.on('submit', function (e) {
-      if (!$this.options.action) e.preventDefault()
-    })
+    // Create submit button for us if the form has none, or if this browser
+    // supports native validation.
+    this.$displayNativeValidation = $('<input style="display: none;" type="submit" onsubmit="return false;">')
+    this.$element.append(this.$displayNativeValidation)
   }
 
   Form.VERSION = '0.1.0'
@@ -32,6 +35,8 @@
     this.$element.trigger(e)
     if (e.isDefaultPrevented()) return
 
+    // Convert data, an object, into formData, a flash hash of key value pairs
+    // for use in the .deserialize() method.
     var formData = {}
     this.$element.find(':input[name]').each(function (idx, input) {
       var name = input.name || $(input).attr('name')
@@ -53,15 +58,11 @@
     this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget, sourceElement: this.sourceElement, sourceData: this.sourceData}))
   }
 
-  Form.prototype.submit = function () {
-    this.$element.submit()
-  }
-
   Form.prototype.serialize = function () {
-    var array = this.$element.serializeArray()
-    var data  = deparam(this.$element.serialize())
-
-    return { object: data, array: array }
+    return {
+      array:  this.$element.serializeArray(),
+      object: deparam(this.$element.serialize())
+    }
   }
 
   // Encapsulates the default browser validate, any custom validation via the
@@ -95,17 +96,17 @@
     var e = $.Event('invalid.ac.form')
     this.$element.trigger(e)
 
-    // Don't display native validation if we've prevented it or validation is off
-    if (e.isDefaultPrevented() || !this.$validate) return
+    // Don't display native validation if we've prevented it, validation is off,
+    // or the browser doesn't support it (or the form would actually submit).
+    if (e.isDefaultPrevented() || !this.$validate || !this.$nativeValidation) return
 
     // If this browser supports native HTML form validation, temporarily turn
     // it back on and submit the form.
-    if (Form.nativeValidation)
-      setTimeout(function() {
-        $this.$element.removeAttr('novalidate')
-        $this.$displayNativeValidation.click()
-        $this.$element.attr('novalidate', '')
-      }, 0)
+    setTimeout(function() {
+      $this.$element.removeAttr('novalidate')
+      $this.$displayNativeValidation.click()
+      $this.$element.attr('novalidate', '')
+    }, 0)
   }
 
   Form.prototype.addEventAttributes = function (submitEvent) {
@@ -116,55 +117,10 @@
     })
   }
 
-  // Initialization functions
-
-  Form.prototype.createSubmit = function () {
-    this.$displayNativeValidation = $('<input style="display: none;" type="submit" onsubmit="return false;">')
-    this.$element.append(this.$displayNativeValidation)
-  }
-
-  // Add "novalidate" to the form so we have full control over the invalid
-  // and submit events.
-  Form.prototype.initializeValidation = function () {
-    if (typeof this.$element.attr('data-original-novalidate') === typeof undefined || this.$element.attr('data-original-novalidate') === null) {
-      this.$element.attr('data-original-novalidate', typeof this.$element.attr('novalidate') !== typeof undefined && this.$element.attr('novalidate') !== false)
-    }
-
-    this.$validate = !this.$element.data('original-novalidate')
-    this.$element.attr('novalidate', '')
-  }
-
-  Form.prototype.reset = function () {
-    this.$element[0].reset()
-  }
-
   Form.prototype.destroy = function (data) {
     this.$element.off('.ac.form').removeData('ac.form')
     this.$validate ? this.$element.removeAttr('novalidate') : this.$element.attr('novalidate', '')
   }
-
-  // Data accessor
-
-  Form.data = function (name) {
-    var attr = "ac.form"
-    if (name) attr = attr + "." + name
-    var el = closestWithData($(this), attr)
-    if (el) return el.data(attr)
-  }
-
-  /*
-   * https://github.com/Modernizr/Modernizr/blob/924c7611c170ef2dc502582e5079507aff61e388/feature-detects/forms/validation.js
-   * Licensed under the MIT license.
-   */
-  Form.nativeValidation = (function () {
-    var validationSupport = false
-    var form = document.createElement('form')
-    form.innerHTML = '<input name="test" required><button></button>'
-    form.addEventListener('submit', function(e) {window.opera ? e.stopPropagation() : e.preventDefault()})
-    form.getElementsByTagName('input')[0].addEventListener('invalid', function(e) {validationSupport = true; e.preventDefault(); e.stopPropagation();})
-    form.getElementsByTagName('button')[0].click()
-    return validationSupport
-  })()
 
 
   // FORM PLUGIN DEFINITION
@@ -172,12 +128,11 @@
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
-    if (option == 'data') return Form.data.apply(this, args)
     return this.each(function () {
       var $this = $(this)
       var data  = $this.data('ac.form')
 
-      var options = $.extend({}, Form.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
+      var options = $.extend({}, Form.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
       if (!data) $this.data('ac.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
@@ -208,12 +163,16 @@
     add: function (handleObj) {
       var form, oldHandler = handleObj.handler
       handleObj.handler = function (e) {
+        // Run validation once per originalEvent, and add attributes for each
+        // new jQuery event encountered.
         if (form = $(this).data('ac.form')) {
           if (!e.originalEvent._validated) form.validate(e)
           if (!e._addedAttributes) form.addEventAttributes(e)
           e.originalEvent._validated = e._addedAttributes = true
         }
 
+        // Continue to run original event, as long as it hasn't been prevented
+        // by the validation process.
         if (!e.isImmediatePropagationStopped()) {
           return oldHandler.apply(this, arguments)
         }
@@ -231,7 +190,7 @@
     }, null)
   }
 
-  $(document).on('click', '[data-toggle="form"]', function (e) {
+  $(document).on('click.ac.form.data-api', '[data-toggle="form"]', function (e) {
     var $this      = $($(this).closest('[data-toggle="form"]')[0])
     var $target    = $($($this.data('target'))[0])
     var $sourceKey = $this.data('source') || 'serialized'
@@ -247,11 +206,15 @@
     Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized}, $this[0])
   })
 
-  $(document).ready(function () {
-    $('[data-control="form"]').each(function () {
-      Plugin.call($(this))
-    })
+  // This will ensure that forms with data-control="form" are initialied by the
+  // time any user-specified submit handlers are run.
+  $(document).on('submit.ac.form.data-api', '[data-control="form"]', function (e) {
+    var $target = $(this)
+    var form    = $target.data('ac.form') || Plugin.call($target).data('ac.form')
+
+    if (!form.options.action) e.preventDefault()
   })
+
 
   /**
    * @author Kyle Florence <kyle[dot]florence[at]gmail[dot]com>
@@ -276,4 +239,19 @@
    * Adapted slightly.
    */
   function selectn(a){function c(a){for(var c=a||(1,eval)("this"),d=b.length,e=0;d>e;e+=1)c&&(c=c[b[e]]);return c}var b=a.replace(/\[([-_\w]+)\]/g,".$1").split(".");return arguments.length>1?c(arguments[1]):c}
+
+  /*
+   * https://github.com/Modernizr/Modernizr/blob/924c7611c170ef2dc502582e5079507aff61e388/feature-detects/forms/validation.js
+   * Licensed under the MIT license.
+   */
+  function supportsNativeValidation = (function () {
+    var validationSupport = false
+    var form = document.createElement('form')
+    form.innerHTML = '<input name="test" required><button></button>'
+    form.addEventListener('submit', function(e) {window.opera ? e.stopPropagation() : e.preventDefault()})
+    form.getElementsByTagName('input')[0].addEventListener('invalid', function(e) {validationSupport = true; e.preventDefault(); e.stopPropagation();})
+    form.getElementsByTagName('button')[0].click()
+    return validationSupport
+  })()
+
 }(jQuery);

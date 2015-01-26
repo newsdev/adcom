@@ -118,7 +118,7 @@
   // url => {}
   State.prototype.deserialize = function (string) {
     var path  = string.split('?')[0]
-    var state = State.parseParams(string.split('?')[1])
+    var state = parseParams(string.split('?')[1])
 
     if (this.options.path) {
       var path_value = path.replace(this.options.path.base, '')
@@ -146,62 +146,6 @@
       })
     }
     if (e.trigger && e.trigger.type !== 'push.ac.state') setState([], e.state)
-  }
-
-  // Adapted from https://gist.github.com/kares/956897#comment-1190642
-  State.parseParams = function (query) {
-    var re = /([^&=]+)=?([^&]*)/g
-    var decode = function (str) { return decodeURIComponent(str.replace(/\+/g, ' ')) }
-
-    function createElement (params, key, value) {
-      key = key + ''
-      if (key.indexOf('.') !== -1) {
-        var list = key.split('.')
-        var new_key = key.split(/\.(.+)?/)[1]
-        if (!params[list[0]]) params[list[0]] = {}
-        if (new_key !== '') {
-          createElement(params[list[0]], new_key, value)
-        } else console.warn('parseParams :: empty property in key "' + key + '"')
-      } else
-      if (key.indexOf('[') !== -1) {
-        var list = key.split('[')
-        key = list[0]
-        var list = list[1].split(']')
-        var index = list[0]
-        if (index == '') {
-          if (!params) params = {}
-          if (!params[key] || !$.isArray(params[key])) params[key] = []
-          params[key].push(value)
-        } else {
-          if (!params) params = {}
-          if (!params[key] || !$.isArray(params[key])) params[key] = []
-          params[key][parseInt(index)] = value
-        }
-      } else {
-        if (!params) params = {}
-        params[key] = value
-      }
-    }
-    query = query + ''
-    if (query.match(/\?/) === null) query = '?' + query
-    var params = {}, e
-    if (query) {
-      if (query.indexOf('#') !== -1) {
-        query = query.substr(0, query.indexOf('#'))
-      }
-
-      if (query.indexOf('?') !== -1) {
-        query = query.substr(query.indexOf('?') + 1, query.length)
-      } else return {}
-      if (query == '') return {}
-      while (e = re.exec(query)) {
-        var key = decode(e[1])
-        var value = decode(e[2])
-        createElement(params, key, value)
-      }
-    }
-    delete params[undefined]
-    return params
   }
 
 
@@ -288,5 +232,61 @@
       Plugin.call($(window), data)
     })
   })
+
+  // Adapted from https://gist.github.com/kares/956897#comment-1190642
+  function parseParams (query) {
+    var re = /([^&=]+)=?([^&]*)/g
+    var decode = function (str) { return decodeURIComponent(str.replace(/\+/g, ' ')) }
+
+    function createElement (params, key, value) {
+      key = key + ''
+      if (key.indexOf('.') !== -1) {
+        var list = key.split('.')
+        var new_key = key.split(/\.(.+)?/)[1]
+        if (!params[list[0]]) params[list[0]] = {}
+        if (new_key !== '') {
+          createElement(params[list[0]], new_key, value)
+        } else console.warn('parseParams :: empty property in key "' + key + '"')
+      } else
+      if (key.indexOf('[') !== -1) {
+        var list = key.split('[')
+        key = list[0]
+        var list = list[1].split(']')
+        var index = list[0]
+        if (index == '') {
+          if (!params) params = {}
+          if (!params[key] || !$.isArray(params[key])) params[key] = []
+          params[key].push(value)
+        } else {
+          if (!params) params = {}
+          if (!params[key] || !$.isArray(params[key])) params[key] = []
+          params[key][parseInt(index)] = value
+        }
+      } else {
+        if (!params) params = {}
+        params[key] = value
+      }
+    }
+    query = query + ''
+    if (query.match(/\?/) === null) query = '?' + query
+    var params = {}, e
+    if (query) {
+      if (query.indexOf('#') !== -1) {
+        query = query.substr(0, query.indexOf('#'))
+      }
+
+      if (query.indexOf('?') !== -1) {
+        query = query.substr(query.indexOf('?') + 1, query.length)
+      } else return {}
+      if (query == '') return {}
+      while (e = re.exec(query)) {
+        var key = decode(e[1])
+        var value = decode(e[2])
+        createElement(params, key, value)
+      }
+    }
+    delete params[undefined]
+    return params
+  }
 
 }(jQuery);

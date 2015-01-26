@@ -9,18 +9,24 @@
     this.options  = options
     this.$element = $(element)
 
-    this.$items   = typeof this.options.items === 'string' ? JSON.parse(this.options.items) : this.options.items
-    this.template = this.parseTemplate(this.options.template)
+    // Immutable options - to change these, .list('destroy') must first be called
+    this.$items    = typeof this.options.items === 'string' ? JSON.parse(this.options.items) : this.options.items
 
-    this.states   = typeof this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
-    this.rendered = []
+    this.$states   = this.options.states
+    this.$rendered = []
 
-    this.sort        = this.options.sort ? this.getSort.apply(this, $.map([this.options.sort], function (n) { return n })) : null
-    this.filters     = {}
-    this.currentPage = parseInt(this.options.currentPage || 1)
-    this.pageSize    = parseInt(this.options.pageSize || 1)
+    // Mutable options
+    this.updateOptions({
+      template:    this.options.template,
+      currentPage: this.options.currentPage,
+      pageSize:    this.options.pageSize,
+      sort:        this.options.sort,
+      filters:     this.options.filters
+    })
 
     this.setInitialState()
+
+    // Initialization for data-api specific options
 
     if (this.options.remote) {
       $.getJSON(this.options.remote, function(items) {
@@ -36,15 +42,29 @@
   List.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.list.data-api" }).join(' ')
 
   List.DEFAULTS = {
+    // immutable
     show: true,
-    items: [],
-    states: [],
     selectedClass: '',
-    filtering: 'on',
-    sorting: 'on',
-    pagination: 'off',
+
+    sort: null,
+    filters: {},
+
+    // mutable
     currentPage: 1,
-    pageSize: 20
+  }
+
+  List.prototype.updateOptions = function (options) {
+    if (options.template)    this.template    = this.parseTemplate(options.template)
+    if (options.currentPage) this.currentPage = parseInt(options.currentPage)
+    if (options.pageSize)    this.pageSize    = parseInt(options.pageSize)
+
+    if (typeof options.sort == 'string')   this.sort = null // TKTKTKTK TODO TODO
+    if (typeof options.sort == 'function') this.sort = options.sort
+    // this.sort        = this.options.sort ? this.getSort.apply(this, $.map([this.options.sort], function (n) { return n })) : null
+
+    if (options.filters) this.filters = options.filters
+    // TKTKTK TODO TODO
+    // should setting a new filter for a key set it immediately, or should it store it for later use when that filter is toggled?
   }
 
   // Orchestration
@@ -57,7 +77,7 @@
     var items = $this.getCurrentItems()
 
     $this.$element.empty()
-    $this.rendered = []
+    $this.$rendered = []
 
     $.each(items, function (idx, item) {
       var renderedItem = $this.renderItem(item)
@@ -87,7 +107,7 @@
     selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) {
       var index = (typeof el == 'number') ? el : $(el).data('ac.list.index')
-      $this.changeState(el, $this.states[index] ? false : true)
+      $this.changeState(el, $this.$states[index] ? false : true)
     })
   }
 
@@ -97,7 +117,7 @@
     if (typeof el === 'number') {
       var item   = this.$items[el]
       var idx    = el
-      var target = $(this.rendered[idx])
+      var target = $(this.$rendered[idx])
     } else {
       var target = $(el)
       var item   = target.data('ac.list.item')
@@ -106,7 +126,7 @@
 
     this.$element.trigger($.Event('toggle.ac.list', { item: item, target: target, index: idx, state: state }))
 
-    this.states[idx] = state
+    this.$states[idx] = state
     if (target) target[state ? 'addClass' : 'removeClass'](this.options.selectedClass)
 
     this.$element.trigger($.Event('toggled.ac.list', { item: item, target: target, index: idx, state: state }))
@@ -116,7 +136,7 @@
     var selected = []
     var $this = this
     $.each(this.$items, function (idx, item) {
-      if ($this.states[idx]) selected.push(item)
+      if ($this.$states[idx]) selected.push(item)
     })
     return selected
   }
@@ -157,29 +177,7 @@
       templateString += '<td data-field="' + field + '"></td>'
     })
 
-    return this.compileTemplate('<tr>' + templateString + '</tr')
-  }
-
-  function unescapeString (string) {
-    // Adapted from Underscore.js 1.7.0
-    // http://underscorejs.org
-    // (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-    // Underscore may be freely distributed under the MIT license.
-    var map = {
-      '&amp;': '&',
-      '&lt;': '<',
-      '&gt;': '>',
-      '&quot;': '"',
-      '&#x27;': "'",
-      '&#x60;': '`'
-    }
-    var escaper = function (match) { return map[match] }
-    var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
-    var testRegexp = RegExp(source)
-    var replaceRegexp = RegExp(source, 'g')
-
-    string = string == null ? '' : '' + string
-    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string
+    return this.compileTemplate('<tr>' + templateString + '</tr>')
   }
 
   // Sort / Scope
@@ -262,8 +260,8 @@
     this.$element.trigger($.Event('pageChanged.ac.list', { page: this.currentPage }))
   }
 
-  // Modeled after PourOver's .getCurrentItems. Should return the items in a
-  // collection which have been filtered, sorted, and paged.
+  // Should return the items in a collection which have been filtered, sorted,
+  // and paged.
   List.prototype.getCurrentItems = function () {
     var visibleItems = this.$items.slice(0) // dup
 
@@ -271,10 +269,10 @@
     if (this.options.filtering == 'on') visibleItems = this.getFilteredItems(visibleItems)
 
     // sort
-    if (this.options.sorting == 'on') visibleItems = this.getSortedItems(visibleItems)
+    if (this.sort)     visibleItems = this.getSortedItems(visibleItems)
 
     // paginate
-    if (this.options.pagination == 'on') visibleItems = this.getPaginatedItems(visibleItems)
+    if (this.pageSize) visibleItems = this.getPaginatedItems(visibleItems)
 
     return visibleItems
   }
@@ -336,7 +334,7 @@
       console.error("[ac.list] Templates for Adcom List can have only one top-level element. It currently has " + renderedChildren.length + ".", $this.$element[0], renderedChildren)
     var el = renderedChildren[0]
 
-    if (this.states[$idx]) $(el).addClass(this.options.selectedClass)
+    if (this.$states[$idx]) $(el).addClass(this.options.selectedClass)
 
     var dynamicElements = $(el).data('field') === undefined ? $(el).find('[data-field]') : $(el)
 
@@ -352,7 +350,7 @@
       $this.update($(el), e.item)
     })
 
-    $this.rendered[$idx] = el
+    $this.$rendered[$idx] = el
 
     return el
   }
@@ -369,8 +367,8 @@
     index = index == undefined ? this.$items.length : index
 
     this.$items.splice(index, 0, data)
-    this.states.splice(index, 0, undefined)
-    this.rendered.splice(index, 0, undefined)
+    this.$states.splice(index, 0, undefined)
+    this.$rendered.splice(index, 0, undefined)
 
     this.show()
   }
@@ -381,11 +379,11 @@
 
     this.$items[index] = data
 
-    if (this.rendered[index]) {
-      var original    = $(this.rendered[index])
+    if (this.$rendered[index]) {
+      var original    = $(this.$rendered[index])
       var replacement = this.renderItem(data)
       original.replaceWith(replacement)
-      this.rendered[index] = replacement[0]
+      this.$rendered[index] = replacement[0]
     }
 
     this.show()
@@ -396,8 +394,8 @@
     if (index == -1) throw "Item not found in List, and could not be deleted."
 
     this.$items.splice(index, 1)
-    this.states.splice(index, 1)
-    this.rendered.splice(index, 1)
+    this.$states.splice(index, 1)
+    this.$rendered.splice(index, 1)
 
     this.show()
   }
@@ -405,8 +403,8 @@
   List.prototype.destroy = function () {
     this.$element.off('.ac.list').removeData('ac.list')
     this.$element.empty()
-    this.states = []
-    this.rendered = []
+    this.$states = []
+    this.$rendered = []
   }
 
   // Trigger definitions
@@ -449,30 +447,22 @@
     })
   }
 
-  // Data accessor
-
-  List.data = function (name) {
-    var attr = "ac.list"
-    if (name) attr = attr + "." + name
-    var el = closestWithData($(this), attr)
-    if (el) return el.data(attr)
-  }
 
   // LIST PLUGIN DEFINITION
   // ======================
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
-    if (option == 'data') return List.data.apply(this, args)
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('ac.list')
 
-      var options = $.extend({}, List.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
+      var options = $.extend({}, List.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
       if (!data) $this.data('ac.list', (data = new List(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
       else if (options.show && !options.remote) data.show()
+      else if (typeof option == 'object') data.update(option)
     })
   }
 
@@ -547,12 +537,6 @@
     Plugin.call($target, 'show')
   })
 
-  $(document).on('ready', function () {
-    $('[data-control="list"]').each(function () {
-      Plugin.call($(this))
-    })
-  })
-
   /*
    * Copyright (c) 2013 Wil Moore III
    * Licensed under the MIT license.
@@ -560,5 +544,27 @@
    * Adapted slightly.
    */
   function selectn(a){function c(a){for(var c=a||(1,eval)("this"),d=b.length,e=0;d>e;e+=1)c&&(c=c[b[e]]);return c}var b=a.replace(/\[([-_\w]+)\]/g,".$1").split(".");return arguments.length>1?c(arguments[1]):c}
+
+  // Adapted from Underscore.js 1.7.0
+  // http://underscorejs.org
+  // (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+  // Underscore may be freely distributed under the MIT license.
+  function unescapeString (string) {
+    var map = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#x27;': "'",
+      '&#x60;': '`'
+    }
+    var escaper = function (match) { return map[match] }
+    var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
+    var testRegexp = RegExp(source)
+    var replaceRegexp = RegExp(source, 'g')
+
+    string = string == null ? '' : '' + string
+    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string
+  }
 
 }(jQuery);
