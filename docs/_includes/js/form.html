@@ -175,15 +175,19 @@ $('#myForm').on('submit.ac.form', function(e) {
         <tr>
           <th>ID</th>
           <th>Name</th>
+          <th>Toggle</th>
+          <th>Choice</th>
           <th></th>
         </tr>
       </thead>
       <tbody data-control="list" id="myListUpdate"
-             data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
+             data-items='[{"id": 1, "name": "First Item", "toggle": "on", "choice": "1"}, {"id": 2, "name": "Second Item", "choice": "2"}]'
              data-template="
              <tr>
                <td data-field='id'></td>
                <td data-field='name'></td>
+               <td data-field='toggle'></td>
+               <td data-field='choice'></td>
                <td>
                  <button class='btn btn-default'
                    data-toggle='form'
@@ -196,11 +200,37 @@ $('#myForm').on('submit.ac.form', function(e) {
 
     <form id="myFormUpdate" data-control="form" data-action="false">
       <div class="row">
-        <div class="form-group col-sm-5">
+        <div class="form-group col-sm-3">
           <input type="text" class="form-control" name="id" placeholder="id">
         </div>
-        <div class="form-group col-sm-5">
+        <div class="form-group col-sm-3">
           <input type="text" class="form-control" name="name" placeholder="name">
+        </div>
+        <div class="form-group col-sm-2">
+          <label class="checkbox-inline">
+            <input type="checkbox" name="toggle">
+            Toggle
+          </label>
+        </div>
+        <div class="form-group col-sm-2">
+          <div class="radio">
+            <label>
+              <input type="radio" name="choice" value="1">
+              1
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="choice" value="2">
+              2
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="choice" value="3">
+              3
+            </label>
+          </div>
         </div>
         <div class="form-group col-sm-2">
           <input type="submit" class="form-control btn btn-primary" value="Save">
