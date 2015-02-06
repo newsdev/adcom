@@ -5,19 +5,18 @@
   // =====================
 
   var List = function (element, options) {
-    var $this = this
     this.options  = options
     this.$element = $(element)
 
-    // Immutable options - to change these, .list('destroy') must first be called
+    // Immutable options - to change these wholesale, .list('destroy') must
+    // first be called, or the CRUD actions should be used.
     this.$items    = typeof this.options.items === 'string' ? JSON.parse(this.options.items) : this.options.items
-
     this.$states   = this.options.states
     this.$rendered = []
 
     // Mutable options
+    this.template = this.parseTemplate(this.options.template)
     this.updateOptions({
-      template:    this.options.template,
       currentPage: this.options.currentPage,
       pageSize:    this.options.pageSize,
       sort:        this.options.sort,
@@ -29,17 +28,17 @@
     // Initialization for data-api specific options
 
     if (this.options.remote) {
-      $.getJSON(this.options.remote, function(items) {
-        $this.$items = items
-        if ($this.options.show) $this.show()
-        $this.$element.trigger($.Event('loaded.ac.list', { items: items }))
-      })
+      $.getJSON(this.options.remote, $.proxy(function(items) {
+        this.$items = items
+        if (this.options.show) this.show()
+        this.$element.trigger($.Event('loaded.ac.list', { items: items }))
+      }, this))
     }
   }
 
   List.VERSION = '0.1.0'
 
-  List.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.list.data-api" }).join(' ')
+  List.TRIGGER_EVENTS  = $.map('click keydown keypress keyup focus blur focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.list.data-api" }).join(' ')
 
   List.DEFAULTS = {
     // immutable
@@ -48,9 +47,10 @@
 
     sort: null,
     filters: {},
+    states: [],
 
     // mutable
-    currentPage: 1,
+    currentPage: 1
   }
 
   List.prototype.updateOptions = function (options) {
@@ -70,21 +70,19 @@
   // Orchestration
 
   List.prototype.show = function () {
-    var $this = this
+    this.$element.trigger('show.ac.list')
 
-    $this.$element.trigger('show.ac.list')
+    var items = this.getCurrentItems()
 
-    var items = $this.getCurrentItems()
+    this.$element.empty()
+    this.$rendered = []
 
-    $this.$element.empty()
-    $this.$rendered = []
+    $.each(items, $.proxy(function (idx, item) {
+      var renderedItem = this.renderItem(item)
+      $(this.$element).append(this.renderItem(item))
+    }, this))
 
-    $.each(items, function (idx, item) {
-      var renderedItem = $this.renderItem(item)
-      $($this.$element).append($this.renderItem(item))
-    })
-
-    $this.$element.trigger($.Event('shown.ac.list', { items: items }))
+    this.$element.trigger($.Event('shown.ac.list', { items: items }))
   }
 
   // Actions
@@ -200,8 +198,8 @@
 
     // default sort function based on single attribute and direction
     return function (a, b) {
-      var aVal = selectn(field, a),
-          bVal = selectn(field, b)
+      var aVal = $.fn.selectn(field, a),
+          bVal = $.fn.selectn(field, b)
       var left  = (typeof aVal === 'function' ? aVal() : aVal) || ''
       var right = (typeof bVal === 'function' ? bVal() : bVal) || ''
 
@@ -228,7 +226,7 @@
 
       $.each(fields, function (idx, field) {
         if (matches) return
-        var val = selectn(field, item)
+        var val = $.fn.selectn(field, item)
         if (typeof val === 'function') val = val()
         if (String(val).toLowerCase().trim().indexOf(value) > -1) matches = true
       })
@@ -269,7 +267,7 @@
     if (this.options.filtering == 'on') visibleItems = this.getFilteredItems(visibleItems)
 
     // sort
-    if (this.sort)     visibleItems = this.getSortedItems(visibleItems)
+    if (this.sort) visibleItems = this.getSortedItems(visibleItems)
 
     // paginate
     if (this.pageSize) visibleItems = this.getPaginatedItems(visibleItems)
@@ -314,7 +312,6 @@
   // Rendering
 
   List.prototype.renderItem = function (item) {
-    var $this    = this
     var $item    = item
     var $idx     = this.$items.indexOf(item)
     var rendered = $(this.template($item))
@@ -331,7 +328,7 @@
       return true
     })
     if (renderedChildren.length > 1)
-      console.error("[ac.list] Templates for Adcom List can have only one top-level element. It currently has " + renderedChildren.length + ".", $this.$element[0], renderedChildren)
+      console.error("Adcom List templates can have only one top-level element. It currently has " + renderedChildren.length + ".", this.$element[0], renderedChildren)
     var el = renderedChildren[0]
 
     if (this.$states[$idx]) $(el).addClass(this.options.selectedClass)
@@ -346,11 +343,11 @@
 
     $(el).data('ac.list.item', $item)
     $(el).data('ac.list.index', $idx)
-    $(el).on('update.ac.list', function (e) {
-      $this.update($(el), e.item)
-    })
+    $(el).on('update.ac.list', $.proxy(function (e) {
+      this.update($(el), e.item)
+    }, this))
 
-    $this.$rendered[$idx] = el
+    this.$rendered[$idx] = el
 
     return el
   }
@@ -403,8 +400,7 @@
   List.prototype.destroy = function () {
     this.$element.off('.ac.list').removeData('ac.list')
     this.$element.empty()
-    this.$states = []
-    this.$rendered = []
+    this.$states = this.$rendered = []
   }
 
   // Trigger definitions
@@ -414,7 +410,6 @@
     el.each(function () {
       var $el = $(this)
       var $target = $($el.data('target'))
-      // if ($target[0] !== $this.$element[0]) return
 
       var field = $el.data('sort')
       var states = ($el.data('states') || 'ascending,descending').split(/,\s*/)
@@ -491,12 +486,8 @@
     }, null)
   }
 
-  $(document).on(List.EVENTS, '[data-toggle="select"]', function (e) {
-    var $this    = $(this).closest('[data-toggle="select"]')
-    var triggers = ($this.attr('data-trigger') || 'click').split(' ')
-
-    if (triggers.indexOf(e.type) == -1) return
-    if ($this.is('a')) e.preventDefault()
+  $(document).on('click.ac.list.data-api', '[data-toggle="select"]', function (e) {
+    var $this   = $(this).closest('[data-toggle="select"]')
 
     var item    = closestWithData($this, 'ac.list.item')
     var $target = closestWithData($this, 'ac.list')
@@ -514,7 +505,7 @@
     Plugin.call($target, 'show')
   })
 
-  $(document).on(List.EVENTS, '[data-filter]', function (e) {
+  $(document).on(List.TRIGGER_EVENTS, '[data-filter]', function (e) {
     var $this        = $(this).closest('[data-filter]')
     var $target      = $($this.data('target'))
     var defaultEvent = $this.is(':input') ? 'change' : 'click'
@@ -536,14 +527,6 @@
     Plugin.call($target, 'setCurrentPage', $this.data('page'))
     Plugin.call($target, 'show')
   })
-
-  /*
-   * Copyright (c) 2013 Wil Moore III
-   * Licensed under the MIT license.
-   * https://github.com/wilmoore/selectn
-   * Adapted slightly.
-   */
-  function selectn(a){function c(a){for(var c=a||(1,eval)("this"),d=b.length,e=0;d>e;e+=1)c&&(c=c[b[e]]);return c}var b=a.replace(/\[([-_\w]+)\]/g,".$1").split(".");return arguments.length>1?c(arguments[1]):c}
 
   // Adapted from Underscore.js 1.7.0
   // http://underscorejs.org

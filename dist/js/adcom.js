@@ -1,3 +1,63 @@
+/*
+ * Several jQuery plugins for help in dealing with objects
+ */
+
++function ($) {
+  'use strict';
+
+  /*
+   * Copyright (c) 2013 Wil Moore III
+   * Licensed under the MIT license.
+   * https://github.com/wilmoore/selectn
+   *
+   * Adapted to allow property access.
+   */
+  $.fn.selectn = function (query, object) {
+    var parts
+
+    // normalize query to `.property` access (i.e. `a.b[0]` becomes `a.b.0`)
+    // allow access to indices[1] and key[properties]
+    query = query.replace(/\[([-_\w]+)\]/g, '.$1')
+    parts = query.split('.')
+
+    var ref = object || (1, eval)('this'),
+        len = parts.length,
+        idx = 0
+
+    // iteratively save each segment's reference
+    for (; idx < len; idx += 1) {
+      if (ref) ref = ref[parts[idx]]
+    }
+
+    return ref
+  }
+
+
+  /*
+   * jQuery serializeObject - v0.2 - 1/20/2010
+   * http://benalman.com/projects/jquery-misc-plugins/
+   *
+   * Copyright (c) 2010 "Cowboy" Ben Alman
+   * Dual licensed under the MIT and GPL licenses.
+   * http://benalman.com/about/license/
+   */
+  $.fn.serializeObject = function () {
+    var obj = {}
+
+    $.each( this.serializeArray(), function(i,o){
+      var n = o.name,
+        v = o.value
+
+        obj[n] = obj[n] === undefined ? v
+          : $.isArray( obj[n] ) ? obj[n].concat( v )
+          : [ obj[n], v ]
+    })
+
+    return obj
+  }
+
+}(jQuery);
+
 +function ($) {
   'use strict';
 
@@ -5,29 +65,34 @@
   // =====================
 
   var List = function (element, options) {
-    var $this = this
     this.options  = options
     this.$element = $(element)
 
-    this.$items   = typeof this.options.items === 'string' ? JSON.parse(this.options.items) : this.options.items
+    // Immutable options - to change these wholesale, .list('destroy') must
+    // first be called, or the CRUD actions should be used.
+    this.$items    = typeof this.options.items === 'string' ? JSON.parse(this.options.items) : this.options.items
+    this.$states   = this.options.states
+    this.$rendered = []
+
+    // Mutable options
     this.template = this.parseTemplate(this.options.template)
-
-    this.states   = typeof this.options.states === 'string' ? this.options.states.split(/,\s*/) : this.options.states || []
-    this.rendered = []
-
-    this.sort        = this.options.sort ? this.getSort.apply(this, $.map([this.options.sort], function (n) { return n })) : null
-    this.filters     = {}
-    this.currentPage = parseInt(this.options.currentPage || 1)
-    this.pageSize    = parseInt(this.options.pageSize || 1)
+    this.updateOptions({
+      currentPage: this.options.currentPage,
+      pageSize:    this.options.pageSize,
+      sort:        this.options.sort,
+      filters:     this.options.filters
+    })
 
     this.setInitialState()
 
+    // Initialization for data-api specific options
+
     if (this.options.remote) {
-      $.getJSON(this.options.remote, function(items) {
-        $this.$items = items
-        if ($this.options.show) $this.show()
-        $this.$element.trigger($.Event('loaded.ac.list', { items: items }))
-      })
+      $.getJSON(this.options.remote, $.proxy(function(items) {
+        this.$items = items
+        if (this.options.show) this.show()
+        this.$element.trigger($.Event('loaded.ac.list', { items: items }))
+      }, this))
     }
   }
 
@@ -36,35 +101,48 @@
   List.EVENTS  = $.map('scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave load resize scroll unload error keydown keypress keyup load resize scroll unload error blur focus focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.list.data-api" }).join(' ')
 
   List.DEFAULTS = {
+    // immutable
     show: true,
-    items: [],
-    states: [],
     selectedClass: '',
-    filtering: 'on',
-    sorting: 'on',
-    pagination: 'off',
-    currentPage: 1,
-    pageSize: 20
+
+    sort: null,
+    filters: {},
+    states: [],
+
+    // mutable
+    currentPage: 1
+  }
+
+  List.prototype.updateOptions = function (options) {
+    if (options.template)    this.template    = this.parseTemplate(options.template)
+    if (options.currentPage) this.currentPage = parseInt(options.currentPage)
+    if (options.pageSize)    this.pageSize    = parseInt(options.pageSize)
+
+    if (typeof options.sort == 'string')   this.sort = null // TKTKTKTK TODO TODO
+    if (typeof options.sort == 'function') this.sort = options.sort
+    // this.sort        = this.options.sort ? this.getSort.apply(this, $.map([this.options.sort], function (n) { return n })) : null
+
+    if (options.filters) this.filters = options.filters
+    // TKTKTK TODO TODO
+    // should setting a new filter for a key set it immediately, or should it store it for later use when that filter is toggled?
   }
 
   // Orchestration
 
   List.prototype.show = function () {
-    var $this = this
+    this.$element.trigger('show.ac.list')
 
-    $this.$element.trigger('show.ac.list')
+    var items = this.getCurrentItems()
 
-    var items = $this.getCurrentItems()
+    this.$element.empty()
+    this.$rendered = []
 
-    $this.$element.empty()
-    $this.rendered = []
+    $.each(items, $.proxy(function (idx, item) {
+      var renderedItem = this.renderItem(item)
+      $(this.$element).append(this.renderItem(item))
+    }, this))
 
-    $.each(items, function (idx, item) {
-      var renderedItem = $this.renderItem(item)
-      $($this.$element).append($this.renderItem(item))
-    })
-
-    $this.$element.trigger($.Event('shown.ac.list', { items: items }))
+    this.$element.trigger($.Event('shown.ac.list', { items: items }))
   }
 
   // Actions
@@ -87,7 +165,7 @@
     selector = $.map([selector], function(n) {return n;})
     $(selector).each(function (idx, el) {
       var index = (typeof el == 'number') ? el : $(el).data('ac.list.index')
-      $this.changeState(el, $this.states[index] ? false : true)
+      $this.changeState(el, $this.$states[index] ? false : true)
     })
   }
 
@@ -97,7 +175,7 @@
     if (typeof el === 'number') {
       var item   = this.$items[el]
       var idx    = el
-      var target = $(this.rendered[idx])
+      var target = $(this.$rendered[idx])
     } else {
       var target = $(el)
       var item   = target.data('ac.list.item')
@@ -106,7 +184,7 @@
 
     this.$element.trigger($.Event('toggle.ac.list', { item: item, target: target, index: idx, state: state }))
 
-    this.states[idx] = state
+    this.$states[idx] = state
     if (target) target[state ? 'addClass' : 'removeClass'](this.options.selectedClass)
 
     this.$element.trigger($.Event('toggled.ac.list', { item: item, target: target, index: idx, state: state }))
@@ -116,7 +194,7 @@
     var selected = []
     var $this = this
     $.each(this.$items, function (idx, item) {
-      if ($this.states[idx]) selected.push(item)
+      if ($this.$states[idx]) selected.push(item)
     })
     return selected
   }
@@ -157,29 +235,7 @@
       templateString += '<td data-field="' + field + '"></td>'
     })
 
-    return this.compileTemplate('<tr>' + templateString + '</tr')
-  }
-
-  function unescapeString (string) {
-    // Adapted from Underscore.js 1.7.0
-    // http://underscorejs.org
-    // (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-    // Underscore may be freely distributed under the MIT license.
-    var map = {
-      '&amp;': '&',
-      '&lt;': '<',
-      '&gt;': '>',
-      '&quot;': '"',
-      '&#x27;': "'",
-      '&#x60;': '`'
-    }
-    var escaper = function (match) { return map[match] }
-    var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
-    var testRegexp = RegExp(source)
-    var replaceRegexp = RegExp(source, 'g')
-
-    string = string == null ? '' : '' + string
-    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string
+    return this.compileTemplate('<tr>' + templateString + '</tr>')
   }
 
   // Sort / Scope
@@ -202,8 +258,8 @@
 
     // default sort function based on single attribute and direction
     return function (a, b) {
-      var aVal = selectn(field, a),
-          bVal = selectn(field, b)
+      var aVal = $.fn.selectn(field, a),
+          bVal = $.fn.selectn(field, b)
       var left  = (typeof aVal === 'function' ? aVal() : aVal) || ''
       var right = (typeof bVal === 'function' ? bVal() : bVal) || ''
 
@@ -230,7 +286,7 @@
 
       $.each(fields, function (idx, field) {
         if (matches) return
-        var val = selectn(field, item)
+        var val = $.fn.selectn(field, item)
         if (typeof val === 'function') val = val()
         if (String(val).toLowerCase().trim().indexOf(value) > -1) matches = true
       })
@@ -262,8 +318,8 @@
     this.$element.trigger($.Event('pageChanged.ac.list', { page: this.currentPage }))
   }
 
-  // Modeled after PourOver's .getCurrentItems. Should return the items in a
-  // collection which have been filtered, sorted, and paged.
+  // Should return the items in a collection which have been filtered, sorted,
+  // and paged.
   List.prototype.getCurrentItems = function () {
     var visibleItems = this.$items.slice(0) // dup
 
@@ -271,10 +327,10 @@
     if (this.options.filtering == 'on') visibleItems = this.getFilteredItems(visibleItems)
 
     // sort
-    if (this.options.sorting == 'on') visibleItems = this.getSortedItems(visibleItems)
+    if (this.sort)     visibleItems = this.getSortedItems(visibleItems)
 
     // paginate
-    if (this.options.pagination == 'on') visibleItems = this.getPaginatedItems(visibleItems)
+    if (this.pageSize) visibleItems = this.getPaginatedItems(visibleItems)
 
     return visibleItems
   }
@@ -316,7 +372,6 @@
   // Rendering
 
   List.prototype.renderItem = function (item) {
-    var $this    = this
     var $item    = item
     var $idx     = this.$items.indexOf(item)
     var rendered = $(this.template($item))
@@ -333,10 +388,10 @@
       return true
     })
     if (renderedChildren.length > 1)
-      console.error("[ac.list] Templates for Adcom List can have only one top-level element. It currently has " + renderedChildren.length + ".", $this.$element[0], renderedChildren)
+      console.error("Adcom List templates can have only one top-level element. It currently has " + renderedChildren.length + ".", this.$element[0], renderedChildren)
     var el = renderedChildren[0]
 
-    if (this.states[$idx]) $(el).addClass(this.options.selectedClass)
+    if (this.$states[$idx]) $(el).addClass(this.options.selectedClass)
 
     var dynamicElements = $(el).data('field') === undefined ? $(el).find('[data-field]') : $(el)
 
@@ -348,11 +403,11 @@
 
     $(el).data('ac.list.item', $item)
     $(el).data('ac.list.index', $idx)
-    $(el).on('update.ac.list', function (e) {
-      $this.update($(el), e.item)
-    })
+    $(el).on('update.ac.list', $.proxy(function (e) {
+      this.update($(el), e.item)
+    }, this))
 
-    $this.rendered[$idx] = el
+    this.$rendered[$idx] = el
 
     return el
   }
@@ -369,8 +424,8 @@
     index = index == undefined ? this.$items.length : index
 
     this.$items.splice(index, 0, data)
-    this.states.splice(index, 0, undefined)
-    this.rendered.splice(index, 0, undefined)
+    this.$states.splice(index, 0, undefined)
+    this.$rendered.splice(index, 0, undefined)
 
     this.show()
   }
@@ -381,11 +436,11 @@
 
     this.$items[index] = data
 
-    if (this.rendered[index]) {
-      var original    = $(this.rendered[index])
+    if (this.$rendered[index]) {
+      var original    = $(this.$rendered[index])
       var replacement = this.renderItem(data)
       original.replaceWith(replacement)
-      this.rendered[index] = replacement[0]
+      this.$rendered[index] = replacement[0]
     }
 
     this.show()
@@ -396,8 +451,8 @@
     if (index == -1) throw "Item not found in List, and could not be deleted."
 
     this.$items.splice(index, 1)
-    this.states.splice(index, 1)
-    this.rendered.splice(index, 1)
+    this.$states.splice(index, 1)
+    this.$rendered.splice(index, 1)
 
     this.show()
   }
@@ -405,8 +460,7 @@
   List.prototype.destroy = function () {
     this.$element.off('.ac.list').removeData('ac.list')
     this.$element.empty()
-    this.states = []
-    this.rendered = []
+    this.$states = this.$rendered = []
   }
 
   // Trigger definitions
@@ -416,7 +470,6 @@
     el.each(function () {
       var $el = $(this)
       var $target = $($el.data('target'))
-      // if ($target[0] !== $this.$element[0]) return
 
       var field = $el.data('sort')
       var states = ($el.data('states') || 'ascending,descending').split(/,\s*/)
@@ -449,30 +502,22 @@
     })
   }
 
-  // Data accessor
-
-  List.data = function (name) {
-    var attr = "ac.list"
-    if (name) attr = attr + "." + name
-    var el = closestWithData($(this), attr)
-    if (el) return el.data(attr)
-  }
 
   // LIST PLUGIN DEFINITION
   // ======================
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
-    if (option == 'data') return List.data.apply(this, args)
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('ac.list')
 
-      var options = $.extend({}, List.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
+      var options = $.extend({}, List.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
       if (!data) $this.data('ac.list', (data = new List(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
       else if (options.show && !options.remote) data.show()
+      else if (typeof option == 'object') data.update(option)
     })
   }
 
@@ -547,19 +592,27 @@
     Plugin.call($target, 'show')
   })
 
-  $(document).on('ready', function () {
-    $('[data-control="list"]').each(function () {
-      Plugin.call($(this))
-    })
-  })
+  // Adapted from Underscore.js 1.7.0
+  // http://underscorejs.org
+  // (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+  // Underscore may be freely distributed under the MIT license.
+  function unescapeString (string) {
+    var map = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&#x27;': "'",
+      '&#x60;': '`'
+    }
+    var escaper = function (match) { return map[match] }
+    var source = '(?:' + Object.getOwnPropertyNames(map).join('|') + ')'
+    var testRegexp = RegExp(source)
+    var replaceRegexp = RegExp(source, 'g')
 
-  /*
-   * Copyright (c) 2013 Wil Moore III
-   * Licensed under the MIT license.
-   * https://github.com/wilmoore/selectn
-   * Adapted slightly.
-   */
-  function selectn(a){function c(a){for(var c=a||(1,eval)("this"),d=b.length,e=0;d>e;e+=1)c&&(c=c[b[e]]);return c}var b=a.replace(/\[([-_\w]+)\]/g,".$1").split(".");return arguments.length>1?c(arguments[1]):c}
+    string = string == null ? '' : '' + string
+    return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string
+  }
 
 }(jQuery);
 
@@ -570,19 +623,22 @@
   // =====================
 
   var Form = function (element, options) {
+    var $this = this
     this.options  = options
     this.$element = $(element)
 
-    this.createSubmit()
-    this.initializeValidation()
+    // Note the "real" novalidate state of the form
+    if (typeof this.$element.attr('data-original-novalidate') === typeof undefined || this.$element.attr('data-original-novalidate') === null) {
+      this.$element.attr('data-original-novalidate', typeof this.$element.attr('novalidate') !== typeof undefined && this.$element.attr('novalidate') !== false)
+    }
+    this.$element.attr('novalidate', '')
+    this.$validate = !this.$element.data('original-novalidate')
+    this.$nativeValidation = supportsNativeValidation()
 
-    // Data-api shorthand for preventing default submit
-    // Attaching a submit handler to every form ensures submit's special events
-    // are fired.
-    var $this = this
-    this.$element.on('submit', function (e) {
-      if (!$this.options.action) e.preventDefault()
-    })
+    // Create submit button for us if the form has none, or if this browser
+    // supports native validation.
+    this.$displayNativeValidation = $('<input style="display: none;" type="submit" onsubmit="return false;">')
+    this.$element.append(this.$displayNativeValidation)
   }
 
   Form.VERSION = '0.1.0'
@@ -597,15 +653,19 @@
     this.$element.trigger(e)
     if (e.isDefaultPrevented()) return
 
-    var formData = {}
-    this.$element.find(':input[name]').each(function (idx, input) {
-      var name = input.name || $(input).attr('name')
-      var val = selectn(name, data)
-      if (val) formData[name] = val
-      if ($(input).attr('type') === 'checkbox') formData[name] = {'on': 'on', true: 'on'}[val] || 'off'
-    })
+    // Reset the form, then go through every addressable input and extract it's
+    // value from the "data" hash.
     this.$element[0].reset()
-    this.$element.deserialize(formData)
+    this.$element.find(':input[name]').each(function (idx, input) {
+      var name  = input.name || $(input).attr('name')
+      var value = $.fn.selectn(name, data)
+
+      if (/^(?:radio|checkbox)$/i.test(input.type)) {
+        if (value == input.value) input.checked = true
+      } else {
+        $(input).val(value)
+      }
+    })
 
     meta = meta || {}
     this.sourceElement = meta.sourceElement
@@ -618,15 +678,11 @@
     this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget, sourceElement: this.sourceElement, sourceData: this.sourceData}))
   }
 
-  Form.prototype.submit = function () {
-    this.$element.submit()
-  }
-
   Form.prototype.serialize = function () {
-    var array = this.$element.serializeArray()
-    var data  = deparam(this.$element.serialize())
-
-    return { object: data, array: array }
+    return {
+      array:  this.$element.serializeArray(),
+      object: this.$element.serializeObject()
+    }
   }
 
   // Encapsulates the default browser validate, any custom validation via the
@@ -660,17 +716,17 @@
     var e = $.Event('invalid.ac.form')
     this.$element.trigger(e)
 
-    // Don't display native validation if we've prevented it or validation is off
-    if (e.isDefaultPrevented() || !this.$validate) return
+    // Don't display native validation if we've prevented it, validation is off,
+    // or the browser doesn't support it (or the form would actually submit).
+    if (e.isDefaultPrevented() || !this.$validate || !this.$nativeValidation) return
 
     // If this browser supports native HTML form validation, temporarily turn
     // it back on and submit the form.
-    if (Form.nativeValidation)
-      setTimeout(function() {
-        $this.$element.removeAttr('novalidate')
-        $this.$displayNativeValidation.click()
-        $this.$element.attr('novalidate', '')
-      }, 0)
+    setTimeout(function() {
+      $this.$element.removeAttr('novalidate')
+      $this.$displayNativeValidation.click()
+      $this.$element.attr('novalidate', '')
+    }, 0)
   }
 
   Form.prototype.addEventAttributes = function (submitEvent) {
@@ -681,55 +737,10 @@
     })
   }
 
-  // Initialization functions
-
-  Form.prototype.createSubmit = function () {
-    this.$displayNativeValidation = $('<input style="display: none;" type="submit" onsubmit="return false;">')
-    this.$element.append(this.$displayNativeValidation)
-  }
-
-  // Add "novalidate" to the form so we have full control over the invalid
-  // and submit events.
-  Form.prototype.initializeValidation = function () {
-    if (typeof this.$element.attr('data-original-novalidate') === typeof undefined || this.$element.attr('data-original-novalidate') === null) {
-      this.$element.attr('data-original-novalidate', typeof this.$element.attr('novalidate') !== typeof undefined && this.$element.attr('novalidate') !== false)
-    }
-
-    this.$validate = !this.$element.data('original-novalidate')
-    this.$element.attr('novalidate', '')
-  }
-
-  Form.prototype.reset = function () {
-    this.$element[0].reset()
-  }
-
   Form.prototype.destroy = function (data) {
     this.$element.off('.ac.form').removeData('ac.form')
     this.$validate ? this.$element.removeAttr('novalidate') : this.$element.attr('novalidate', '')
   }
-
-  // Data accessor
-
-  Form.data = function (name) {
-    var attr = "ac.form"
-    if (name) attr = attr + "." + name
-    var el = closestWithData($(this), attr)
-    if (el) return el.data(attr)
-  }
-
-  /*
-   * https://github.com/Modernizr/Modernizr/blob/924c7611c170ef2dc502582e5079507aff61e388/feature-detects/forms/validation.js
-   * Licensed under the MIT license.
-   */
-  Form.nativeValidation = (function () {
-    var validationSupport = false
-    var form = document.createElement('form')
-    form.innerHTML = '<input name="test" required><button></button>'
-    form.addEventListener('submit', function(e) {window.opera ? e.stopPropagation() : e.preventDefault()})
-    form.getElementsByTagName('input')[0].addEventListener('invalid', function(e) {validationSupport = true; e.preventDefault(); e.stopPropagation();})
-    form.getElementsByTagName('button')[0].click()
-    return validationSupport
-  })()
 
 
   // FORM PLUGIN DEFINITION
@@ -737,12 +748,11 @@
 
   function Plugin(option) {
     var args = Array.prototype.slice.call(arguments, Plugin.length)
-    if (option == 'data') return Form.data.apply(this, args)
     return this.each(function () {
       var $this = $(this)
       var data  = $this.data('ac.form')
 
-      var options = $.extend({}, Form.DEFAULTS, $this.data(), data && data.options, typeof option == 'object' && option)
+      var options = $.extend({}, Form.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
       if (!data) $this.data('ac.form', (data = new Form(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
@@ -773,12 +783,16 @@
     add: function (handleObj) {
       var form, oldHandler = handleObj.handler
       handleObj.handler = function (e) {
+        // Run validation once per originalEvent, and add attributes for each
+        // new jQuery event encountered.
         if (form = $(this).data('ac.form')) {
           if (!e.originalEvent._validated) form.validate(e)
           if (!e._addedAttributes) form.addEventAttributes(e)
           e.originalEvent._validated = e._addedAttributes = true
         }
 
+        // Continue to run original event, as long as it hasn't been prevented
+        // by the validation process.
         if (!e.isImmediatePropagationStopped()) {
           return oldHandler.apply(this, arguments)
         }
@@ -796,7 +810,7 @@
     }, null)
   }
 
-  $(document).on('click', '[data-toggle="form"]', function (e) {
+  $(document).on('click.ac.form.data-api', '[data-toggle="form"]', function (e) {
     var $this      = $($(this).closest('[data-toggle="form"]')[0])
     var $target    = $($($this.data('target'))[0])
     var $sourceKey = $this.data('source') || 'serialized'
@@ -812,35 +826,30 @@
     Plugin.call($target, 'show', serialized, {sourceElement: source.clone(true, false), sourceData: serialized}, $this[0])
   })
 
-  $(document).ready(function () {
-    $('[data-control="form"]').each(function () {
-      Plugin.call($(this))
-    })
+  // This will ensure that forms with data-control="form" are initialied by the
+  // time any user-specified submit handlers are run.
+  $(document).on('submit.ac.form.data-api', '[data-control="form"]', function (e) {
+    var $target = $(this)
+    var form    = $target.data('ac.form') || Plugin.call($target).data('ac.form')
+
+    if (!form.options.action) e.preventDefault()
   })
 
-  /**
-   * @author Kyle Florence <kyle[dot]florence[at]gmail[dot]com>
-   * @website https://github.com/kflorence/jquery-deserialize/
-   * @version 1.2.1
-   *
-   * Dual licensed under the MIT and GPLv2 licenses.
-   */
-  +function(i,b){var f=Array.prototype.push,a=/^(?:radio|checkbox)$/i,e=/\+/g,d=/^(?:option|select-one|select-multiple)$/i,g=/^(?:button|color|date|datetime|datetime-local|email|hidden|month|number|password|range|reset|search|submit|tel|text|textarea|time|url|week)$/i;function c(j){return j.map(function(){return this.elements?i.makeArray(this.elements):this}).filter(":input").get()}function h(j){var k,l={};i.each(j,function(n,m){k=l[m.name];l[m.name]=k===b?m:(i.isArray(k)?k.concat(m):[k,m])});return l}i.fn.deserialize=function(A,l){var y,n,q=c(this),t=[];if(!A||!q.length){return this}if(i.isArray(A)){t=A}else{if(i.isPlainObject(A)){var B,w;for(B in A){i.isArray(w=A[B])?f.apply(t,i.map(w,function(j){return{name:B,value:j}})):f.call(t,{name:B,value:w})}}else{if(typeof A==="string"){var v;A=A.split("&");for(y=0,n=A.length;y<n;y++){v=A[y].split("=");f.call(t,{name:decodeURIComponent(v[0]),value:decodeURIComponent(v[1].replace(e,"%20"))})}}}}if(!(n=t.length)){return this}var u,k,x,z,C,o,m,w,p=i.noop,s=i.noop,r={};l=l||{};q=h(q);if(i.isFunction(l)){s=l}else{p=i.isFunction(l.change)?l.change:p;s=i.isFunction(l.complete)?l.complete:s}for(y=0;y<n;y++){u=t[y];C=u.name;w=u.value;if(!(k=q[C])){continue}m=(z=k.length)?k[0]:k;m=(m.type||m.nodeName).toLowerCase();o=null;if(g.test(m)){if(z){x=r[C];k=k[r[C]=(x==b)?0:++x]}p.call(k,(k.value=w))}else{if(a.test(m)){o="checked"}else{if(d.test(m)){o="selected"}}}if(o){if(!z){k=[k];z=1}for(x=0;x<z;x++){u=k[x];if(u.value==w){p.call(u,(u[o]=true)&&w)}}}}s.call(this);return this}}(jQuery)
 
   /*
-   * Copyright (c) 2010 "Cowboy" Ben Alman
-   * Dual licensed under the MIT and GPL licenses.
-   * http://benalman.com/about/license/
-   */
-  function deparam(L,I){var K={},J={"true":!0,"false":!1,"null":null};$.each(L.replace(/\+/g," ").split("&"),function(O,T){var N=T.split("="),S=decodeURIComponent(N[0]),M,R=K,P=0,U=S.split("]["),Q=U.length-1;if(/\[/.test(U[0])&&/\]$/.test(U[Q])){U[Q]=U[Q].replace(/\]$/,"");U=U.shift().split("[").concat(U);Q=U.length-1}else{Q=0}if(N.length===2){M=decodeURIComponent(N[1]);if(I){M=M&&!isNaN(M)?+M:M==="undefined"?undefined:J[M]!==undefined?J[M]:M}if(Q){for(;P<=Q;P++){S=U[P]===""?R.length:U[P];R=R[S]=P<Q?R[S]||(U[P+1]&&isNaN(U[P+1])?{}:[]):M}}else{if($.isArray(K[S])){K[S].push(M)}else{if(K[S]!==undefined){K[S]=[K[S],M]}else{K[S]=M}}}}else{if(S){K[S]=I?undefined:""}}});return K};
-
-  /*
-   * Copyright (c) 2013 Wil Moore III
+   * https://github.com/Modernizr/Modernizr/blob/924c7611c170ef2dc502582e5079507aff61e388/feature-detects/forms/validation.js
    * Licensed under the MIT license.
-   * https://github.com/wilmoore/selectn
-   * Adapted slightly.
    */
-  function selectn(a){function c(a){for(var c=a||(1,eval)("this"),d=b.length,e=0;d>e;e+=1)c&&(c=c[b[e]]);return c}var b=a.replace(/\[([-_\w]+)\]/g,".$1").split(".");return arguments.length>1?c(arguments[1]):c}
+  function supportsNativeValidation () {
+    var validationSupport = false
+    var form = document.createElement('form')
+    form.innerHTML = '<input name="test" required><button></button>'
+    form.addEventListener('submit', function(e) {window.opera ? e.stopPropagation() : e.preventDefault()})
+    form.getElementsByTagName('input')[0].addEventListener('invalid', function(e) {validationSupport = true; e.preventDefault(); e.stopPropagation();})
+    form.getElementsByTagName('button')[0].click()
+    return validationSupport
+  }
+
 }(jQuery);
 
 +function ($) {
@@ -963,7 +972,7 @@
   // url => {}
   State.prototype.deserialize = function (string) {
     var path  = string.split('?')[0]
-    var state = State.parseParams(string.split('?')[1])
+    var state = parseParams(string.split('?')[1])
 
     if (this.options.path) {
       var path_value = path.replace(this.options.path.base, '')
@@ -991,62 +1000,6 @@
       })
     }
     if (e.trigger && e.trigger.type !== 'push.ac.state') setState([], e.state)
-  }
-
-  // Adapted from https://gist.github.com/kares/956897#comment-1190642
-  State.parseParams = function (query) {
-    var re = /([^&=]+)=?([^&]*)/g
-    var decode = function (str) { return decodeURIComponent(str.replace(/\+/g, ' ')) }
-
-    function createElement (params, key, value) {
-      key = key + ''
-      if (key.indexOf('.') !== -1) {
-        var list = key.split('.')
-        var new_key = key.split(/\.(.+)?/)[1]
-        if (!params[list[0]]) params[list[0]] = {}
-        if (new_key !== '') {
-          createElement(params[list[0]], new_key, value)
-        } else console.warn('parseParams :: empty property in key "' + key + '"')
-      } else
-      if (key.indexOf('[') !== -1) {
-        var list = key.split('[')
-        key = list[0]
-        var list = list[1].split(']')
-        var index = list[0]
-        if (index == '') {
-          if (!params) params = {}
-          if (!params[key] || !$.isArray(params[key])) params[key] = []
-          params[key].push(value)
-        } else {
-          if (!params) params = {}
-          if (!params[key] || !$.isArray(params[key])) params[key] = []
-          params[key][parseInt(index)] = value
-        }
-      } else {
-        if (!params) params = {}
-        params[key] = value
-      }
-    }
-    query = query + ''
-    if (query.match(/\?/) === null) query = '?' + query
-    var params = {}, e
-    if (query) {
-      if (query.indexOf('#') !== -1) {
-        query = query.substr(0, query.indexOf('#'))
-      }
-
-      if (query.indexOf('?') !== -1) {
-        query = query.substr(query.indexOf('?') + 1, query.length)
-      } else return {}
-      if (query == '') return {}
-      while (e = re.exec(query)) {
-        var key = decode(e[1])
-        var value = decode(e[2])
-        createElement(params, key, value)
-      }
-    }
-    delete params[undefined]
-    return params
   }
 
 
@@ -1133,5 +1086,61 @@
       Plugin.call($(window), data)
     })
   })
+
+  // Adapted from https://gist.github.com/kares/956897#comment-1190642
+  function parseParams (query) {
+    var re = /([^&=]+)=?([^&]*)/g
+    var decode = function (str) { return decodeURIComponent(str.replace(/\+/g, ' ')) }
+
+    function createElement (params, key, value) {
+      key = key + ''
+      if (key.indexOf('.') !== -1) {
+        var list = key.split('.')
+        var new_key = key.split(/\.(.+)?/)[1]
+        if (!params[list[0]]) params[list[0]] = {}
+        if (new_key !== '') {
+          createElement(params[list[0]], new_key, value)
+        } else console.warn('parseParams :: empty property in key "' + key + '"')
+      } else
+      if (key.indexOf('[') !== -1) {
+        var list = key.split('[')
+        key = list[0]
+        var list = list[1].split(']')
+        var index = list[0]
+        if (index == '') {
+          if (!params) params = {}
+          if (!params[key] || !$.isArray(params[key])) params[key] = []
+          params[key].push(value)
+        } else {
+          if (!params) params = {}
+          if (!params[key] || !$.isArray(params[key])) params[key] = []
+          params[key][parseInt(index)] = value
+        }
+      } else {
+        if (!params) params = {}
+        params[key] = value
+      }
+    }
+    query = query + ''
+    if (query.match(/\?/) === null) query = '?' + query
+    var params = {}, e
+    if (query) {
+      if (query.indexOf('#') !== -1) {
+        query = query.substr(0, query.indexOf('#'))
+      }
+
+      if (query.indexOf('?') !== -1) {
+        query = query.substr(query.indexOf('?') + 1, query.length)
+      } else return {}
+      if (query == '') return {}
+      while (e = re.exec(query)) {
+        var key = decode(e[1])
+        var value = decode(e[2])
+        createElement(params, key, value)
+      }
+    }
+    delete params[undefined]
+    return params
+  }
 
 }(jQuery);

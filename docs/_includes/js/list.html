@@ -22,7 +22,7 @@
           <th>Name</th>
         </tr>
       </thead>
-      <tbody id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+      <tbody id="myList" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
     </table>
   </div><!-- /example -->
 
@@ -34,7 +34,7 @@
       <th>Name</th>
     </tr>
   </thead>
-  <tbody id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+  <tbody id="myList" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
 </table>
 {% endhighlight %}
 
@@ -42,12 +42,11 @@
   <p>The default template will work for simple displays, but you can always override what gets rendered for each item. The only requirement is that the template is wrapped in a single outer element, which is what events and data is bound to.</p>
 
   <div class="bs-example">
-    <ol id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name" data-template="<li data-field='name'></li>"></ol>
+    <ol id="myList" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name" data-template="<li data-field='name'></li>"></ol>
   </div><!-- /example -->
 
 {% highlight html %}
 <ol id="myList"
-    data-control="list"
     data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'
     data-fields="id,name"
     data-template="<li data-field='name'></li>"></ol>
@@ -57,7 +56,6 @@
   <p>You can also specify the template inline inside the container element using normal HTML. If no <code>template</code> <code>fields</code> attributes are specified, then the value of the container's <code>.html()</code> method will be used as the template.</p>
   <div class="bs-example">
     <ol id="myList"
-        data-control="list"
         data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'>
       <li data-field='name'></li>
     </ol>
@@ -65,7 +63,6 @@
 
 {% highlight html %}
 <ol id="myList"
-    data-control="list"
     data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'>
   <li data-field='name'></li>
 </ol>
@@ -122,7 +119,7 @@ $('#myList').list({templateEngine: function(t) {
         <input type="radio" name="id">ID is 2
       </label>
     </div>
-    <table class="table table-condensed" id="myListFiltering" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+    <table class="table table-condensed" id="myListFiltering" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
   </div><!-- /example -->
 
 {% highlight html %}
@@ -137,7 +134,7 @@ $('#myList').list({templateEngine: function(t) {
     <input type="radio" name="id">ID is 2
   </label>
 </div>
-<table class="table table-condensed" id="myListFiltering" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+<table class="table table-condensed" id="myListFiltering" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
 {% endhighlight %}
 
   <div class="bs-callout bs-callout-info" id="list-filtering-override">
@@ -152,13 +149,13 @@ $('#myList').list({templateEngine: function(t) {
 
   <div class="bs-example">
     <input type="text" class="form-control" data-filter="id,name" data-target="#myListSearching" data-trigger="keyup" placeholder="Search">
-    <table class="table table-condensed" id="myListSearching" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+    <table class="table table-condensed" id="myListSearching" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
   </div><!-- /example -->
 
 {% highlight html %}
 <input type="text" class="btn btn-primary" data-filter="id,name" data-target="#myListSearching" data-trigger="keyup" placeholder="Search">
 
-<table class="table table-condensed" id="myListSearching" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+<table class="table table-condensed" id="myListSearching" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
 {% endhighlight %}
 
   <div class="bs-callout bs-callout-info" id="list-filtering-multiple">
@@ -209,7 +206,7 @@ $('#myList').list({templateEngine: function(t) {
         </script>
       </div>
     </div>
-    <table class="table table-condensed" id="myListMultiple" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+    <table class="table table-condensed" id="myListMultiple" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
   </div><!-- /example -->
 
 {% highlight html %}
@@ -252,12 +249,12 @@ $('#myList').list({templateEngine: function(t) {
     </script>
   </div>
 </div>
-<table class="table table-condensed" id="myListMultiple" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
+<table class="table table-condensed" id="myListMultiple" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></table>
 {% endhighlight %}
 
   <div class="bs-callout bs-callout-info" id="list-filtering-triggers">
     <h4>Custom event triggers</h4>
-    <p>By default, filters are applied when a user clicks on a static trigger, or the value of a user input changes. But you can change the event that Index.js listens for on the given element with a <code>data-trigger</code> attribute. This lets us update the list more or less frequently.</p>
+    <p>By default, filters are applied when a user clicks on a static trigger, or the value of a user input changes. But you can change the event that Index.js listens for on the given element with a <code>data-trigger</code> attribute. This lets us update the list more or less frequently, or based on different types of user input (e.g., applying a filter when a form is submitted, versus every time a key is pressed). Allowed events are stored in <code>List.TRIGGER_EVENTS</code>.</p>
     <code>&lt;input type="text" ... data-trigger="keyup"&gt;</code>
   </div>
 
@@ -275,7 +272,7 @@ $('#myList').list({templateEngine: function(t) {
           <th class="sort-control" data-sort="name" data-target="#myListSorting">Name (click me)</th>
         </tr>
       </thead>
-      <tbody id="myListSorting" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+      <tbody id="myListSorting" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
     </table>
 
   </div><!-- /example -->
@@ -290,7 +287,7 @@ $('#myList').list({templateEngine: function(t) {
           data-sort="name" data-target="#myList">Name (click me)</th>
     </tr>
   </thead>
-  <tbody id="myList" data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
+  <tbody id="myList" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]' data-fields="id,name"></tbody>
 </table>
 {% endhighlight %}
 
@@ -311,7 +308,6 @@ $('#myList').list({templateEngine: function(t) {
   <div class="bs-example">
     <div class="row">
       <div id="myListPagination" class="col-sm-6 col-xs-12"
-        data-control="list"
         data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}, {"id": 7}, {"id": 8}, {"id": 9}, {"id": 10}]'
         data-template="<span class='btn btn-default disabled pg-link' data-field='id'>"
         data-pagination="on"
@@ -335,7 +331,6 @@ $('#myList').list({templateEngine: function(t) {
 
 {% highlight html %}
 <div id="myListPagination"
-  data-control="list"
   data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}, {"id": 6}, {"id": 7}, {"id": 8}, {"id": 9}, {"id": 10}]'
   data-template="<span class='btn btn-default disabled' data-field='id'>"
   data-pagination="on"
@@ -364,7 +359,6 @@ $('#myList').list({templateEngine: function(t) {
 
   <div class="bs-example">
     <div id="myListSelection"
-      data-control="list"
       data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}]'
       data-selected-class="active btn-primary"
       data-template="<span class='btn btn-default pg-link' data-toggle='select' data-field='id'>">
@@ -373,7 +367,6 @@ $('#myList').list({templateEngine: function(t) {
 
 {% highlight html %}
 <div id="myListSelection"
-  data-control="list"
   data-items='[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}]'
   data-selected-class="active btn-primary"
   data-template="<span class='btn btn-default' data-toggle='select' data-field='id'>">
@@ -389,7 +382,7 @@ $('#myList').list({templateEngine: function(t) {
   <h3>Via data attributes</h3>
   <p>Render a list without writing JavaScript. Set <code>data-control="list"</code> on your list container element to trigger it automatically, along with a <code>data-items</code> attribute containing a serialized array of items.</p>
 {% highlight html %}
-<table data-control="list" data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'></table>
+<table data-items='[{"id": 1, "name": "First Item"}, {"id": 2, "name": "Second Item"}]'></table>
 {% endhighlight %}
 
   <h3>Via JavaScript</h3>
@@ -689,3 +682,9 @@ $('#myList').on('shown.ac.list', function (e) {
 })
 {% endhighlight %}
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('[data-items]').list();
+  });
+</script>

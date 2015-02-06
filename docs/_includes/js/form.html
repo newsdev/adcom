@@ -175,17 +175,21 @@ $('#myForm').on('submit.ac.form', function(e) {
         <tr>
           <th>ID</th>
           <th>Name</th>
+          <th>Select</th>
+          <th>Sel. Mul.</th>
           <th>Toggle</th>
           <th>Choice</th>
           <th></th>
         </tr>
       </thead>
       <tbody data-control="list" id="myListUpdate"
-             data-items='[{"id": 1, "name": "First Item", "toggle": "on", "choice": "1"}, {"id": 2, "name": "Second Item", "choice": "2"}]'
+             data-items='[{"id": 1, "name": "First Item", "select": 1, "toggle": "on", "choice": "1"}, {"id": 2, "name": "Second Item", "select": 2, "choice": "2"}]'
              data-template="
              <tr>
                <td data-field='id'></td>
                <td data-field='name'></td>
+               <td data-field='select'></td>
+               <td data-field='select-multiple'></td>
                <td data-field='toggle'></td>
                <td data-field='choice'></td>
                <td>
@@ -200,11 +204,24 @@ $('#myForm').on('submit.ac.form', function(e) {
 
     <form id="myFormUpdate" data-control="form" data-action="false">
       <div class="row">
-        <div class="form-group col-sm-3">
+        <div class="form-group col-sm-1">
           <input type="text" class="form-control" name="id" placeholder="id">
         </div>
-        <div class="form-group col-sm-3">
+        <div class="form-group col-sm-2">
           <input type="text" class="form-control" name="name" placeholder="name">
+        </div>
+        <div class="form-group col-sm-2">
+          <select type="text" class="form-control" name="select">
+            <option value="">unselected</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+        <div class="form-group col-sm-2">
+          <select type="text" class="form-control" name="select-multiple" multiple>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
         </div>
         <div class="form-group col-sm-2">
           <label class="checkbox-inline">
@@ -212,7 +229,7 @@ $('#myForm').on('submit.ac.form', function(e) {
             Toggle
           </label>
         </div>
-        <div class="form-group col-sm-2">
+        <div class="form-group col-sm-1">
           <div class="radio">
             <label>
               <input type="radio" name="choice" value="1">
