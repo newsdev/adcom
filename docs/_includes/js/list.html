@@ -570,18 +570,6 @@ $('#myList').list({
   <p>Calculates the list of visible items and renders them into it's container element.</p>
   {% highlight js %}$('#myList').list('show'){% endhighlight %}
 
-  <h4>.list('setFilter', key, function)</h4>
-  <p>Manually sets a filter function to be applied. Can be used multiple times with different keys. Pass <code>undefined</code> as the final argument to remove an existing filter. You can also pass multiple filters as a hash to the function.</p>
-  {% highlight js %}$('#myList').list('setFilter', function(item) { ... }){% endhighlight %}
-
-  <h4>.list('setSort', function)</h4>
-  <p>Manually sets a sort function. Only one sort function can exist at a time. Pass <code>undefined</code> as the function to remove an existing filter.</p>
-  {% highlight js %}$('#myList').list('setSort', function(a, b) { ... }){% endhighlight %}
-
-  <h4>.list('setCurrentPage', Integer)</h4>
-  <p>Manually sets the current page of the list.</p>
-  {% highlight js %}$('#myList').list('setCurrentPage', 2){% endhighlight %}
-
   <h4>.list('select', selector || Integer)</h4>
   <p>Changes the state of the items represented by the selector, or at the specified index, to <code>true</code>. You can also pass an array of indices. Triggers the <code>toggle</code> events.</p>
   {% highlight js %}$('#myList').list('select', 2)
@@ -616,6 +604,17 @@ $('#myList').list('delete', $('#specialListItem'))
 $('#myList').list('delete', 0)
 {% endhighlight %}
 
+  <h4>.list({'filters': {key: [function or string]})</h4>
+  <p>Manually sets a filter function to be applied. Can be used multiple times with different keys, or in bulk. Pass <code>undefined</code> as a filter's value to remove an existing filter. Pass a function or a string pattern that will be turned into a standard sort function, based off the key field.</p>
+  {% highlight js %}$('#myList').list({filters: {myFilter: function(item) { ... }}}){% endhighlight %}
+
+  <h4>.list({'sort': [function or string]})</h4>
+  <p>Manually sets a sort function. Only one sort function can exist at a time. Pass <code>undefined</code> as the function to remove the existing sort function. You may also pass a string, such as "field", which will generate a sort function automatically based on that field. Multiple fields can be separated with commas, and can be reversed by adding a suffix: <code>field.descending</code>.</p>
+  {% highlight js %}$('#myList').list('setSort', function(a, b) { ... }){% endhighlight %}
+
+  <h4>.list({'currentPage': Integer}), .list({'pageSize': Integer})</h4>
+  <p>Manually sets the current page or page size of the list.</p>
+  {% highlight js %}$('#myList').list({currentPage: 2}){% endhighlight %}
 
   <h3>Events</h3>
   <p>Adcom's list class exposes a few events for hooking into functionality.</p>
