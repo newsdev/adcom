@@ -76,6 +76,7 @@
 
     // Mutable options
     this.template = this.parseTemplate(this.options.template)
+    this.filters  = {}
     this.updateOptions({
       currentPage: this.options.currentPage,
       pageSize:    this.options.pageSize,
@@ -117,14 +118,8 @@
     if (options.template)    this.template    = this.parseTemplate(options.template)
     if (options.currentPage) this.currentPage = parseInt(options.currentPage)
     if (options.pageSize)    this.pageSize    = parseInt(options.pageSize)
-
-    if (typeof options.sort == 'string')   this.sort = null // TKTKTKTK TODO TODO
-    if (typeof options.sort == 'function') this.sort = options.sort
-    // this.sort        = this.options.sort ? this.getSort.apply(this, $.map([this.options.sort], function (n) { return n })) : null
-
-    if (options.filters) this.filters = options.filters
-    // TKTKTK TODO TODO
-    // should setting a new filter for a key set it immediately, or should it store it for later use when that filter is toggled?
+    if (options.sort)        this.setSort(options.sort)
+    if (options.filters)     this.setFilter(options.filters)
   }
 
   // Orchestration
@@ -150,19 +145,19 @@
 
   List.prototype.select = function (selector) {
     var $this = this
-    selector = $.map([selector], function(n) {return n;})
+    selector = $.map([selector], function(n) {return n})
     $(selector).each(function (idx, el) { $this.changeState(el, true) })
   }
 
   List.prototype.deselect = function (selector) {
     var $this = this
-    selector = $.map([selector], function(n) {return n;})
+    selector = $.map([selector], function(n) {return n})
     $(selector).each(function (idx, el) { $this.changeState(el, false) })
   }
 
   List.prototype.toggle = function (selector) {
     var $this = this
-    selector = $.map([selector], function(n) {return n;})
+    selector = $.map([selector], function(n) {return n})
     $(selector).each(function (idx, el) {
       var index = (typeof el == 'number') ? el : $(el).data('ac.list.index')
       $this.changeState(el, $this.$states[index] ? false : true)
@@ -208,8 +203,10 @@
       if ($(el.data('target'))[0] != $this.$element[0]) return
 
       var field = el.data('sort')
-      if (el.hasClass('sort-ascending')) $this.setSort(field, false)
-      if (el.hasClass('sort-descending')) $this.setSort(field, true)
+      if (el.hasClass('sort-ascending')) $this.setSort(field + '.ascending')
+      if (el.hasClass('sort-descending')) $this.setSort(field + '.descending')
+      // if (el.hasClass('sort-ascending')) $this.setSort(field, false)
+      // if (el.hasClass('sort-descending')) $this.setSort(field, true)
     })
   }
 
@@ -250,24 +247,34 @@
   // For even more control, write your own .getCurrentItems function, which is
   // called to retrieve the list of items to render in the current view.
 
-  List.prototype.getSort = function (field, reverse) {
-    var factor = reverse ? -1 : 1
+  List.prototype.getSort = function (fields) {
+    if (typeof fields === 'function' || fields === null || fields === undefined) return fields
 
-    if (field === null || field === undefined) return null
-    if (typeof field === 'function') return function (a, b) { return field(a, b) * factor }
+    var normalizedFields = []
+    $.each(fields, function (idx, field) {
+      var factor = field.match(/\.des(c(end(ing)?)?)?$/) ? -1 : 1
+      field = field.replace(/\.((des(c(end(ing)?)?)?)|(asc(end(ing)?)?)?)$/, '')
+      normalizedFields.push([field, factor])
+    })
 
     // default sort function based on single attribute and direction
     return function (a, b) {
-      var aVal = $.fn.selectn(field, a),
-          bVal = $.fn.selectn(field, b)
-      var left  = (typeof aVal === 'function' ? aVal() : aVal) || ''
-      var right = (typeof bVal === 'function' ? bVal() : bVal) || ''
+      for (var index=0; index < normalizedFields.length; index++) {
+        var field  = normalizedFields[index][0],
+            factor = normalizedFields[index][1]
 
-      if (typeof left == 'string')  left  = left.toLowerCase()
-      if (typeof right == 'string') right = right.toLowerCase()
+        var aVal = $.fn.selectn(field, a),
+            bVal = $.fn.selectn(field, b)
 
-      if (left < right) return factor * -1
-      if (left > right) return factor * 1
+        var left  = (typeof aVal === 'function' ? aVal() : aVal) || ''
+        var right = (typeof bVal === 'function' ? bVal() : bVal) || ''
+
+        if (typeof left == 'string')  left  = left.toLowerCase()
+        if (typeof right == 'string') right = right.toLowerCase()
+
+        if (left < right) return factor * -1
+        if (left > right) return factor * 1
+      }
       return 0
     }
   }
@@ -276,9 +283,9 @@
     if (typeof value === 'function' || value === undefined) return value
 
     // Use the built-in filter generator if value is not undefined (delete) or
-    // a function itself.
-    var fields = typeof key === 'string' ? key.split(/,\s*/) : key
-    fields = $.isArray(fields) ? fields : [fields]
+    // a function itself. Creates a generous OR search among all passed in
+    // fields in key.
+    var fields = typeof key === 'string' ? key.split(/,\s*/) : [key]
     return function (item) {
       var matches = false
       // Must this be done inside this function?
@@ -294,14 +301,22 @@
     }
   }
 
-  List.prototype.setSort = function (field, reverse) {
-    this.$element.trigger($.Event('sortChange.ac.list', { }))
-    this.sort = this.getSort(field, reverse)
+  List.prototype.setSort = function (fields) {
+    if (typeof fields === 'string') fields = fields.split(/,\s*/)
+
+    this.$element.trigger($.Event('sortChange.ac.list', { fields: fields }))
+    this.sort = this.getSort(fields)
     this.currentPage = 1
-    this.$element.trigger($.Event('sortChanged.ac.list', { function: this.sort }))
+    this.$element.trigger($.Event('sortChanged.ac.list', { fields: fields, function: this.sort }))
   }
 
   List.prototype.setFilter = function (key, filter) {
+    if (typeof key === 'object') {
+      return $.each(key, $.proxy(function (key, filter) {
+        this.setFilter(key, filter)
+      }, this))
+    }
+
     this.$element.trigger($.Event('filterChange.ac.list', { key: key, filter: filter }))
 
     if (filter === undefined) {
@@ -324,7 +339,7 @@
     var visibleItems = this.$items.slice(0) // dup
 
     // filter
-    if (this.options.filtering == 'on') visibleItems = this.getFilteredItems(visibleItems)
+    if (this.filters && Object.keys(this.filters).length) visibleItems = this.getFilteredItems(visibleItems)
 
     // sort
     if (this.sort) visibleItems = this.getSortedItems(visibleItems)
@@ -481,9 +496,13 @@
       var nextState = states[(stateIdx + 1) % states.length]
 
       $('[data-sort][data-target="' + $el.data('target') + '"]').removeClass('sort-ascending sort-descending')
-      if (nextState !== 'off') $el.addClass('sort-' + nextState)
 
-      $this.setSort(field, {'ascending': false, 'descending': true, 'off': null}[nextState])
+      if (nextState === 'off') {
+        $this.setSort(null)
+      } else {
+        $el.addClass('sort-' + nextState)
+        $this.setSort(field + '.' + nextState)
+      }
     })
   }
 
