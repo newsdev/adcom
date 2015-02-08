@@ -205,8 +205,6 @@
       var field = el.data('sort')
       if (el.hasClass('sort-ascending')) $this.setSort(field + '.ascending')
       if (el.hasClass('sort-descending')) $this.setSort(field + '.descending')
-      // if (el.hasClass('sort-ascending')) $this.setSort(field, false)
-      // if (el.hasClass('sort-descending')) $this.setSort(field, true)
     })
   }
 
@@ -286,16 +284,16 @@
     // a function itself. Creates a generous OR search among all passed in
     // fields in key.
     var fields = typeof key === 'string' ? key.split(/,\s*/) : [key]
+    var regexp = new RegExp(value, 'i')
+
     return function (item) {
       var matches = false
-      // Must this be done inside this function?
-      value = value.toLowerCase().trim()
 
       $.each(fields, function (idx, field) {
         if (matches) return
         var val = $.fn.selectn(field, item)
         if (typeof val === 'function') val = val()
-        if (String(val).toLowerCase().trim().indexOf(value) > -1) matches = true
+        if (String(val).match(regexp)) matches = true
       })
       return matches
     }
@@ -514,7 +512,8 @@
       if ($target[0] !== $this.$element[0]) return
 
       var fields  = $el.attr('data-filter')
-      var value   = $el.is(':input') ? $el.val() : $el.attr('data-match')
+      // data-match is deprecated; use data-pattern, which supports regexes, instead
+      var value   = $el.is(':input') ? $el.val() : ($el.attr('data-pattern') || $el.attr('data-match'))
       if (!value) value = undefined
 
       $this.setFilter(fields, value)
