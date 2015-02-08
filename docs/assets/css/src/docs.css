@@ -13,15 +13,15 @@
 
 
 .bs-docs-masthead h1 {
-  color: #1d3264 !important;
   padding-top: 50px !important;
+  color: #1d3264 !important;
 }
 h1.page-header {
-  margin: 0px -15px 20px -100%;
   padding: 70px 15px 40px 100% !important;
+  margin: 0 -15px 20px -100%;
   font-size: 45px;
-  background: #34497b;
   color: white;
+  background: #34497b;
 }
 
 /*
@@ -214,7 +214,7 @@ body {
  */
 
 .bs-docs-masthead {
-  border-top: 12px solid #1D3263
+  border-top: 12px solid #1d3263;
 }
 
 /* Share masthead with page headers */

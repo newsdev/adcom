@@ -103,7 +103,7 @@ $('#myList').list({templateEngine: function(t) {
 
   <h2 id="list-filtering">Filtering</h3>
 
-  <p>Index.js also provides a convention around filtering the list of items before it is rendered, and lets you trigger those filters without JavaScript by using the data-api. Configure the filter using the <code>data-filter</code> and <code>data-match</code> attributes, which specify the comma-separated field and the value to match against. If any given field matches the value (using a fairly tolerant, case insensitive match), then the item will be included.</p>
+  <p>Index.js also provides a convention around filtering the list of items before it is rendered, and lets you trigger those filters without JavaScript by using the data-api. Configure the filter using the <code>data-filter</code> and <code>data-pattern</code> attributes, which specify the comma-separated field and the value to match against. If any given field matches the value (the default sort function treats the value as case-insensitive regular expression), then the item will be included.</p>
 
   <h3>Static Filters</h3>
 
@@ -112,10 +112,10 @@ $('#myList').list({templateEngine: function(t) {
       <label class="btn btn-primary active" data-filter="id" data-target="#myListFiltering">
         <input type="radio" name="id">All
       </label>
-      <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListFiltering">
+      <label class="btn btn-primary" data-filter="id" data-pattern="1" data-target="#myListFiltering">
         <input type="radio" name="id">ID is 1
       </label>
-      <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListFiltering">
+      <label class="btn btn-primary" data-filter="id" data-pattern="2" data-target="#myListFiltering">
         <input type="radio" name="id">ID is 2
       </label>
     </div>
@@ -127,10 +127,10 @@ $('#myList').list({templateEngine: function(t) {
   <label class="btn btn-primary active" data-filter="id" data-target="#myListFiltering">
     <input type="radio" name="id">All
   </label>
-  <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListFiltering">
+  <label class="btn btn-primary" data-filter="id" data-pattern="1" data-target="#myListFiltering">
     <input type="radio" name="id">ID is 1
   </label>
-  <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListFiltering">
+  <label class="btn btn-primary" data-filter="id" data-pattern="2" data-target="#myListFiltering">
     <input type="radio" name="id">ID is 2
   </label>
 </div>
@@ -141,11 +141,12 @@ $('#myList').list({templateEngine: function(t) {
     <h4>Setting a custom filter function</h4>
     <p>Additionally, you can set your own filtering function by calling <code>.setFilter()</code> on the element. Your filter function should return true to include the item, false to reject it.</p>
     <code>$("#myList").list('setFilter', 'myFilterID', function(item) { ... })</code>
+    <p>This may be necessary if you want more control over the filtering than the default regular expression match provides.</p>
   </div>
 
   <h3>Dynamic Filters</h3>
 
-  <p>By attaching a <code>data-filter</code> trigger to an input element, you can filter based on dynamic user input. Input elements use their <code>.val()</code> value instead of their <code>data-match</code> value.</p>
+  <p>By attaching a <code>data-filter</code> trigger to an input element, you can filter based on dynamic user input. Input elements use their <code>.val()</code> value instead of their <code>data-pattern</code> value.</p>
 
   <div class="bs-example">
     <input type="text" class="form-control" data-filter="id,name" data-target="#myListSearching" data-trigger="keyup" placeholder="Search">
@@ -173,10 +174,10 @@ $('#myList').list({templateEngine: function(t) {
           <label class="btn btn-primary active" data-filter="id" data-target="#myListMultiple">
             <input type="radio" name="id">All
           </label>
-          <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListMultiple">
+          <label class="btn btn-primary" data-filter="id" data-pattern="1" data-target="#myListMultiple">
             <input type="radio" name="id">ID is 1
           </label>
-          <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListMultiple">
+          <label class="btn btn-primary" data-filter="id" data-pattern="2" data-target="#myListMultiple">
             <input type="radio" name="id">ID is 2
           </label>
         </div>
@@ -216,10 +217,10 @@ $('#myList').list({templateEngine: function(t) {
       <label class="btn btn-primary active" data-filter="id" data-target="#myListMultiple">
         <input type="radio" name="id">All
       </label>
-      <label class="btn btn-primary" data-filter="id" data-match="1" data-target="#myListMultiple">
+      <label class="btn btn-primary" data-filter="id" data-pattern="1" data-target="#myListMultiple">
         <input type="radio" name="id">ID is 1
       </label>
-      <label class="btn btn-primary" data-filter="id" data-match="2" data-target="#myListMultiple">
+      <label class="btn btn-primary" data-filter="id" data-pattern="2" data-target="#myListMultiple">
         <input type="radio" name="id">ID is 2
       </label>
     </div>
@@ -254,7 +255,7 @@ $('#myList').list({templateEngine: function(t) {
 
   <div class="bs-callout bs-callout-info" id="list-filtering-triggers">
     <h4>Custom event triggers</h4>
-    <p>By default, filters are applied when a user clicks on a static trigger, or the value of a user input changes. But you can change the event that Index.js listens for on the given element with a <code>data-trigger</code> attribute. This lets us update the list more or less frequently, or based on different types of user input (e.g., applying a filter when a form is submitted, versus every time a key is pressed). Allowed events are stored in <code>List.TRIGGER_EVENTS</code>.</p>
+    <p>By default, filters are applied when a user clicks on a static trigger, or the value of a user input changes. But you can change the event that Index.js listens for on the given element with a <code>data-trigger</code> attribute. This lets us update the list more or less frequently, or based on different types of user input (e.g., applying a filter when a form is submitted, versus every time a key is pressed). Not all events are listened to for performance reasons; view the allowed events in <code>List.TRIGGER_EVENTS</code>.</p>
     <code>&lt;input type="text" ... data-trigger="keyup"&gt;</code>
   </div>
 
@@ -297,6 +298,8 @@ $('#myList').list({templateEngine: function(t) {
     <p>You can also set your own sort function by calling <code>.setSort()</code> on the element:</p>
     <code>$("#myList").list('setSort', function(a, b) { ... })</code>
   </div>
+
+  You can also pass a string as the <code>sort</code> option when initializing a list in code or through the List's top-level data attributes. As with the toggles above, default sort functions will be created. You can pass multiple fields, separated by commas, and you can choose the sort order by appending either <code>.ascending</code> (default) or <code>.descending</code> to the field name. For example: <code>.list({sort: 'name, age.descending'})</code>.
 
   <h2 id="list-pagination">Pagination</h2>
   <style>.pg-link { margin: 0 8px 8px 0; width: 40px; }</style>
@@ -506,10 +509,10 @@ $('#myList').list({templateEngine: function(t) {
          <td>Comma-separated list of field names against which the filter will be applied. If the filter matches the value of any field, the item will be displayed.</td>
        </tr>
        <tr>
-         <td>match</td>
+         <td>pattern</td>
          <td>string</td>
          <td></td>
-         <td>Value to be compared to the item's attributes. When using the default filter function, this value will be compared using a case-insensitive search, and if it is found anywhere in the item's relevant attributes, it will match.</td>
+         <td>Value to be compared to the item's attributes. When using the default filter function, this value will be treated as a case-insensitive regular expression. Note that if you need reserved regex characters to be treated normally, you'll either have to escape them here, or set a custom filter function instead.</td>
        </tr>
        <tr>
          <td>trigger</td>
@@ -568,7 +571,7 @@ $('#myList').list({
   {% highlight js %}$('#myList').list('show'){% endhighlight %}
 
   <h4>.list('setFilter', key, function)</h4>
-  <p>Manually sets a filter function to be applied. Can be used multiple times with different keys. Pass <code>undefined</code> as the final argument to remove an existing filter.</p>
+  <p>Manually sets a filter function to be applied. Can be used multiple times with different keys. Pass <code>undefined</code> as the final argument to remove an existing filter. You can also pass multiple filters as a hash to the function.</p>
   {% highlight js %}$('#myList').list('setFilter', function(item) { ... }){% endhighlight %}
 
   <h4>.list('setSort', function)</h4>
