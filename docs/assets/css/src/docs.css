@@ -12,6 +12,18 @@
  */
 
 
+.bs-docs-masthead h1 {
+  color: #1d3264 !important;
+  padding-top: 50px !important;
+}
+h1.page-header {
+  margin: 0px -15px 20px -100%;
+  padding: 70px 15px 40px 100% !important;
+  font-size: 45px;
+  background: #34497b;
+  color: white;
+}
+
 /*
  * Scaffolding
  *
@@ -200,6 +212,10 @@ body {
  *
  * Tweaks to the custom homepage and the masthead (main jumbotron).
  */
+
+.bs-docs-masthead {
+  border-top: 12px solid #1D3263
+}
 
 /* Share masthead with page headers */
 .bs-docs-masthead,
