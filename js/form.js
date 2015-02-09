@@ -63,7 +63,7 @@
   Form.prototype.serialize = function () {
     return {
       array:  this.$element.serializeArray(),
-      object: this.$element.serializeObject()
+      object: $.deparam(this.$element.serialize())
     }
   }
 
