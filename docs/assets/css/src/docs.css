@@ -17,8 +17,7 @@
   color: #1d3264 !important;
 }
 h1.page-header {
-  padding: 70px 15px 40px 100% !important;
-  margin: 0 -15px 20px -100%;
+  padding: 70px 15px 40px 15px !important;
   font-size: 45px;
   color: white;
   background: #34497b;

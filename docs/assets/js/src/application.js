@@ -34,16 +34,31 @@
 
     // Sidenav affixing
     setTimeout(function () {
-      var $sideBar = $('.bs-docs-sidebar')
+      var $sideBarGS = $('.bs-docs-sidebar-gs')
 
-      $sideBar.affix({
+      $sideBarGS.affix({
         offset: {
           top: function () {
-            var offsetTop      = $sideBar.offset().top
-            var sideBarMargin  = parseInt($sideBar.children(0).css('margin-top'), 10)
-            var navOuterHeight = $('.bs-docs-nav').height()
+            var offsetTop      = $sideBarGS.offset().top
+            var sideBarMargin  = parseInt($sideBarGS.children(0).css('margin-top'), 10)
 
-            return (this.top = offsetTop - navOuterHeight - sideBarMargin)
+            return (this.top = offsetTop - sideBarMargin)
+          },
+          bottom: function () {
+            return (this.bottom = $('.bs-docs-footer').outerHeight(true) + $('#javascript').outerHeight(true) + $('.bs-docs-container-js').outerHeight(true) + 15)
+          }
+        }
+      })
+
+      var $sideBarJS = $('.bs-docs-sidebar-js')
+
+      $sideBarJS.affix({
+        offset: {
+          top: function () {
+            var offsetTop      = $sideBarJS.offset().top
+            var sideBarMargin  = parseInt($sideBarJS.children(0).css('margin-top'), 10)
+
+            return (this.top = offsetTop - sideBarMargin)
           },
           bottom: function () {
             return (this.bottom = $('.bs-docs-footer').outerHeight(true))

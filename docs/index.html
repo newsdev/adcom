@@ -15,11 +15,15 @@ title: Adcom
   </div>
 </main>
 
-<div class="container bs-docs-container">
+<h1 id="getting-started" class="page-header">
+  <div class="container">
+    Getting Started
+  </div>
+</h1>
 
+<div class="container bs-docs-container bs-docs-container-gs">
   <div class="row">
-    <div class="col-md-9" role="main">
-      <h1 id="getting-started" class="page-header">Getting Started</h1>
+    <div class="col-md-9" rolw="main">
       <p class="lead">Adcom consists of three jQuery plugins, configured via data-attributes, that streamline adding interaction to common page elements.</p>
       <div class="row bs-downloads">
         <div class="col-sm-6">
@@ -32,25 +36,52 @@ title: Adcom
           <p>
             <a href="#form" class="btn btn-lg btn-outline" role="button">Form.js</a>
           </p>
-          <p>Populate and serialize forms with ease.</p>
+          <p>Populate, serialize and validate forms.</p>
         </div>
       </div>
 
       {% include getting-started/usage.html %}
       {% include getting-started/download.html %}
       {% include getting-started/whats-included.html %}
+    </div>
 
+    <div class="col-md-3">
+      <div class="bs-docs-sidebar bs-docs-sidebar-gs hidden-print hidden-xs hidden-sm" role="complementary">
+        <ul class="nav bs-docs-sidenav">
+          <li>
+            <h6>Getting Started</h6>
+          </li>
+          {% include nav/getting-started.html %}
+        </ul>
+        <a class="back-to-top" href="#top">
+          Back to top
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <h1 id="javascript" class="page-header">JavaScript</h1>
+<h1 id="javascript" class="page-header">
+  <div class="container">
+    JavaScript
+  </div>
+</h1>
+
+<div class="container bs-docs-container bs-docs-container-js">
+  <div class="row">
+    <div class="col-md-9" role="main">
       <p class="lead">Dynamic lists and forms for your admins.</p>
       {% include js/overview.html %}
       {% include js/list.html %}
       {% include js/form.html %}
     </div>
     <div class="col-md-3">
-      <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary">
+      <div class="bs-docs-sidebar bs-docs-sidebar-js hidden-print hidden-xs hidden-sm" role="complementary">
         <ul class="nav bs-docs-sidenav">
-          {% include nav/main.html %}
+          <li>
+            <h6>JavaScript</h6>
+          </li>
+          {% include nav/javascript.html %}
         </ul>
         <a class="back-to-top" href="#top">
           Back to top
