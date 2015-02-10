@@ -270,7 +270,7 @@
 
   List.prototype.setInitialState = function () {
     var $this = this
-    this.toggleFilter($('.active[data-filter][data-target]'))
+    this.toggleFilter($('[data-filter][data-target]').filter('.active, :checked'))
 
     $('[data-sort]').each(function (e) {
       var el = $(this)
@@ -586,8 +586,14 @@
       if ($target[0] !== $this.$element[0]) return
 
       var fields  = $el.attr('data-filter')
-      // data-match is deprecated; use data-pattern, which supports regexes, instead
-      var value   = $el.is(':input') ? $el.val() : ($el.attr('data-pattern') || $el.attr('data-match'))
+
+      // Use first value of `pattern`, `match`, or .val() of input elements
+      // that are not unselected checkboxes.
+      // `data-match` is deprecated; use data-pattern, which supports regexes
+      var value = $el.attr('data-pattern') || $el.attr('data-match')
+      if (!value && $el.is(':input') && $el.is(':checkbox:checked, :not(:checkbox)')) {
+        value = $el.val()
+      }
       if (!value) value = undefined
 
       $this.setFilter(fields, value)
@@ -609,7 +615,7 @@
       if (!data) $this.data('ac.list', (data = new List(this, options)))
       if (typeof option == 'string') data[option].apply(data, args)
       else if (options.show && !options.remote) data.show()
-      else if (typeof option == 'object') data.update(option)
+      else if (typeof option == 'object') data.updateOptions(option)
     })
   }
 
