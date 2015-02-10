@@ -1,5 +1,4 @@
 node_modules/*
-.sass-cache/*
 *.swp
 _gh_pages
 _site
