@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Adcom &middot; moↄbA
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="/public/css/adcom-namespaced.css">
+  <link rel="stylesheet" href="/public/css/adcom-docs.css">
+  <link rel="stylesheet" href="/public/css/prism.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <script type="text/javascript" src="http://typeface.nytimes.com/zam5nzz.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+
+
+  <body class="">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p><strong>Ad</strong>min <strong>com</strong>ponents</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item active" href="/">Home</a>
+    <hr>
+    <a class="sidebar-nav-item " href="list-js.html">List.js</a>
+    <a class="sidebar-nav-item " href="form-js.html">Form.js</a>
+    <a class="sidebar-nav-item " href="session-js.html">Session.js</a>
+    <a class="sidebar-nav-item " href="persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item " href="message-js.html">Message.js</a>
+    <hr>
+    <a class="sidebar-nav-item " href="styles.html">Styles</a>
+    <hr>
+
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a>
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v0.1.0</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015 The New York Times.<br>
+      All rights reserved.
+    </p>
+  </div>
+
+  <div class="sidebar-item sidebar-img">
+    <img src="/public/images/logo.png">
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Adcom</a>
+            <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <h1 id="what-is-adcom?">What is Adcom?</h1>
+
+<blockquote>
+<p>Adcom is a set of JavaScript plugins and frontend styles <br> that serve as the foundation for admins at The New York Times.</p>
+</blockquote>
+
+<p>The plugins serve common use cases on the many internal sites we create day to day: rendering <strong>dynamic lists</strong>, standardizing <strong>form validation</strong>, <strong>maintaining state</strong> across page loads, persisting <strong>user settings</strong>, and so on.</p>
+
+<p>The styles are a custom flavor of <a href="https://getbootstrap.com">Bootstrap</a>, and includes a set of guidelines for what to include on each page, and where. Ensuring that admins from all of our teams have a consistent visual language helps users feel more comfortable using the sites, and makes it easier for our developers to maintain.</p>
+
+<ul>
+<li><a href="#why">Why?</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#plugins">Take me to the Plugins</a></li>
+<li><a href="#styles">Take me to the Styles</a></li>
+<li><a href="https://github.com/newsdev/adcom#development">Development</a></li>
+</ul>
+
+<!-- The Why,  -->
+
+<hr>
+
+<h2 id="why-is-adcom?">Why is Adcom?</h2>
+
+<p>Adcom was designed to create a library of guidelines for how to structure and implement common parts of our internal siteds. This implementation was developed to suit our specific needs (and we hope the needs of others as well), but is based on a more general set of issues we face as a large, diverse development shop.</p>
+
+<h4 id="comfort-in-the-familiar">Comfort in the familiar</h4>
+
+<p>Dozens, if not hundreds, of internal web sites are created every year at The New York Times, from tools used by copy editors and reporters to status and monitoring pages to documentation. For users, the different ways these sites are organized and designed can cause confusion, and requires an increased mental effort to understand.</p>
+
+<p>Adcom represents our efforts to create a pattern to <strong>unify the workflow</strong> of our tools. The styles include a <strong>boilerplate layout</strong> that can be rendered with your choice of framework and language. The CSS, based on Bootstrap, includes components with guidelines for use within the workflow of an app.</p>
+
+<p>In the same way that Django&#39;s default admin covers the large swath of admin needs that are relatively consistent, Adcom provides a template for the most common admin workflows tasks, but is modular enough to take a back seat when necessary.</p>
+
+<h4 id="accepting-feature-creep">Accepting feature creep</h4>
+
+<p>Admins have a way of encouraging feature creep. They start out small, but can grow over months or years to cover an ever-wider range of needs and options.</p>
+
+<p>Taking this as a given, Adcom tries to smooth the process of that feature creep, by providing foundational plugins that are quick to use for a <code>1.0</code>, but flexible enough to <strong>grow with increased complexity</strong>. <a href="/list-js.html">List.js</a>, for example, enables quick and simple rendering of lists for a first draft. When it comes time to add a more complex templating engine, or additional filtering, or when you need to change the data source, each change can happen independently, without having to start over with a new plugin.</p>
+
+<h4 id="isolating-code">Isolating code</h4>
+
+<p>Helping developers quickly comprehend how an existing project works can greatly increase how nimble a larger team is. We found that a main impedement to this was <strong>sheer code quantity</strong>. The JavaScript for any given page might contain custom code to render a custom a list, serialize a form, etc., in addition to (and interweaved with) what you could call the &quot;business logic&quot; of the page. While quick to write, each additional implementation on a team made increased the overall complexity of our code.</p>
+
+<p>Adcom&#39;s plugins work to <strong>remove common client-side logic</strong> out of a page&#39;s working JavaScript file, leaving behind a set of code that&#39;s easier to find and to understand.</p>
+
+<p>Like <a href="http://getbootstrap.com/javascript/#js-data-attrs">Bootstrap</a>, Adcom&#39;s plugin encourage use and configuration in the View layer by setting data attributes directly on elements. More generally, this suggests an increased mental focus on the <strong>document driving development</strong>. Several design decisions are made to flatten the JavaScript and document layers, linking the physical map of a page to the source code that generates it and the JavaScript that enhances it:</p>
+
+<ul>
+<li>Tie settings that define interaction directly to the DOM nodes it affects</li>
+<li>Render JavaScript templates inline inside their destinations</li>
+<li>Prefer baking HTML structure into the page over dynamic generation (e.g., rendering a blank form once, and populating it multiple times as needed)</li>
+</ul>
+
+<h4 id="meeting-developers-at-home">Meeting developers at home</h4>
+
+<p>Adcom is in principle platform agnostic and is limited to client-side JavaScript and CSS, in order to be used in various frameworks.</p>
+
+<p>It also encourages development that remains within those boundaries. An ultimate goal is reducing disconnect in the design of various admins, so that their frontends are consistent and their backends easier to comprehend. The more portable the template, the better.</p>
+
+<hr>
+
+<h2 id="usage">How is Adcom? <small>Usage</small></h2>
+
+<p><a href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a> the latest version from GitHub.</p>
+
+<p>Adcom is available over bower:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">bower install adcom
+</code></pre></div>
+<p>The <code>dist</code> folder of the source code contains the following files:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">adcom/
+└── dist/
+    ├── css/
+    │   ├── adcom.css
+    │   ├── adcom.css.map
+    │   └── adcom.min.css
+    └── js/
+        ├── adcom.js
+        └── adcom.min.js
+</code></pre></div>
+<p>The <code>adcom.css</code> and <code>adcom.min.css</code> both include Bootstrap <a href="https://github.com/twbs/bootstrap/releases/v3.3.4">v3.3.4</a>. <code>adcom.js</code> and <code>adcom.min.js</code> do <strong>not</strong> include the Bootstrap JavaScript plugins.</p>
+
+<hr>
+
+<h2 id="plugins">Plugins</h2>
+
+<ul>
+<li><a href="/list-js.html">List.js</a> takes a list of items and renders them using a template</li>
+<li><a href="/form-js.html">Form.js</a> standardizes cross-browser form validation and serialization</li>
+<li><a href="/session-js.html">Session.js</a> stores individual user settings in localStorage or sessionStorage</li>
+<li><a href="/persist-js.html">Persist.js</a> creates &quot;sticky&quot; element attributes that can persist across page loads</li>
+<li><a href="/message-js.html">Message.js</a> displays alert and <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">snackbar</a>-style messages to readers</li>
+</ul>
+
+<h3 id="javascript-usage">JavaScript Usage</h3>
+
+<p>You can include all of the plugins or individual ones by loading either the distribution <code>adcom.js</code> file or any of the source files.</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- load all of plugins --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"dist/js/adcom.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="c">&lt;!-- load list.js only --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/list.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div>
+<h4 id="require.js-/-amd">Require.js / AMD</h4>
+
+<p>Plugins are also compatible with the Asynchronous Module Definition API:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- using require.js --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"require.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+    <span class="na">paths</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">jquery</span><span class="p">:</span> <span class="s1">'assets/jquery'</span><span class="p">,</span>
+      <span class="na">adcom</span><span class="p">:</span> <span class="s1">'assets/adcom'</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+  <span class="nx">require</span><span class="p">([</span><span class="s1">'adcom'</span><span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// all plugins are defined</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div>
+<p>Each assumes jQuery is available on the page or through require, and will install List.js to <code>$.fn.list</code>.</p>
+
+<h3 id="plugin-initialization">Plugin Initialization</h3>
+
+<p>Most plugins have a set of primary options can be specified in two ways:</p>
+
+<ul>
+<li>As an object to the plugin&#39;s initializer function (such as <code>.list({ &quot;option&quot;: true })</code>)</li>
+<li>Adding data-attributes to the plugin&#39;s element (initializers are normally called on a single DOM element)</li>
+</ul>
+
+<p>For example, set the <code>show</code> option on a list by passing a boolean to the initailizer, or with a data attribute on the element:</p>
+
+<ul>
+<li><code>$(list).list({show: false})</code></li>
+<li><code>&lt;list data-show=&quot;false&quot;&gt; ... &lt;/list&gt;</code></li>
+</ul>
+
+<p>When a plugin is initialized, all data attributes on the element are converted into options that get passed into the initializer as defaults. You can also mix and match; options specified in the JavaScript initializer take precedence over those as data attributes. Multi-word options are expressed in camel case in JavaScript (<code>currentPage</code>), and with hypens as data attributes (<code>data-current-page</code>).</p>
+
+<hr>
+
+<h2 id="styles">Styles</h2>
+
+<p>Adcom includes CSS styles which are a compiled variation of Bootstrap. There are several modifications / additions Adcom makes to the following categories:</p>
+
+<ul>
+<li><a href="/styles.html#navigation">Navigation</a></li>
+<li><a href="/styles.html#forms">Forms</a></li>
+<li><a href="/styles.html#lists">Lists</a></li>
+<li><a href="/styles.html#messages">Messages</a></li>
+<li><a href="/styles.html#buttons">Buttons</a></li>
+</ul>
+
+<p>It also includes a <a href="/whitelabel.html">boilerplate scaffold</a> of the overall structure we use for admins at The New York Times.</p>
+
+<h3 id="styles-usage">Styles usage</h3>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- load adcom.css in your head tag --&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/assets/adcom.css"</span><span class="nt">&gt;</span>
+</code></pre></div>
+<hr>
+
+<h2 id="development">Development</h2>
+
+<p>Make sure you have <code>npm</code> installed on your system. Then, run <code>npm install</code> within the project&#39;s home directory to install dependencies.</p>
+
+<p>You also need to have <code>bower</code> installed to load Bootstrap as a dependency. Run <code>bower install</code>.</p>
+
+<h3 id="grunt">Grunt</h3>
+
+<p>Several <a href="http://gruntjs.com/getting-started"><code>grunt</code></a> tasks are provided to make development easier.</p>
+
+<p>Run <code>grunt</code> to compile the CSS and JavaScript, update the docs, and watch for new changes to the source files to re-run itself.</p>
+
+<p>Run <code>grunt jekyll:server</code> to boot up this documentation on <code>localhost:8000</code>.</p>
+
+<h3 id="contributing">Contributing</h3>
+
+<p>This repo is hosted on <a href="https://github.com/newsdev/adcom">GitHub</a>. Please use the Issues page to comment on the project and report any bugs or concerns you have.</p>
+
+<h3 id="license">License</h3>
+
+<p>Adcom is released under the <a href="https://github.com/newsdev/adcom/blob/master/LICENSE">Apache 2.0 License</a>.</p>
+
+<h2 id="author">Author</h2>
+
+<p><strong>Michael Strickland</strong>, <a href="https://github.com/newsdev">The New York Times</a>
+- <a href="https://github.com/abstrctn">https://github.com/abstrctn</a>
+- <a href="https://twitter.com/moriogawa">https://twitter.com/moriogawa</a></p>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/underscore-min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/public/js/prism.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/beautify-html.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/adcom.js"></script>
+    <script type="text/javascript" src="/public/js/adcom-docs.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-60337978-2', 'auto');
+      ga('send', 'pageview');
+  </script>
+  </body>
+</html>

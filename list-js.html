@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      List.js &middot; Adcom
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="/public/css/adcom-namespaced.css">
+  <link rel="stylesheet" href="/public/css/adcom-docs.css">
+  <link rel="stylesheet" href="/public/css/prism.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <script type="text/javascript" src="http://typeface.nytimes.com/zam5nzz.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+
+
+  <body class="">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p><strong>Ad</strong>min <strong>com</strong>ponents</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item " href="/">Home</a>
+    <hr>
+    <a class="sidebar-nav-item active" href="list-js.html">List.js</a>
+    <a class="sidebar-nav-item " href="form-js.html">Form.js</a>
+    <a class="sidebar-nav-item " href="session-js.html">Session.js</a>
+    <a class="sidebar-nav-item " href="persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item " href="message-js.html">Message.js</a>
+    <hr>
+    <a class="sidebar-nav-item " href="styles.html">Styles</a>
+    <hr>
+
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a>
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v0.1.0</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015 The New York Times.<br>
+      All rights reserved.
+    </p>
+  </div>
+
+  <div class="sidebar-item sidebar-img">
+    <img src="/public/images/logo.png">
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Adcom</a>
+            <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <h2 id="what-is-list.js?">What is List.js?</h2>
+
+<blockquote>
+<p>List.js takes a <strong>list of items</strong> and renders them using a <strong>template</strong>.</p>
+</blockquote>
+
+<p>You can provide the items in several ways:</p>
+
+<ul>
+<li>Inline as a JSON-serialized <code>data-attribute</code></li>
+<li>Provided as an array to a JavaScript initializer</li>
+<li>Ajaxed in from a remote url</li>
+</ul>
+
+<p>As well as the template:</p>
+
+<ul>
+<li>Inline as a <code>data-attribute</code></li>
+<li>As a text or compiled template to a JavaScript initializer</li>
+<li>Written as the inner HTML of the container element</li>
+</ul>
+
+<p>Any way you configure it, the list is rendered using the same jQuery plugin, and has access to the same set of rendering helpers: pagination, sorting and filtering. This lets your list evolve from a simple hard-coded test set to your final database-driven, searchable, sortable table, without swapping in different plugins as your requirements expand.</p>
+
+<ul>
+<li><a href="/#javascript-usage">Usage</a></li>
+<li><a href="#examples">Examples</a>
+
+<ul>
+<li><a href="#example-templates">Templates</a></li>
+<li><a href="#example-filtering">Filtering / Searching</a></li>
+<li><a href="#example-sorting">Sorting</a></li>
+<li><a href="#example-pagination">Pagination</a></li>
+</ul></li>
+<li><a href="#options">Options</a></li>
+<li><a href="#api">API</a></li>
+<li><a href="#events">Events</a></li>
+</ul>
+
+<hr>
+
+<h2 id="examples">Examples</h2>
+
+<p>These examples show a subset of the ways you can configure lists; they use example snippets of HTML and JavaScript that <strong>you can edit</strong>, and the rendered result is displayed below.</p>
+
+<p>You can configure all of the Adcom plugins either through JavaScript as in the following examples, or through data-attributes. Read more about your options <a href="/#plugin-initialization">here</a>.</p>
+
+<h3 id="example-templates">Templates <small>Render a simple table of data</small></h3>
+
+<p>To render a dynamic table, simply write the HTML necessary to render a single row. Add a unique identifier to the element that will contain all of the items (in this case, the <code>tbody</code>). List.js includes a minimal template syntax that lets you insert the value of any element by specifying a JSON path as <code>data-field</code>.</p>
+
+<p>Then, initialize your list by calling <code>.list()</code> on the <code>tbody</code> with any options you need. Here, we specify the template by passing in the HTML contents of the <code>tbody</code> explicitly; but this happens by default if you don&#39;t specify a template, it is shown here to be explicit. You can also pass in a compiled JavaScript template. Functions will be evaluated by passing the item to the template.</p>
+<div class="highlight"><pre><code class="language-example-list" data-lang="example-list">&lt;table&gt;
+  &lt;tbody id="1"&gt;
+    &lt;tr&gt;
+      &lt;td data-field="id"&gt;&lt;/td&gt;
+      &lt;td data-field="name"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;script type="text/javascript"&gt;
+  var items = [
+    {"id": 1, "name": "one"},
+    {"id": 2, "name": "two"},
+    // {"id": 3, "name": "three"}
+  ];
+  $('#1').list({
+    items: items,
+    template: $('#1')[0].innerHTML
+  });
+&lt;/script&gt;
+</code></pre></div>
+<p>Try adding additional items or more columns to see how it changes the output.</p>
+
+<p>While not possible for all element types, where possible we encourage including the template inline inside the list element (as shown above) as a convention to reduce ambiguity in how a page is constructed.</p>
+
+<hr>
+
+<h3 id="example-filtering">Filtering and Searching <small></small></h3>
+
+<p>You can tie various input &quot;triggers&quot;, such as <code>&lt;input&gt;</code> tags, to a list by adding <code>data-target=&quot;#id&quot;</code> to each of them.</p>
+
+<p>The value of each trigger element (either the natural <code>value</code> of something like a text input, or a custom value or regular expression specified with <code>data-pattern</code>) will be matched against every item in the list. If any of the attributes referenced in the trigger&#39;s <code>data-fields</code> (specified using a top-level attribute name, or a JSON path) match the value, it will be included.</p>
+
+<p>Items must match every active filter to be included.</p>
+<div class="highlight"><pre><code class="language-example-list" data-lang="example-list">&lt;input type="text" data-target="#2" data-filter="name" data-trigger="keyup" placeholder="Search name"&gt;
+&lt;input type="checkbox" data-target="#2" data-filter="checkbox" data-pattern="true" value="true"&gt;
+&lt;label for="checkbox"&gt;On?&lt;/label&gt;
+&lt;input type="radio" data-target="#2" data-filter="radio" data-pattern="1" name="radio"&gt;
+&lt;label&gt;1&lt;/label&gt;
+&lt;input type="radio" data-target="#2" data-filter="radio" data-pattern="2" name="radio"&gt;
+&lt;label&gt;2&lt;/label&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Checkbox&lt;/th&gt;
+      &lt;th&gt;Radio&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody id="2"&gt;
+    &lt;tr&gt;
+      &lt;td data-field="name"&gt;&lt;/td&gt;
+      &lt;td data-field="checkbox"&gt;&lt;/td&gt;
+      &lt;td data-field="radio"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;script type="text/javascript"&gt;
+  var items = [
+    {"name": "Number one!", "checkbox": true, radio: "1"},
+    {"name": "Number two :(", "checkbox": false, radio: "2"}
+  ];
+  $('#2').list({ items: items });
+&lt;/script&gt;
+</code></pre></div>
+<hr>
+
+<h3 id="example-sorting">Sorting <small></small></h3>
+
+<p>Any field can be sorted by adding a &quot;sort trigger&quot; to an element, which is triggered on click. Just add <code>data-target</code> and <code>data-sort</code> (where you specify a single field or JSON path) to an element.</p>
+
+<p>On click, the sort cycles through ascending and descending, and is kept track of with the <code>sort-ascending</code> and <code>sort-descending</code> classes on the trigger. Add one of these at the start to default the sort. (<code>number</code> in the example below starts out with <code>sort-ascending</code>.)</p>
+<div class="highlight"><pre><code class="language-example-list" data-lang="example-list">&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th class="sort-control sort-ascending" data-target="#3" data-sort="number"&gt;Number&lt;/th&gt;
+      &lt;th class="sort-control" data-target="#3" data-sort="text"&gt;Text&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody id="3"&gt;
+    &lt;tr&gt;
+      &lt;td data-field="number"&gt;&lt;/td&gt;
+      &lt;td data-field="text"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;script type="text/javascript"&gt;
+  var items = [
+    {"number": 1, "text": "Beta"},
+    {"number": 2, "text": "Alpha"}
+  ];
+  $('#3').list({ items: items });
+&lt;/script&gt;
+</code></pre></div>
+<p>You can customize the order / availability of the sort states by adding <code>data-states</code> to the trigger element, with any of the following comma-separated in the desired cycle order: <code>ascending</code>, <code>descending</code> or <code>off</code> (default is just the first two).</p>
+
+<hr>
+
+<h3 id="example-pagination">Pagination <small></small></h3>
+
+<p>Two configuration options can be set or updated on a list: <code>pageSize</code> and <code>currentPage</code>. The text inputs below are set to update the list&#39;s settings on change; try updating their values.</p>
+<div class="highlight"><pre><code class="language-example-list" data-lang="example-list">&lt;input id="4-size" value="5" type="number" min="1"&gt;
+&lt;input id="4-page" value="1" type="number" min="1"&gt;
+&lt;div id="4"&gt;
+  &lt;button disabled data-field="#"&gt;&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;
+  var items = [ {"#": 1}, {"#": 2}, {"#": 3}, {"#": 4}, {"#": 5}, {"#": 6}, {"#": 7}, {"#": 8}, {"#": 9}, {"#": 10} ];
+  $('#4').list({
+    items: items,
+    pageSize: $('#4-size').val(),
+    currentPage: $('#4-page').val(),
+  });
+
+  $('#4-size').on('change', function() {
+    $('#4').list({pageSize: $(this).val()});
+  });
+  $('#4-page').on('change', function() {
+    $('#4').list({currentPage: $(this).val()});
+  });
+&lt;/script&gt;
+</code></pre></div>
+<p>Similar to the filter and sort triggers above, clicked on an element with <code>data-target</code> and <code>data-page</code> attributes will change the current page.</p>
+
+<p>Remember, you can specify any of the list-level configuration options as data-attributes on the list element itself. For example, <code>pageSize</code> can also be configured by adding a <code>data-page-size</code> attribute to the list element.</p>
+
+<hr>
+
+<h2 id="options">Options</h2>
+
+<p><a href="/#plugin-initialization">A note</a> on using data attributes versus initializer functions.</p>
+
+<h3 id="options-initialization">Initialization <small>List elements</small></h3>
+
+<table><thead>
+<tr>
+<th>attribute</th>
+<th>type</th>
+<th>default</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>items</td>
+<td>array, serialized array</td>
+<td></td>
+<td>The entire set of items to include in the list.</td>
+</tr>
+<tr>
+<td>template</td>
+<td>string, function</td>
+<td>List element&#39;s <code>.innerHTML</code></td>
+<td>Either a compiled template function (which will receieve each item in the list to be rendered), or a string that will be compiled into a template. If a <code>template-engine</code> is also passed, that engine will be used to generate the function from the passed-in string.</td>
+</tr>
+<tr>
+<td>template-engine</td>
+<td>function</td>
+<td></td>
+<td>Specify a custom templating function, such as <code>_.template</code>. Used when a string is passed for the template.</td>
+</tr>
+<tr>
+<td>page-size</td>
+<td>integer</td>
+<td>20</td>
+<td>How many items to display at a time.</td>
+</tr>
+<tr>
+<td>current-page</td>
+<td>integer</td>
+<td>1</td>
+<td>What page to start with. Can also be updated to switch pages.</td>
+</tr>
+<tr>
+<td>show</td>
+<td>boolean</td>
+<td>true</td>
+<td>Whether to render the list immediately after initialization.</td>
+</tr>
+<tr>
+<td>remote</td>
+<td>string</td>
+<td></td>
+<td>A path to an endpoing containing a JSON representation of the items to load into the list.</td>
+</tr>
+</tbody></table>
+
+<h3 id="filter-triggers">Filter triggers</h3>
+
+<table><thead>
+<tr>
+<th>attribute</th>
+<th>type</th>
+<th>default</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>target</td>
+<td>jQuery selector</td>
+<td></td>
+<td>Selector for the list element.</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>CSV</td>
+<td></td>
+<td>Comma-separated string of fields to include when searching for <code>pattern</code>.</td>
+</tr>
+<tr>
+<td>pattern</td>
+<td>string, regex</td>
+<td></td>
+<td>A case-insensitive string or regex that will be compared against the fields from <code>filter</code>.</td>
+</tr>
+<tr>
+<td>trigger</td>
+<td>string</td>
+<td>click, change</td>
+<td>The page event that will trigger the filter updating. Defaults to <code>click</code> for static elements, <code>change</code> for inputs.</td>
+</tr>
+</tbody></table>
+
+<h3 id="sort-triggers">Sort triggers</h3>
+
+<table><thead>
+<tr>
+<th>attribute</th>
+<th>type</th>
+<th>default</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>target</td>
+<td>jQuery selector</td>
+<td></td>
+<td>Selector for the list element.</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>string</td>
+<td></td>
+<td>The field to sort by.</td>
+</tr>
+<tr>
+<td>states</td>
+<td>string</td>
+<td>ascending, descending</td>
+<td>Comma-separated list of which states to cycle through when toggling the sort. Can specify any combination of <code>ascending</code>, <code>descending</code>, and / or <code>off</code>. The initial state defaults to <code>off</code>, but can be set to another one by adding the <code>sort-ascending</code> or <code>sort-descending</code> class to the trigger.</td>
+</tr>
+</tbody></table>
+
+<h3 id="page-triggers">Page triggers</h3>
+
+<table><thead>
+<tr>
+<th>attribute</th>
+<th>type</th>
+<th>default</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>target</td>
+<td>jQuery selector</td>
+<td></td>
+<td>Selector for the list element.</td>
+</tr>
+<tr>
+<td>page</td>
+<td>integer</td>
+<td></td>
+<td>The list&#39;s <code>currentPage</code> will be updated to this number when the trigger is clicked.</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2 id="api">API <small>Public methods</small></h2>
+
+<table><thead>
+<tr>
+<th>method</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>.list({ options })</td>
+<td>Any of the <a href="#options-initialization">list options</a> can be set or updated with this function. Multi word options should be camelcased (<code>page-size</code> = <code>pageSize</code>). You can also set the sorting behavior by passing a sort function as <code>sort</code>. This will override any default sort that is produced by the sort triggers. Similarly, you can override or add filters by passing a slug and filter function as <code>filter</code>, or several of them by passing them as a key/value hash. Filters are addititve; pass <code>null</code> as the value for a given slug to delete a filter.</td>
+</tr>
+<tr>
+<td>.list(&#39;show&#39;)</td>
+<td>Re-render the list with the latest settings. If <code>data-show</code> is set to false, then this needs to be called manually.</td>
+</tr>
+<tr>
+<td>.list(&#39;destroy&#39;)</td>
+<td>Destroy the internal list.</td>
+</tr>
+<tr>
+<td>.list(&#39;add&#39;, Object[, index])</td>
+<td>Add an item to the list. You can optionally pass the index at which the item should be rendered, if you are not sorting the list.</td>
+</tr>
+<tr>
+<td>.list(&#39;update&#39;, index &#124;&#124; element &#124;&#124; Object, Object)</td>
+<td>Update an item in the list. The second argument can be any of the following: 1) the index in the original <code>items</code> list of the element, 2) the DOM element currently rendered within the list representing the item, or 3) a reference to the original item object that was passed into <code>items</code>. The item is replaced with the new item.</td>
+</tr>
+<tr>
+<td>.list(&#39;delete&#39;, index &#124;&#124; element &#124;&#124; Object)</td>
+<td>Remove a given item from the list. Same rules for arguments options as above.</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2 id="events">Events</h2>
+
+<p>All events with a pre and post version (such as <code>show</code> and <code>shown</code>) can be cancelled by calling <code>.preventDefault()</code> on the pre event.</p>
+
+<table><thead>
+<tr>
+<th>event</th>
+<th>trigger</th>
+<th>event properties</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>show.ac.list</td>
+<td>Before each time the list is rendered.</td>
+<td></td>
+</tr>
+<tr>
+<td>shown.ac.list</td>
+<td>After each time the list is rendered.</td>
+<td></td>
+</tr>
+<tr>
+<td>loaded.ac.list</td>
+<td>When the remote list of items has successfully been fetched. Only if the <code>remote</code> option is used</td>
+<td></td>
+</tr>
+<tr>
+<td>sortChange.ac.list</td>
+<td>When the sort function is about to be set or updated</td>
+<td><code>fields</code> the fields to sort on</td>
+</tr>
+<tr>
+<td>sortChanged.ac.list</td>
+<td>After the sort function has changed, before the list is rendered</td>
+<td><code>fields</code> the fields to sort on <br> <code>function</code> resulting sort function</td>
+</tr>
+<tr>
+<td>filterChange.ac.list</td>
+<td>When any filter is about to be set, updated or deleted</td>
+<td><code>key</code> slug for the filter <br> <code>filter</code> arguments passed to the filter</td>
+</tr>
+<tr>
+<td>filterChanged.ac.list</td>
+<td>After any filter has changed, before the list is rendered</td>
+<td><code>key</code> slug for the filter <br> <code>filter</code> arguments passed to the filter <br> <code>function</code> resulting filter function</td>
+</tr>
+<tr>
+<td>pageChange.ac.list</td>
+<td>When the page is about to be changed</td>
+<td><code>page</code></td>
+</tr>
+<tr>
+<td>pageChanged.ac.list</td>
+<td>After the page has been changed, before the list is rendered</td>
+<td><code>page</code></td>
+</tr>
+<tr>
+<td>paginated.ac.list</td>
+<td>After the list of items has been paginated internall, before the list is rendered. Use to render dynamic pagination triggers.</td>
+<td><code>page</code> <br> <code>pages</code> number of pages <br> <code>count</code> item count <br> <code>items</code> items in the current page <br> <code>start</code> index <br> <code>end</code> index</td>
+</tr>
+</tbody></table>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/underscore-min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/public/js/prism.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/beautify-html.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/adcom.js"></script>
+    <script type="text/javascript" src="/public/js/adcom-docs.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-60337978-2', 'auto');
+      ga('send', 'pageview');
+  </script>
+  </body>
+</html>

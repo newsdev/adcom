@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Styles &middot; Adcom
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="/public/css/adcom-namespaced.css">
+  <link rel="stylesheet" href="/public/css/adcom-docs.css">
+  <link rel="stylesheet" href="/public/css/prism.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <script type="text/javascript" src="http://typeface.nytimes.com/zam5nzz.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+
+
+  <body class="messages-static">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p><strong>Ad</strong>min <strong>com</strong>ponents</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item " href="/">Home</a>
+    <hr>
+    <a class="sidebar-nav-item " href="list-js.html">List.js</a>
+    <a class="sidebar-nav-item " href="form-js.html">Form.js</a>
+    <a class="sidebar-nav-item " href="session-js.html">Session.js</a>
+    <a class="sidebar-nav-item " href="persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item " href="message-js.html">Message.js</a>
+    <hr>
+    <a class="sidebar-nav-item active" href="styles.html">Styles</a>
+    <hr>
+
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a>
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v0.1.0</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015 The New York Times.<br>
+      All rights reserved.
+    </p>
+  </div>
+
+  <div class="sidebar-item sidebar-img">
+    <img src="/public/images/logo.png">
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Adcom</a>
+            <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <h2 id="styles">Styles</h2>
+
+<blockquote>
+<p>A custom flavor of Bootstrap that serves as the scaffolding for admins at The New York Times.</p>
+</blockquote>
+
+<ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#scaffolding">Scaffolding</a></li>
+<li><a href="#components">Components</a>
+
+<ul>
+<li><a href="#navigation">Navigation</a></li>
+<li><a href="#forms">Forms</a></li>
+<li><a href="#lists">Lists</a></li>
+<li><a href="#messages">Messages</a></li>
+<li><a href="#buttons">Buttons</a></li>
+</ul></li>
+</ul>
+
+<hr>
+
+<h2 id="usage">Usage</h2>
+
+<p>Adcom ships with compiled development and minified versions of <code>adcom.css</code>, along with a <code>.map</code> file, which is ready for inclusion on your webpages. The current version uses Bootstrap <a href="https://github.com/twbs/bootstrap/releases/v3.3.4">v3.3.4</a>.</p>
+
+<p>Our source <code>.less</code> files are available in the source code; see <a href="#development">Development</a> for information about customizing them yourself.</p>
+
+<hr>
+
+<h2 id="scaffolding">Scaffolding</h2>
+
+<p>The best introduction we can give to the Adcom styles is simply to see it in action. View an example index page <a href="/whitelabel.html">here</a>.</p>
+
+<p>Several of the componets, such as the navbars, instructions drawer, and styles for rendering items in a central list, are opinionated in their design, to be consistent, intuitive, and minimalistic in the complexity of actions they encourage.</p>
+
+<p><a href="/whitelabel.html">Image</a></p>
+
+<p>We encourage pages to include the following:</p>
+
+<ul>
+<li>Global <strong>About</strong> and <strong>Support</strong> pages that can explain a tool to newcomers, and provide instructions for help when needed</li>
+<li>A set of <strong>page-specific instructions</strong>, preferrably visibile on first load, that helps newcomers and servers as a useful reference</li>
+<li><strong>Consistent interfaces</strong> for list filters / sorting</li>
+<li><strong>Consistent visual language</strong> for triggers to add, remove, edit and export resources</li>
+<li>Using <strong>modals for forms</strong> that create or change a resource</li>
+<li>Explicit information for <strong>what will happen when a reader takes any action</strong> (what will happen to the page, how any databases will be affected)</li>
+</ul>
+
+<p>In practice, most of the pages we produce are some sort of index page. Having a general style that highlights primary actions for a reader to take not only save development time, but gives readers a more familiar environment and encourages developers to keep the page&#39;s workflow simple and streamlined.</p>
+
+<hr>
+
+<h2 id="components">Components</h2>
+
+<p>While the scaffolding above helps our admins be consist and clear, the individual components are there mainly to save time.</p>
+
+<p>We&#39;ve tried to encourage several things in our designs:</p>
+
+<ul>
+<li>Use Bootstrap (or any other framework) wherever possible</li>
+<li>TKTKTKTKTKTKTK</li>
+</ul>
+
+<p>The specific styles we&#39;re using are included here in case they help others. But they are by no means canonical, which is why we&#39;ve also included the concepts behind our designs above.</p>
+
+<hr>
+
+<h3 id="navigation">Navigation</h3>
+
+<p>We use two separate navigation bars: one that is consist across tools, and includes universal features likes links to support and information. Another another that is specific to the tool, and may vary freely by page.</p>
+
+<h5 id="primary-navigation">Primary navigation</h5>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="navbar navbar-default navbar-primary"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="navbar-header"&gt;
+      &lt;a class="navbar-brand"&gt;App Name&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;ul class="nav navbar-nav navbar-left"&gt;
+      &lt;li class="navbar-summary"&gt;&lt;span&gt;Description.&lt;/span&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;ul class="nav navbar-nav navbar-right navbar-bits"&gt;
+      &lt;li class="navbar-form" data-toggle="collapse" href="#page-instructions"&gt;
+        &lt;button type="button" class="btn btn-sm btn-muted" data-toggle="button"&gt;
+          Instructions
+        &lt;/button&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;About&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Support&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#"&gt;Log in&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div>
+<h5 id="app-navigation">App Navigation</h5>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="navbar navbar-default navbar-application"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class='btn btn-sm btn-success navbar-btn navbar-left'&gt;
+      Button
+    &lt;/div&gt;
+    &lt;form class='navbar-form navbar-left form-inline'&gt;
+      &lt;div class='form-group form-group-sm glyphicon-input'&gt;
+        &lt;input class='form-control input-sm' data-filter='headline,author' data-target='#myList' data-trigger='keyup' placeholder='Search' style='min-width: 190px'&gt;
+        &lt;i class='glyphicon glyphicon-search'&gt;&lt;/i&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+    &lt;ul class='nav navbar-nav navbar-right navbar-sort'&gt;
+      &lt;li class='navbar-text'&gt;&lt;span&gt;Sort by:&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;
+        &lt;a class='sort-control sort-descending' data-sort='updated_at' data-target='#myList' href='#'&gt;Date Updated&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;a class='sort-control' data-sort='headline' data-target='#myList' href='#'&gt;Headline&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div>
+<hr>
+
+<h3 id="forms">Forms</h3>
+
+<p>In general, forms should be rendered inline in modals on the page with <a href="/form-js.html">Form.js</a>.</p>
+
+<p>Use modals to:</p>
+
+<ul>
+<li>Keep the form short, simple and self-explanatory</li>
+<li>Simply navigational sturcture</li>
+<li>Reduce reliance on framework-specific helpers like <code>form_for</code> in favor of JSON-based serialization (with <code>.form(&#39;show&#39;)</code>)</li>
+</ul>
+
+<p>Forms should use <a href="/form-js.html#validate">native validation</a> where possible to display errors, and use the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation">HTML5 validations API</a> to configure custom error messages.</p>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="modal-header"&gt;
+    &lt;button type="button" class="close" data-dismiss="modal"&gt;&lt;span&gt;&amp;times;&lt;/span&gt;&lt;/button&gt;
+    &lt;h2 class="modal-title"&gt;Create New List&lt;/h2&gt;
+  &lt;/div&gt;
+
+  &lt;div class="modal-body"&gt;
+    &lt;div class="form-group"&gt;
+      &lt;label class="control-label"&gt;Headline&lt;/label&gt;
+      &lt;div class="control-input"&gt;
+        &lt;input class="form-control" placeholder="Headline"&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+      &lt;label class="control-label"&gt;Leadin&lt;/label&gt;
+      &lt;div class="control-input"&gt;
+        &lt;textarea class="form-control" placeholder="Leadin"&gt;&lt;/textarea&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+      &lt;label class="control-label"&gt;Tone&lt;/label&gt;
+      &lt;div class="control-input"&gt;
+        &lt;select class="form-control"&gt;
+          &lt;option selected value="default"&gt;Default&lt;/option&gt;
+          &lt;option value="feature"&gt;Feature&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+      &lt;label class="control-label"&gt;Creator&lt;/label&gt;
+      &lt;div class="control-input"&gt;
+        &lt;input class="form-control" placeholder="Creator"&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;div class="modal-footer"&gt;
+    &lt;input type="button" class="btn btn-link btn-lg" value="Cancel"&gt;
+    &lt;input type="button" class="btn btn-primary btn-lg" value="Create List" data-loading-text="Submitting..."&gt;
+  &lt;/div&gt;
+&lt;/form&gt;
+</code></pre></div>
+<p>The primary submit button on a form should use the <code>btn-primary</code> class; other buttons should tend to use <code>btn-link</code> for de-emphasis.</p>
+
+<p>Use the default validation states provided by <a href="http://getbootstrap.com/css/#forms-control-validation">Bootstrap</a>.</p>
+
+<hr>
+
+<h3 id="lists">Lists</h3>
+
+<p>We use a consistent layout for general index pages, and divide the rows for individual resources into three sections:</p>
+
+<ol>
+<li><strong>Labels</strong> short status or alert messages that are likely to vary from item to item</li>
+<li><strong>Primary content</strong> a multi-row section for the name / description of an item, with any necessary metadata at the bottom</li>
+<li><strong>Actions</strong> where buttons go to edit / delete / view more about an item</li>
+</ol>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="list list-bordered"&gt;
+  &lt;div class="list-item"&gt;
+    &lt;div class='content-labels'&gt;
+      &lt;span class="btn btn-sm btn-block btn-muted disabled"&gt;Label&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class='content-primary'&gt;
+      &lt;h4&gt;Title&lt;/h4&gt;
+      &lt;p&gt;Description&lt;/p&gt;
+      &lt;p class="content-metadata"&gt;
+        Updated &lt;span&gt;TKTK&lt;/span&gt;
+        by &lt;span&gt;TKTK&lt;/span&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class='content-actions text-right'&gt;
+      &lt;button class="btn btn-sm btn-primary"&gt;Button&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="list-item"&gt;
+    &lt;div class='content-labels'&gt;
+      &lt;span class="btn btn-sm btn-block btn-muted disabled"&gt;Label&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class='content-primary'&gt;
+      &lt;h4&gt;Title&lt;/h4&gt;
+      &lt;p&gt;Description&lt;/p&gt;
+      &lt;p class="content-metadata"&gt;
+        Updated &lt;span&gt;TKTK&lt;/span&gt;
+        by &lt;span&gt;TKTK&lt;/span&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class='content-actions text-right'&gt;
+      &lt;button class="btn btn-sm btn-primary"&gt;Button&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div>
+<p>List elements should have at most one <strong>primary</strong> button. Elements that link to a detail view should have that link be the primary link, right-most inside the element, in addition to the primary heading tag of the item being a link to it as well. Avoid turning the entire item into a link.</p>
+
+<h4 id="sort-/-search-triggers">Sort / Search triggers</h4>
+
+<p>Adcom includes some built-in classes for styling sort triggers and search fields.</p>
+
+<p>Filtering should happen client-side wherever possible.</p>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="navbar navbar-default"&gt;
+  &lt;div class="container"&gt;
+    &lt;ul class='nav navbar-nav navbar-sort navbar-left'&gt;
+      &lt;li class='navbar-text'&gt;&lt;span&gt;Sort by:&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;
+        &lt;a class='sort-control sort-descending' data-sort='updated_at' data-target='#myList' href='#'&gt;Date Updated&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;a class='sort-control' data-sort='headline' data-target='#myList' href='#'&gt;Headline&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;a class='sort-control' data-sort='author' data-target='#myList' href='#'&gt;Creator&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="navbar navbar-default"&gt;
+  &lt;div class="container"&gt;
+    &lt;ul class="nav navbar-nav navbar-left"&gt;
+      &lt;li class="navbar-form"&gt;
+        &lt;form class="form-inline"&gt;
+          &lt;div class="form-group form-group-sm glyphicon-input"&gt;
+            &lt;input class="form-control input-sm" placeholder="Placeholder"&gt;
+            &lt;i class="glyphicon glyphicon-search"&gt;&lt;/i&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div>
+<h4 id="pagination">Pagination</h4>
+
+<p>Adcom doesn&#39;t define custom styles for pagination, and in practice we avoid using it in admins. Instead, infinite scroll and additional filters as needed are preferable.</p>
+
+<hr>
+
+<h3 id="messages">Messages</h3>
+
+<p>Based on <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">Snackbars</a> from Google&#39;s <a href="http://www.google.com/design/spec/material-design/introduction.html">Material Design spec</a>, messages are meant to provide brief, optionally actionable, feedback to readers. Google&#39;s usage guidelines are the foundation of our usage rules. They can be made interactive using <a href="/message-js.html">Message.js</a>.</p>
+
+<p>For destructive actions, messages should include an <strong>undo</strong> command. Messages should <strong>not stack</strong>, and Message.js allows only one to be present at a time; new messages forcibly replace older messages.</p>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="message fade in"&gt;
+  Message sent
+  &lt;a href="#"&gt;Undo&lt;/a&gt;
+&lt;/div&gt;
+</code></pre></div>
+<p>Dialogs are constructed identically to messages, but with an extra <code>message-dialog</code> class. They differ from Messages in that they are meant to stop the reader&#39;s action, and require some sort of interaction. They are more loosely based on Google&#39;s <a href="http://www.google.com/design/spec/components/dialogs.html">Dialogs</a>. <strong>Cancel</strong> should always be an explicit option.</p>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="message message-dialog fade in"&gt;
+  &lt;h4&gt;You must be logged in to continue&lt;/h4&gt;
+  &lt;p&gt;Exporting this article requires that you be logged into the CMS.&lt;/p&gt;
+  &lt;a href="#" data-dismiss="message"&gt;Cancel&lt;/a&gt;
+  &lt;a href="#"&gt;Login&lt;/a&gt;
+&lt;/div&gt;
+</code></pre></div>
+<p>For dialogs that demand an external action by the user (such as logging in), a <strong>retry</strong> option should be provided if possible to avoid repetition of the workflow.</p>
+
+<p>Both Messages and Dialogs can be modified with the <code>message-sm</code> and <code>message-lg</code> classes to change their widths. Include the <code>fade</code> class to animate the show / hide transition.</p>
+
+<h3 id="buttons">Buttons</h3>
+
+<p>Buttons work the same way as they do in Bootstrap, but Adcom has modified some of the colors and added an additional class, <code>btn-muted</code>.</p>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;p&gt;
+  &lt;button type="button" class="btn btn-default"&gt;Default&lt;/button&gt;
+  &lt;button type="button" class="btn btn-muted"&gt;Muted&lt;/button&gt;
+  &lt;button type="button" class="btn btn-primary"&gt;Primary&lt;/button&gt;
+  &lt;button type="button" class="btn btn-success"&gt;Success&lt;/button&gt;
+  &lt;button type="button" class="btn btn-info"&gt;Info&lt;/button&gt;
+  &lt;button type="button" class="btn btn-warning"&gt;Warning&lt;/button&gt;
+  &lt;button type="button" class="btn btn-danger"&gt;Danger&lt;/button&gt;
+  &lt;button type="button" class="btn btn-link"&gt;Link&lt;/button&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;button type="button" class="btn btn-default btn-lg"&gt;Large button&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button type="button" class="btn btn-default"&gt;Default button&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button type="button" class="btn btn-default btn-sm"&gt;Small button&lt;/button&gt;&lt;/p&gt;
+&lt;p&gt;&lt;button type="button" class="btn btn-default btn-xs"&gt;Extra small button&lt;/button&gt;&lt;/p&gt;
+</code></pre></div>
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/underscore-min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/public/js/prism.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/beautify-html.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/adcom.js"></script>
+    <script type="text/javascript" src="/public/js/adcom-docs.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-60337978-2', 'auto');
+      ga('send', 'pageview');
+  </script>
+  </body>
+</html>

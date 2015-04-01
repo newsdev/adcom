@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Form.js &middot; Adcom
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="/public/css/adcom-namespaced.css">
+  <link rel="stylesheet" href="/public/css/adcom-docs.css">
+  <link rel="stylesheet" href="/public/css/prism.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <script type="text/javascript" src="http://typeface.nytimes.com/zam5nzz.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+
+
+  <body class="">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p><strong>Ad</strong>min <strong>com</strong>ponents</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item " href="/">Home</a>
+    <hr>
+    <a class="sidebar-nav-item " href="list-js.html">List.js</a>
+    <a class="sidebar-nav-item active" href="form-js.html">Form.js</a>
+    <a class="sidebar-nav-item " href="session-js.html">Session.js</a>
+    <a class="sidebar-nav-item " href="persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item " href="message-js.html">Message.js</a>
+    <hr>
+    <a class="sidebar-nav-item " href="styles.html">Styles</a>
+    <hr>
+
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a>
+    <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v0.1.0</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015 The New York Times.<br>
+      All rights reserved.
+    </p>
+  </div>
+
+  <div class="sidebar-item sidebar-img">
+    <img src="/public/images/logo.png">
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Adcom</a>
+            <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <h2 id="what-is-form.js?">What is Form.js?</h2>
+
+<blockquote>
+<p>Form.js extends form elements, adding additional hooks for serialization and deserialization, and standardizes validation behavior across browsers.</p>
+</blockquote>
+
+<p>Without affecting the native behavior of the form element, Form.js gives you several features out of the box:</p>
+
+<ul>
+<li>Populating a form from page elements (like items in a <a href="/list-js.html">list</a>) using the data-api</li>
+<li>Binding data objects to any updates submitted by a form</li>
+<li>Browser-native validation gets run even when default submit behavior is prevented</li>
+<li>Provides access to form data as an object</li>
+</ul>
+
+<p>Form.js helps us edit records directly in the browser, independent of whatever data backend we&#39;re using.</p>
+
+<p>It also helps smooth out inconsistencies with validation in differenet browsers: we encourage using native browser validation by default (patching it to work on ajax requests), but provide hooks for displaying errors manually in browsers like Safari that don&#39;t handle errors for you.</p>
+
+<ul>
+<li><a href="/#javascript-usage">Usage</a></li>
+<li><a href="#examples">Examples</a>
+
+<ul>
+<li><a href="#populate">Populate</a></li>
+<li><a href="#serialize">Serialize</a></li>
+<li><a href="#validate">Validate</a></li>
+</ul></li>
+<li><a href="#api">API</a></li>
+<li><a href="#events">Events</a></li>
+</ul>
+
+<hr>
+
+<h2 id="examples">Examples</h2>
+
+<p>These examples show a subset of the ways you can configure forms; they use example snippets of HTML and JavaScript that <strong>you can edit</strong>, and the rendered result is displayed below.</p>
+
+<p>You can configure all of the Adcom plugins either through JavaScript as in the following examples, or through data-attributes. Read more about your options <a href="/#plugin-initialization">here</a>.</p>
+
+<h3 id="populate">Populate</h3>
+
+<p>To populate a form with data, simply call the <code>show</code> method with the data object: <code>.form(&#39;show&#39;, {...})</code>.</p>
+<div class="highlight"><pre><code class="language-example-html" data-lang="example-html">&lt;form id="1"&gt;
+  &lt;input name="title"&gt;
+&lt;/form&gt;
+
+&lt;script type="text/javascript"&gt;
+  $('#1').form('show', {title: "Moby Dick"});
+&lt;/script&gt;
+</code></pre></div>
+<p>Alternativly, you can use a trigger element that contains three data attributes: <code>data-serialized</code> with the data, <code>data-target</code> with the form&#39;s selector, and <code>data-toggle=&quot;form&quot;</code>.</p>
+<div class="highlight"><pre><code class="language-example-html" data-lang="example-html">&lt;form id="2"&gt;
+  &lt;input name="title"&gt;
+&lt;/form&gt;
+
+&lt;button type="button" data-toggle="form" data-target="#2" data-serialized='{"title": "Moby Dick"}'&gt;
+  Populate with "Moby Dick"
+&lt;/button&gt;
+&lt;button type="button" data-toggle="form" data-target="#2" data-serialized='{"title": "A Tale of Two Cities"}'&gt;
+  Populate with "A Tale of Two Cities"
+&lt;/button&gt;
+
+&lt;script type="text/javascript"&gt;
+  $('#2').form();
+&lt;/script&gt;
+</code></pre></div>
+<p>You can customize where Form.js looks for the data on a trigger element by setting <code>data-source</code> to something other than <code>serialized</code>. List.js stores the data for each item as <code>ac.list.item</code>, meaning you can set <code>data-source=&quot;ac.list.item&quot;</code> on a list element to populate a form with it&#39;s contents:</p>
+<div class="highlight"><pre><code class="language-example-html" data-lang="example-html">&lt;list id="3"&gt;
+  &lt;button data-field="title"
+    data-toggle="form" data-target="#4" data-source="ac.list.item"&gt;
+  &lt;/button&gt;
+&lt;/list&gt;
+
+&lt;form id="4"&gt;
+  &lt;input name="title"&gt;
+&lt;/form&gt;
+
+&lt;script type="text/javascript"&gt;
+  $('#3').list({items: [{"title": "Moby Dick"}, {"title": "A Tale of Two Cities"}]});
+  $('#4').form();
+&lt;/script&gt;
+</code></pre></div>
+<hr>
+
+<h3 id="serialize">Serialize</h3>
+
+<p>If you are handling the form submit yourself, you can hook into the form&#39;s <code>submit</code> event. Form.js does not automatically prevent native submission, so you must either call <code>e.preventDefault()</code> on the submit event, or set <code>data-action=&quot;false&quot;</code> on the form.</p>
+
+<p>Form.js uses <a href="http://benalman.com/code/projects/jquery-bbq/examples/deparam/">$.deparam from Ben Alman</a> to provide the form data as an object.</p>
+<div class="highlight"><pre><code class="language-example-html" data-lang="example-html">&lt;form id="5" data-action="false"&gt;
+  &lt;input name="title" value="Moby Dick"&gt;
+  &lt;input type="submit"&gt;
+&lt;/form&gt;
+&lt;p&gt;submit event's "e.object":&lt;/p&gt;
+&lt;pre&gt;&lt;code id="5-output"&gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;script type="text/javascript"&gt;
+  $('#5')
+    .form()
+    .on('submit', function(e) {
+      $('#5-output').html(JSON.stringify(e.object, null, 2));
+    })
+    .submit();
+&lt;/script&gt;
+</code></pre></div>
+<hr>
+
+<h3 id="validate">Validate</h3>
+
+<p>The less work you have to do around form validation, the better. So Form.js makes as much use of the browser&#39;s native <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation">validations API</a> as possible. On browsers that support it, using native validation configuration like <code>required</code> and <code>data-pattern</code> attributes is often all you need to prevent invalid form submission. (Validation messages can be <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation#Customized_error_messages">customized</a> if necessary.)</p>
+
+<p>Form validation presents is handled differently based on whether:</p>
+
+<ul>
+<li>The current browser</li>
+<li>You are using native or AJAX submission</li>
+<li>You need to show form-wide errors</li>
+<li>You&#39;ve disabled validation with <code>novalidate</code></li>
+</ul>
+
+<p>Form.js saves you from having to change your validation logic if any of the above variables change, and respects existing patterns:</p>
+
+<ul>
+<li>Validation runs before the <code>submit</code> event is fired</li>
+<li>Validation is enabled by default, and can be disabled by adding <code>novalidate</code> to the form element</li>
+</ul>
+
+<p>And extends them using similar pattners:</p>
+
+<ul>
+<li>The browser&#39;s validation UI can be disabled / overridden by calling <code>.preventDefault()</code> on the <code>invalid.ac.form</code> event</li>
+<li>Display form-wide errors using <code>invalid.ac.form</code> before the blocking native UI is displayed</li>
+<li>Extends the native <code>submit</code> event to include metadata about the submission (form serialized as object, and where the data came from)</li>
+</ul>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;form id="6" data-action="false"&gt;
+  &lt;div class="form-group"&gt;
+    &lt;input name="title" required placeholder="Required field" class="form-control"&gt;
+  &lt;/div&gt;
+
+  &lt;div class="form-group"&gt;
+    &lt;input type="submit" class="btn btn-default"&gt;
+  &lt;/div&gt;
+&lt;/form&gt;
+
+&lt;style&gt;
+  form:before {
+    content: attr(data-error);
+    color: #a94442;
+    display: block;
+  }
+  form [data-error]:after {
+    content: attr(data-error);
+    color: #a94442;
+  }
+&lt;/style&gt;
+
+&lt;script type="text/javascript"&gt;
+  $('#6').form()
+    .on('validate.ac.form', function() {
+      $(this).find('[data-error]').andSelf().removeAttr('data-error');
+      $(this).find('.has-error').removeClass('has-error');
+    })
+    .on('invalid.ac.form', function(e) {
+      $(this).attr('data-error', 'There was a problem with your submission.');
+    })
+    .find(':input').on('invalid', function(e) {
+      $(this).closest('.form-group').addClass('has-error');
+      if (e.nativeValidation) return;
+
+      $(this).closest('.form-group').attr('data-error', e.target.validationMessage);
+    })
+&lt;/script&gt;
+</code></pre></div>
+<p>The benefit is that, except where no native method exists (such as for form-wide messages), you are simply learning and using the HTML5 validation API, not an Adcom API, keeping your code more portable and your mind free of domain-specific languages.</p>
+
+<p>The JavaScript included above can also work generically for all adcom forms on your site, and could be included just once. The only customization then necessary would be the validation messages themselves as needed.</p>
+
+<hr>
+
+<h2 id="options">Options</h2>
+
+<p><a href="/#plugin-initialization">A note</a> on using data attributes versus initializer functions.</p>
+
+<table><thead>
+<tr>
+<th>attribute</th>
+<th>type</th>
+<th>default</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>serialized</td>
+<td>object, serialized object</td>
+<td></td>
+<td>Data to populate the form with on instantiation.</td>
+</tr>
+<tr>
+<td>show</td>
+<td>boolean</td>
+<td>true</td>
+<td>Whether to populate the form immediately after initialization. Requires the <code>serialized</code> option.</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2 id="api">API <small>Public methods</small></h2>
+
+<table><thead>
+<tr>
+<th>method</th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>.form(&#39;show&#39;, Object)</code></td>
+<td>Populates the form with data from the passed-in object.</td>
+</tr>
+<tr>
+<td><code>.form(&#39;validate&#39;)</code></td>
+<td>Trigger validation of the form without submitting. Will use the browser&#39;s native validation UI if available.</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2 id="events">Events</h2>
+
+<p>All events with a pre and post version (such as <code>show</code> and <code>shown</code>) can be cancelled by calling <code>.preventDefault()</code> on the pre event.</p>
+
+<table><thead>
+<tr>
+<th>event</th>
+<th>trigger</th>
+<th>event properties</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>show.ac.form</td>
+<td>Before a data object is deserialized into the form.</td>
+<td><code>serialized</code> data for form</td>
+</tr>
+<tr>
+<td>shown.ac.form</td>
+<td>After a form is populated with data.</td>
+<td><code>serialized</code> data for form</td>
+</tr>
+<tr>
+<td>validate.ac.form</td>
+<td>Before validation is run on the form.</td>
+<td><code>object</code> form data as an object <br> <code>array</code> form data as an array of values</td>
+</tr>
+<tr>
+<td>invalid.ac.form</td>
+<td>During validation if any errors were detected. Use to display form-wide error messages.</td>
+<td></td>
+</tr>
+<tr>
+<td>validated.ac.form</td>
+<td>After validation has finished. Native and custom messages will have already been displayed.</td>
+<td><code>isValid</code> whether the form passed validation</td>
+</tr>
+<tr>
+<td>submit.ac.form</td>
+<td>Before native form submission. Use to prevent native submission and / or submit data manually.</td>
+<td><code>object</code> form data as an object <br> <code>array</code> form data as an array of values <br> <code>sourceData</code> data source that populated the form <br> <code>sourceElement</code> element where sourceData is kept</td>
+</tr>
+</tbody></table>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/underscore-min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/public/js/prism.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/beautify-html.js" data-manual></script>
+    <script type="text/javascript" src="/public/js/adcom.js"></script>
+    <script type="text/javascript" src="/public/js/adcom-docs.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-60337978-2', 'auto');
+      ga('send', 'pageview');
+  </script>
+  </body>
+</html>
