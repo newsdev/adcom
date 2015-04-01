@@ -120,11 +120,11 @@
 
 <h2 id="scaffolding">Scaffolding</h2>
 
-<p>The best introduction we can give to the Adcom styles is simply to see it in action. View an example index page <a href="/whitelabel.html">here</a>.</p>
+<p>The best introduction we can give to the Adcom styles is simply to see it in action. View an example index page <a href="/adcom/whitelabel.html">here</a>.</p>
 
 <p>Several of the componets, such as the navbars, instructions drawer, and styles for rendering items in a central list, are opinionated in their design, to be consistent, intuitive, and minimalistic in the complexity of actions they encourage.</p>
 
-<p><a href="/whitelabel.html">Image</a></p>
+<p><img src="/adcom/public/images/scaffolding.png" alt="Adcom Scaffolding"></p>
 
 <p>We encourage pages to include the following:</p>
 
@@ -210,7 +210,7 @@
 
 <h3 id="forms">Forms</h3>
 
-<p>In general, forms should be rendered inline in modals on the page with <a href="/form-js.html">Form.js</a>.</p>
+<p>In general, forms should be rendered inline in modals on the page with <a href="/adcom/form-js.html">Form.js</a>.</p>
 
 <p>Use modals to:</p>
 
@@ -220,7 +220,7 @@
 <li>Reduce reliance on framework-specific helpers like <code>form_for</code> in favor of JSON-based serialization (with <code>.form(&#39;show&#39;)</code>)</li>
 </ul>
 
-<p>Forms should use <a href="/form-js.html#validate">native validation</a> where possible to display errors, and use the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation">HTML5 validations API</a> to configure custom error messages.</p>
+<p>Forms should use <a href="/adcom/form-js.html#validate">native validation</a> where possible to display errors, and use the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation">HTML5 validations API</a> to configure custom error messages.</p>
 <div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">
 &lt;form class="form-horizontal"&gt;
   &lt;div class="modal-header"&gt;
@@ -363,7 +363,7 @@
 
 <h3 id="messages">Messages</h3>
 
-<p>Based on <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">Snackbars</a> from Google&#39;s <a href="http://www.google.com/design/spec/material-design/introduction.html">Material Design spec</a>, messages are meant to provide brief, optionally actionable, feedback to readers. Google&#39;s usage guidelines are the foundation of our usage rules. They can be made interactive using <a href="/message-js.html">Message.js</a>.</p>
+<p>Based on <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">Snackbars</a> from Google&#39;s <a href="http://www.google.com/design/spec/material-design/introduction.html">Material Design spec</a>, messages are meant to provide brief, optionally actionable, feedback to readers. Google&#39;s usage guidelines are the foundation of our usage rules. They can be made interactive using <a href="/adcom/message-js.html">Message.js</a>.</p>
 
 <p>For destructive actions, messages should include an <strong>undo</strong> command. Messages should <strong>not stack</strong>, and Message.js allows only one to be present at a time; new messages forcibly replace older messages.</p>
 <div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="message fade in"&gt;
