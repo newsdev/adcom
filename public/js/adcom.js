@@ -191,12 +191,12 @@
     // immutable
     show: true,
     selectedClass: '',
+    locale: 'en',
 
     sort: null,
     filters: {},
     states: [],
-
-    // mutable
+    items: [],
     currentPage: 1
   }
 
@@ -233,6 +233,7 @@
       $(this.$element).append(this.renderItem(item))
     }, this))
 
+    this.$element.removeClass('loading')
     this.$element.trigger($.Event('shown.ac.list', { items: items }))
   }
 
@@ -339,7 +340,18 @@
       normalizedFields.push([field, factor])
     })
 
-    // default sort function based on single attribute and direction
+    // Create a comparator function that defaults to localCompare, and upgrades
+    // to Intl.Collator in browsers that support it.
+    var comparator = function(a, b) { a.localeCompare(b) }
+    if (typeof Intl != 'undefined') {
+      comparator = Intl.Collator(this.options.locale, {
+        sensitivity: 'base',
+        numeric: true,
+        ignorePunctuation: true
+      })
+    }
+
+    // default sort function based on one or more attributes and direction
     return function (a, b) {
       for (var index=0; index < normalizedFields.length; index++) {
         var field  = normalizedFields[index][0],
@@ -348,14 +360,11 @@
         var aVal = $.fn.selectn(field, a),
             bVal = $.fn.selectn(field, b)
 
-        var left  = (typeof aVal === 'function' ? aVal() : aVal) || ''
-        var right = (typeof bVal === 'function' ? bVal() : bVal) || ''
+        // Support sorting by the response of functions
+        var left  = String((typeof aVal === 'function' ? aVal() : aVal) || '')
+        var right = String((typeof bVal === 'function' ? bVal() : bVal) || '')
 
-        if (typeof left == 'string')  left  = left.toLowerCase()
-        if (typeof right == 'string') right = right.toLowerCase()
-
-        if (left < right) return factor * -1
-        if (left > right) return factor * 1
+        return factor * comparator(left, right)
       }
       return 0
     }
@@ -805,6 +814,7 @@
   // validate.ac.form event, and triggers a display of any invalidation
   // messages if necessary.
   Form.prototype.validate = function (submitEvent) {
+    var $this = this
     if (!this.$validate) return
 
     var e = $.Event('validate.ac.form', this.serialize())
@@ -825,7 +835,9 @@
       }
     }
 
-    this.$element.trigger($.Event('validated.ac.form', {isValid: isValid}))
+    setTimeout(function () {
+      $this.$element.trigger($.Event('validated.ac.form', {isValid: isValid}))
+    })
   }
 
   // If the form is invalid according to the DOM's native validity checker,

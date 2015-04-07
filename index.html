@@ -64,8 +64,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2015 The New York Times.<br>
-      All rights reserved.
+      &copy; 2015 The New York Times Company.
     </p>
   </div>
 
@@ -81,7 +80,7 @@
       <div class="masthead">
         <div class="container">
           <h3 class="masthead-title">
-            <a href="/" title="Home">Adcom</a>
+            <a href="/adcom/" title="Home">Adcom</a>
             <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
           </h3>
         </div>
@@ -110,41 +109,41 @@
 
 <h2 id="why-is-adcom?">Why is Adcom?</h2>
 
-<p>Adcom was designed to create a library of guidelines for how to structure and implement common parts of our internal siteds. This implementation was developed to suit our specific needs (and we hope the needs of others as well), but is based on a more general set of issues we face as a large, diverse development shop.</p>
+<p>Adcom was designed to create a library of guidelines for how to structure our internal sites. This implementation was built for our specific needs (and we hope the needs of others as well), but is based on a more <strong>general set of issues</strong> we identified as a large programming team.</p>
 
 <h4 id="comfort-in-the-familiar">Comfort in the familiar</h4>
 
-<p>Dozens, if not hundreds, of internal web sites are created every year at The New York Times, from tools used by copy editors and reporters to status and monitoring pages to documentation. For users, the different ways these sites are organized and designed can cause confusion, and requires an increased mental effort to understand.</p>
+<p>We are constantly creating internal sites at The New York Times. They&#39;re used by copy editors, reporters, web producers, other developers and more. We feel it&#39;s important to provide a consistent workflow and visual framework for users. They should <strong>feel familiar and predictable</strong>, not dangerous.</p>
 
-<p>Adcom represents our efforts to create a pattern to <strong>unify the workflow</strong> of our tools. The styles include a <strong>boilerplate layout</strong> that can be rendered with your choice of framework and language. The CSS, based on Bootstrap, includes components with guidelines for use within the workflow of an app.</p>
+<p>Our sites should share a common layout and user flow patterns, and interaction components should be predictable. Adcom contains a boilterplate layout for how to structure our sites, with Bootstrap-based components.</p>
 
-<p>In the same way that Django&#39;s default admin covers the large swath of admin needs that are relatively consistent, Adcom provides a template for the most common admin workflows tasks, but is modular enough to take a back seat when necessary.</p>
+<p>We are currently working on documenting our user flow patterns.</p>
 
 <h4 id="accepting-feature-creep">Accepting feature creep</h4>
 
-<p>Admins have a way of encouraging feature creep. They start out small, but can grow over months or years to cover an ever-wider range of needs and options.</p>
+<p>Long-lived admins encourage feature creep. They can grow over months or years to cover an ever-wider range of needs and options, and development time is lost reimplementing to suit them.</p>
 
-<p>Taking this as a given, Adcom tries to smooth the process of that feature creep, by providing foundational plugins that are quick to use for a <code>1.0</code>, but flexible enough to <strong>grow with increased complexity</strong>. <a href="/adcom/list-js.html">List.js</a>, for example, enables quick and simple rendering of lists for a first draft. When it comes time to add a more complex templating engine, or additional filtering, or when you need to change the data source, each change can happen independently, without having to start over with a new plugin.</p>
+<p>Adcom tries to smooth the process of that feature creep, by providing foundational plugins that are quick to use for a <code>1.0</code>, but flexible enough to <strong>grow with increased complexity</strong>.</p>
+
+<p><a href="/adcom/list-js.html">List.js</a> helps you render simple tables for a first draft. When you need a more advanced templating engine, additional filtering or you need to change the data source, each change can happen independently, without having to start over with a new plugin.</p>
 
 <h4 id="isolating-code">Isolating code</h4>
 
-<p>Helping developers quickly comprehend how an existing project works can greatly increase how nimble a larger team is. We found that a main impedement to this was <strong>sheer code quantity</strong>. The JavaScript for any given page might contain custom code to render a custom a list, serialize a form, etc., in addition to (and interweaved with) what you could call the &quot;business logic&quot; of the page. While quick to write, each additional implementation on a team made increased the overall complexity of our code.</p>
+<p>Making our front-end code easier to maintain and understand for newcomers requires organization. Moving the JavaScript for common tasks into plugins, and moving the configuration into the HTML keeps our page-specific JavaScript focused on the business logic of a page.</p>
 
-<p>Adcom&#39;s plugins work to <strong>remove common client-side logic</strong> out of a page&#39;s working JavaScript file, leaving behind a set of code that&#39;s easier to find and to understand.</p>
-
-<p>Like <a href="http://getbootstrap.com/javascript/#js-data-attrs">Bootstrap</a>, Adcom&#39;s plugin encourage use and configuration in the View layer by setting data attributes directly on elements. More generally, this suggests an increased mental focus on the <strong>document driving development</strong>. Several design decisions are made to flatten the JavaScript and document layers, linking the physical map of a page to the source code that generates it and the JavaScript that enhances it:</p>
+<p>Like <a href="http://getbootstrap.com/javascript/#js-data-attrs">Bootstrap</a>, Adcom&#39;s plugins encourage use and configuration in the View layer by setting data attributes directly on elements. This reinforces thinking of the <strong>document as driving development</strong>. Design decisions are made to flatten the shared JavaScript and document layers, linking the physical map of a page to it&#39;s source code and the JavaScript that enhances it:</p>
 
 <ul>
-<li>Tie settings that define interaction directly to the DOM nodes it affects</li>
-<li>Render JavaScript templates inline inside their destinations</li>
+<li>Tie interactions settings directly to the affected elements</li>
+<li>Render JavaScript templates inline inside their containers</li>
 <li>Prefer baking HTML structure into the page over dynamic generation (e.g., rendering a blank form once, and populating it multiple times as needed)</li>
 </ul>
 
 <h4 id="meeting-developers-at-home">Meeting developers at home</h4>
 
-<p>Adcom is in principle platform agnostic and is limited to client-side JavaScript and CSS, in order to be used in various frameworks.</p>
+<p>Adcom is platform agnostic. To be used in various frameworks, it&#39;s limited to client-side JavaScript and CSS.</p>
 
-<p>It also encourages development that remains within those boundaries. An ultimate goal is reducing disconnect in the design of various admins, so that their frontends are consistent and their backends easier to comprehend. The more portable the template, the better.</p>
+<p>It also encourages development that remains within those boundaries. An ultimate goal is reducing disconnect in the design of our admins, so that their frontends are consistent and the code easier to understand. The more portable the front-end code, the better.</p>
 
 <hr>
 

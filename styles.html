@@ -64,8 +64,7 @@
 
   <div class="sidebar-item">
     <p>
-      &copy; 2015 The New York Times.<br>
-      All rights reserved.
+      &copy; 2015 The New York Times Company.
     </p>
   </div>
 
@@ -81,7 +80,7 @@
       <div class="masthead">
         <div class="container">
           <h3 class="masthead-title">
-            <a href="/" title="Home">Adcom</a>
+            <a href="/adcom/" title="Home">Adcom</a>
             <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
           </h3>
         </div>
@@ -358,6 +357,10 @@
 <h4 id="pagination">Pagination</h4>
 
 <p>Adcom doesn&#39;t define custom styles for pagination, and in practice we avoid using it in admins. Instead, infinite scroll and additional filters as needed are preferable.</p>
+
+<h4 id="loading-animation">Loading animation</h4>
+
+<p>A default <code>loading</code> state is included with Adcom that can be applied to lists with the <code>loading</code> class. This is useful for lists whose items are ajaxed in, or for inline lists that may take a split second to initialize. The <code>loading</code> class is removed when the list is finally rendered. The value of the list&#39;s <code>data-loading-text</code> will be used as a loading message.</p>
 
 <hr>
 

@@ -6572,9 +6572,6 @@ mark,
 .mark {
   background: #ffffb2;
 }
-.btn {
-  margin: 0;
-}
 .input-group-btn .btn {
   z-index: 10;
 }
@@ -6805,13 +6802,22 @@ h5,
 h6 {
   margin-top: 0;
 }
-footer {
-  padding: 20px 0 10px 0;
-  font-size: 18px;
-  line-height: 30px;
+footer:before {
+  width: 60px;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  margin: 0 0 13px;
+  background-color: #e5e5e5;
 }
-footer:not([class^='border']):not([class*=' border']) {
-  border-top: 1px solid #e5e5e5;
+footer p {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+}
+footer {
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 .vee {
   display: inline-block;
@@ -7255,7 +7261,7 @@ a.sort-control.sort-ascending.sort-ascending::after {
   }
 }
 .list > .list-item {
-  padding: 15px 0;
+  padding: 10px 0 0;
   margin-left: -15px;
   margin-right: -15px;
 }
@@ -7275,11 +7281,12 @@ a.sort-control.sort-ascending.sort-ascending::after {
 .list > .list-item:after {
   clear: both;
 }
-.list-bordered > .list-item:not(:last-child):after {
-  background-color: #e5e5e5;
+.list-bordered > .list-item:after {
   margin: 0 15px;
-  height: 1px;
   display: block;
+}
+.list-bordered > .list-item:not(:last-child):after {
+  border-bottom: 1px solid #e5e5e5;
 }
 .list-hover > :not(.active):not(tr).list-item:hover,
 .list-hover > tr:not(.active).list-item:hover > td {
@@ -7374,6 +7381,68 @@ ul.list > .list-item .counter::before,
   .content-labels,
   .content-primary {
     margin-bottom: 4px;
+  }
+}
+.list[data-loading-text].loading {
+  position: relative;
+}
+.list[data-loading-text].loading .list-item {
+  visibility: hidden;
+}
+.list[data-loading-text].loading:before {
+  content: "";
+  display: block;
+  border: 8px dashed rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 110px;
+  left: 50%;
+  margin-top: 30px;
+  margin-left: -15px;
+  -webkit-animation: spin 0.5s linear infinite;
+  -moz-animation: spin 0.5s linear infinite;
+  -o-animation: spin 0.5s linear infinite;
+  animation: spin 0.5s linear infinite;
+}
+.list[data-loading-text].loading:after {
+  content: attr(data-loading-text);
+  display: block;
+  font-family: "nyt-franklin", helvetica, arial, sans-serif;
+  font-size: 12px;
+  font-weight: 100;
+  text-align: center;
+  color: #999;
+  position: absolute;
+  width: 200px;
+  top: 140px;
+  left: 50%;
+  margin-top: 50px;
+  margin-left: -100px;
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 .message {
