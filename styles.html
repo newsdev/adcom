@@ -196,11 +196,11 @@
     &lt;/form&gt;
     &lt;ul class='nav navbar-nav navbar-right navbar-sort'&gt;
       &lt;li&gt;&lt;span&gt;Sort by:&lt;/span&gt;&lt;/li&gt;
-      &lt;li class='sort-control'&gt;
-        &lt;a class='sort-descending' data-sort='updated_at' data-target='#myList' href='#'&gt;Date Updated&lt;/a&gt;
+      &lt;li&gt;
+        &lt;a class='sort-control sort-descending' data-sort='updated_at' data-target='#myList' href='#'&gt;Date Updated&lt;/a&gt;
       &lt;/li&gt;
-      &lt;li class='sort-control'&gt;
-        &lt;a data-sort='headline' data-target='#myList' href='#'&gt;Headline&lt;/a&gt;
+      &lt;li&gt;
+        &lt;a class='sort-control' data-sort='headline' data-target='#myList' href='#'&gt;Headline&lt;/a&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/div&gt;
@@ -326,7 +326,7 @@
 <div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="navbar navbar-default"&gt;
   &lt;div class="container"&gt;
     &lt;ul class='nav navbar-nav navbar-sort navbar-left'&gt;
-      &lt;li class='navbar-text'&gt;&lt;span&gt;Sort by:&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;Sort by:&lt;/span&gt;&lt;/li&gt;
       &lt;li&gt;
         &lt;a class='sort-control sort-descending' data-sort='updated_at' data-target='#myList' href='#'&gt;Date Updated&lt;/a&gt;
       &lt;/li&gt;
@@ -362,7 +362,8 @@
 <h4 id="loading-animation">Loading animation</h4>
 
 <p>A default <code>loading</code> state is included with Adcom that can be applied to lists with the <code>loading</code> class. This is useful for lists whose items are ajaxed in, or for inline lists that may take a split second to initialize. The <code>loading</code> class is removed when the list is finally rendered. The value of the list&#39;s <code>data-loading-text</code> will be used as a loading message.</p>
-
+<div class="highlight"><pre><code class="language-example-list-bs" data-lang="example-list-bs">&lt;div class="list loading" data-loading-text="Loading items"&gt;&lt;/div&gt;
+</code></pre></div>
 <hr>
 
 <h3 id="messages">Messages</h3>

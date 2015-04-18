@@ -6887,35 +6887,37 @@ footer {
 .navbar-default .navbar-nav.navbar-sort > li {
   font-size: 13px;
 }
-.navbar-default .navbar-nav.navbar-sort > li.sort-control a {
+.navbar-default .navbar-nav.navbar-sort > li > .sort-control {
   font-weight: 400;
   letter-spacing: 0.5px;
   padding-right: 30px;
   padding-left: 0;
 }
-.navbar-default .navbar-nav.navbar-sort > li.sort-control a::after {
+.navbar-default .navbar-nav.navbar-sort > li > .sort-control::after {
   font-weight: 300;
 }
-.navbar-default .navbar-nav.navbar-sort > li.sort-control a:not(.sort-ascending):not(.sort-descending) {
+.navbar-default .navbar-nav.navbar-sort > li > .sort-control:not(.sort-ascending):not(.sort-descending) {
   color: #31708f;
 }
-.navbar-default .navbar-nav.navbar-sort > li.sort-control a:not(.sort-ascending):not(.sort-descending):hover {
+.navbar-default .navbar-nav.navbar-sort > li > .sort-control:not(.sort-ascending):not(.sort-descending):hover {
   color: #666666;
 }
-.navbar-default .navbar-nav.navbar-sort > li.sort-control a .sort-ascending.sort-descending {
+.navbar-default .navbar-nav.navbar-sort > li > .sort-control .sort-ascending.sort-descending {
   color: #222;
 }
-.navbar-default .navbar-nav.navbar-sort > li.sort-control + .sort-control a::before {
+.navbar-default .navbar-nav.navbar-sort > li + li > a::before {
   content: '';
   border-left: 1px solid #ccc;
   padding-right: 15px;
   color: #31708f;
 }
-.navbar-default .navbar-nav.navbar-sort > li:not(.sort-control) {
+.navbar-default .navbar-nav.navbar-sort > li > :not(.sort-control) {
   line-height: 18.57142858px;
   padding: 15px 0;
   margin-left: 15px;
   margin-right: 15px;
+  display: inline-block;
+  color: #999;
 }
 .navbar-default .navbar-nav > li.open a,
 .navbar-default .navbar-nav > li.open a:focus,
@@ -7147,22 +7149,22 @@ input[data-filter]:not(:focus)::-moz-placeholder {
 input[data-filter]:not(:focus):-ms-input-placeholder {
   opacity: 0.5;
 }
-.sort-control a {
+.sort-control {
   font-weight: 500;
   color: #999;
   font-size: 0.9em;
 }
-.sort-control a:hover {
+.sort-control:hover {
   cursor: pointer;
 }
-.sort-control a::after {
+.sort-control::after {
   font-size: 0.8em;
   border-color: #999;
   margin: 0 0 0 4px;
   border-right-width: 2px;
   border-bottom-width: 2px;
 }
-.sort-control a::after {
+.sort-control::after {
   position: absolute;
   content: '';
   border-color: #999;
@@ -7180,7 +7182,7 @@ input[data-filter]:not(:focus):-ms-input-placeholder {
   -ms-transition: -ms-transform 0.4s ease;
   transition: transform 0.4s ease;
 }
-.sort-control a::after {
+.sort-control::after {
   content: '';
   border-style: solid;
   -webkit-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
@@ -7188,16 +7190,16 @@ input[data-filter]:not(:focus):-ms-input-placeholder {
   -ms-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
   transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
 }
-.sort-control a.sort-descending {
+.sort-control.sort-descending {
   color: #000;
 }
-.sort-control a.sort-descending::after {
+.sort-control.sort-descending::after {
   border-color: #444;
 }
-.sort-control a.sort-ascending {
+.sort-control.sort-ascending {
   color: #000;
 }
-.sort-control a.sort-ascending::after {
+.sort-control.sort-ascending::after {
   content: '';
   border-style: solid;
   -webkit-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
@@ -7205,11 +7207,11 @@ input[data-filter]:not(:focus):-ms-input-placeholder {
   -ms-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
   transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
 }
-.sort-control a.sort-ascending::after {
+.sort-control.sort-ascending::after {
   border-color: #444;
 }
 @media (max-width: 767px) {
-  .sort-control a {
+  .sort-control {
     float: left;
     padding-right: 30px;
   }
