@@ -11,7 +11,7 @@
 
   <title>
     
-      Adcom &middot; moↄbA
+      Adcom &middot; Admin Components
     
   </title>
 
@@ -48,13 +48,14 @@
   <nav class="sidebar-nav">
     <a class="sidebar-nav-item active" href="/adcom/">Home</a>
     <hr>
-    <a class="sidebar-nav-item " href="list-js.html">List.js</a>
-    <a class="sidebar-nav-item " href="form-js.html">Form.js</a>
-    <a class="sidebar-nav-item " href="session-js.html">Session.js</a>
-    <a class="sidebar-nav-item " href="persist-js.html">Persist.js</a>
-    <a class="sidebar-nav-item " href="message-js.html">Message.js</a>
+    <a class="sidebar-nav-item " href="/adcom/list-js.html">List.js</a>
+    <a class="sidebar-nav-item " href="/adcom/form-js.html">Form.js</a>
+    <a class="sidebar-nav-item " href="/adcom/session-js.html">Session.js</a>
+    <a class="sidebar-nav-item " href="/adcom/persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item " href="/adcom/message-js.html">Message.js</a>
     <hr>
-    <a class="sidebar-nav-item " href="styles.html">Styles</a>
+    <a class="sidebar-nav-item " href="/adcom/styles.html">Styles</a>
+    <a class="sidebar-nav-item" href="/adcom/boilerplate.html">Boilerplate</a>
     <hr>
 
     <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a>
@@ -81,7 +82,6 @@
         <div class="container">
           <h3 class="masthead-title">
             <a href="/adcom/" title="Home">Adcom</a>
-            <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
           </h3>
         </div>
       </div>
@@ -90,12 +90,14 @@
         <h1 id="what-is-adcom?">What is Adcom?</h1>
 
 <blockquote>
-<p>Adcom is a set of JavaScript plugins and frontend styles <br> that serve as the foundation for admins at The New York Times.</p>
+<p>Adcom is a set of JavaScript plugins and frontend styles <br> that are the foundation for admin sites at The New York Times.</p>
 </blockquote>
 
-<p>The plugins serve common use cases on the many internal sites we create day to day: rendering <strong>dynamic lists</strong>, standardizing <strong>form validation</strong>, <strong>maintaining state</strong> across page loads, persisting <strong>user settings</strong>, and so on.</p>
+<p>The plugins serve common use cases on the internal sites we create day-to-day: rendering <strong>dynamic lists</strong>, standardizing <strong>form validation</strong>, <strong>maintaining state</strong> across page loads, persisting <strong>settings</strong>, and others.</p>
 
-<p>The styles are a custom flavor of <a href="https://getbootstrap.com">Bootstrap</a>, and includes a set of guidelines for what to include on each page, and where. Ensuring that admins from all of our teams have a consistent visual language helps users feel more comfortable using the sites, and makes it easier for our developers to maintain.</p>
+<p>The styles are a custom flavor of <a href="https://getbootstrap.com">Bootstrap</a>, and establish guidelines for what to include on each page, and where. A consistent visual language helps people feel more comfortable using our tools, and makes them easiser for our developers to maintain.</p>
+
+<hr>
 
 <ul>
 <li><a href="#why">Why?</a></li>
@@ -107,43 +109,43 @@
 
 <hr>
 
-<h2 id="why-is-adcom?">Why is Adcom?</h2>
+<h2 id="why">Why is Adcom?<small>Guidelines</small></h2>
 
-<p>Adcom was designed to create a library of guidelines for how to structure our internal sites. This implementation was built for our specific needs (and we hope the needs of others as well), but is based on a more <strong>general set of issues</strong> we identified as a large programming team.</p>
+<p>Adcom was built for our specific needs at The New York Times, but is based on a more <strong>general set of issues</strong> we identified as a large programming team.</p>
 
-<h4 id="comfort-in-the-familiar">Comfort in the familiar</h4>
+<h4 id="establishing-familiarity">Establishing familiarity</h4>
 
-<p>We are constantly creating internal sites at The New York Times. They&#39;re used by copy editors, reporters, web producers, other developers and more. We feel it&#39;s important to provide a consistent workflow and visual framework for users. They should <strong>feel familiar and predictable</strong>, not dangerous.</p>
+<p>Our internal websites are used by copy editors, reporters, web producers, developers and others, and we feel it&#39;s important for them to have a consistent workflow and visual framework. These tools should <strong>feel familiar and predictable</strong>, not dangerous. This is especially important when creating tools by developers using separate frameworks and codebases.</p>
 
-<p>Our sites should share a common layout and user flow patterns, and interaction components should be predictable. Adcom contains a boilterplate layout for how to structure our sites, with Bootstrap-based components.</p>
+<p>Adcom contains a boilerplate layout for how to structure our sites, with Bootstrap-based components and <a href="/adcom/styles.html">best practices</a> for when and how to use them.</p>
 
-<p>We are currently working on documenting our user flow patterns.</p>
+<h4 id="living-with-feature-creep">Living with feature creep</h4>
 
-<h4 id="accepting-feature-creep">Accepting feature creep</h4>
+<p>Long-lived admins encourage feature creep. They can grow over months or years to cover more needs and options, and development time can be lost reimplementing code to suit them.</p>
 
-<p>Long-lived admins encourage feature creep. They can grow over months or years to cover an ever-wider range of needs and options, and development time is lost reimplementing to suit them.</p>
+<p>We try to smooth out that process by providing foundational plugins that are quick to use for a <code>1.0</code>, but flexible enough to <strong>grow with increased complexity</strong>.</p>
 
-<p>Adcom tries to smooth the process of that feature creep, by providing foundational plugins that are quick to use for a <code>1.0</code>, but flexible enough to <strong>grow with increased complexity</strong>.</p>
-
-<p><a href="/adcom/list-js.html">List.js</a> helps you render simple tables for a first draft. When you need a more advanced templating engine, additional filtering or you need to change the data source, each change can happen independently, without having to start over with a new plugin.</p>
+<p>For example, <a href="/adcom/list-js.html">List.js</a> helps you render simple tables for a first draft. When you need a more advanced templating engine, additional filtering or you need to change the data source, each change can happen independently, without having to start over with a new plugin.</p>
 
 <h4 id="isolating-code">Isolating code</h4>
 
-<p>Making our front-end code easier to maintain and understand for newcomers requires organization. Moving the JavaScript for common tasks into plugins, and moving the configuration into the HTML keeps our page-specific JavaScript focused on the business logic of a page.</p>
+<p>Making our front-end code easier for newcomers to maintain and understand means keeping our code organized. Moving the JavaScript for common tasks into plugins, and moving the configuration into the HTML, keeps each page&#39;s JavaScript focused on it&#39;s unique business logic.</p>
 
-<p>Like <a href="http://getbootstrap.com/javascript/#js-data-attrs">Bootstrap</a>, Adcom&#39;s plugins encourage use and configuration in the View layer by setting data attributes directly on elements. This reinforces thinking of the <strong>document as driving development</strong>. Design decisions are made to flatten the shared JavaScript and document layers, linking the physical map of a page to it&#39;s source code and the JavaScript that enhances it:</p>
+<p>Like <a href="http://getbootstrap.com/javascript/#js-data-attrs">Bootstrap</a>, Adcom&#39;s plugins encourage use and configuration in the View layer by setting data attributes directly on elements. This reinforces thinking of the <strong>document as driving development</strong>. The API tries to flatten the shared JavaScript and document layers, linking the physical map of a page to its source code and the JavaScript that enhances it:</p>
 
 <ul>
-<li>Tie interactions settings directly to the affected elements</li>
+<li>Tie interaction settings to the affected elements</li>
 <li>Render JavaScript templates inline inside their containers</li>
 <li>Prefer baking HTML structure into the page over dynamic generation (e.g., rendering a blank form once, and populating it multiple times as needed)</li>
 </ul>
 
-<h4 id="meeting-developers-at-home">Meeting developers at home</h4>
+<h4 id="a-diverse-network-of-admins">A diverse network of admins</h4>
 
-<p>Adcom is platform agnostic. To be used in various frameworks, it&#39;s limited to client-side JavaScript and CSS.</p>
+<p>We build our sites using different frameworks and languages. To make Adcom usable across it all, we focus on the <strong>document</strong>.</p>
 
-<p>It also encourages development that remains within those boundaries. An ultimate goal is reducing disconnect in the design of our admins, so that their frontends are consistent and the code easier to understand. The more portable the front-end code, the better.</p>
+<p>The document layer is the closest blueprint we have to the finished page that users access, making it a useful starting point into understanding and changing a page. It&#39;s design also tends to be the most resiliant across frameworks. So <strong>sharing code</strong> incresingly means <strong>sharing documents</strong>.</p>
+
+<p>So we encourage configuring our plugins in the document and writing template partials inline.</p>
 
 <hr>
 
@@ -151,9 +153,11 @@
 
 <p><a href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a> the latest version from GitHub.</p>
 
-<p>Adcom is available over bower:</p>
+<p>Adcom is also available over <a href="http://bower.io/%22">bower</a>.</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">bower install adcom
 </code></pre></div>
+<h4 id="what&#39;s-inside?">What&#39;s inside?</h4>
+
 <p>The <code>dist</code> folder of the source code contains the following files:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">adcom/
 └── dist/
@@ -165,18 +169,18 @@
         ├── adcom.js
         └── adcom.min.js
 </code></pre></div>
-<p>The <code>adcom.css</code> and <code>adcom.min.css</code> both include Bootstrap <a href="https://github.com/twbs/bootstrap/releases/v3.3.4">v3.3.4</a>. <code>adcom.js</code> and <code>adcom.min.js</code> do <strong>not</strong> include the Bootstrap JavaScript plugins.</p>
+<p>The <code>adcom.css</code> and <code>adcom.min.css</code> both include Bootstrap <a href="https://github.com/twbs/bootstrap/releases/v3.3.4">v3.3.4</a>. <code>adcom.js</code> and <code>adcom.min.js</code> do <strong>not</strong> include the Bootstrap JavaScript plugins; if you require them, they must be included separately.</p>
 
 <hr>
 
 <h2 id="plugins">Plugins</h2>
 
 <ul>
-<li><a href="/adcom/list-js.html">List.js</a> takes a list of items and renders them using a template</li>
+<li><a href="/adcom/list-js.html">List.js</a> renders a list of items using a template</li>
 <li><a href="/adcom/form-js.html">Form.js</a> standardizes cross-browser form validation and serialization</li>
-<li><a href="/adcom/session-js.html">Session.js</a> stores individual user settings in localStorage or sessionStorage</li>
+<li><a href="/adcom/session-js.html">Session.js</a> stores individual settings in localStorage or sessionStorage</li>
 <li><a href="/adcom/persist-js.html">Persist.js</a> creates &quot;sticky&quot; element attributes that can persist across page loads</li>
-<li><a href="/adcom/message-js.html">Message.js</a> displays alert and <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">snackbar</a>-style messages to readers</li>
+<li><a href="/adcom/message-js.html">Message.js</a> displays alert and <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">snackbar</a>-style messages</li>
 </ul>
 
 <h3 id="javascript-usage">JavaScript Usage</h3>
@@ -205,25 +209,25 @@
   <span class="p">});</span>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div>
-<p>Each assumes jQuery is available on the page or through require, and will install List.js to <code>$.fn.list</code>.</p>
+<p>Each assumes <a href="https://jquery.com/">jQuery</a> is available on the page or through <a href="http://requirejs.org/">RequireJS</a>, and will install List.js to <code>$.fn.list</code>.</p>
 
 <h3 id="plugin-initialization">Plugin Initialization</h3>
 
-<p>Most plugins have a set of primary options can be specified in two ways:</p>
+<p>Most plugins have a set of primary options that can be specified in two ways:</p>
 
 <ul>
-<li>As an object to the plugin&#39;s initializer function (such as <code>.list({ &quot;option&quot;: true })</code>)</li>
-<li>Adding data-attributes to the plugin&#39;s element (initializers are normally called on a single DOM element)</li>
+<li>Adding data attributes to the plugin&#39;s element (initializers are normally called on a single DOM element)</li>
+<li>Passing them as an object to the plugin&#39;s initializer function (such as <code>.list({ &quot;option&quot;: true })</code>)</li>
 </ul>
 
-<p>For example, set the <code>show</code> option on a list by passing a boolean to the initailizer, or with a data attribute on the element:</p>
+<p>For example, set the <code>show</code> option on a list with a data attribute on the element, or by passing a boolean to the initializer:</p>
 
 <ul>
 <li><code>$(list).list({show: false})</code></li>
 <li><code>&lt;list data-show=&quot;false&quot;&gt; ... &lt;/list&gt;</code></li>
 </ul>
 
-<p>When a plugin is initialized, all data attributes on the element are converted into options that get passed into the initializer as defaults. You can also mix and match; options specified in the JavaScript initializer take precedence over those as data attributes. Multi-word options are expressed in camel case in JavaScript (<code>currentPage</code>), and with hypens as data attributes (<code>data-current-page</code>).</p>
+<p>When a plugin is initialized, all data attributes on the element are converted into options that get passed into the initializer as defaults. You can also mix and match; options specified in the JavaScript initializer take precedence over those as data attributes. Multi-word options are expressed in camel case in JavaScript (<code>currentPage</code>), and with hyphens as data attributes (<code>data-current-page</code>).</p>
 
 <hr>
 
@@ -239,7 +243,7 @@
 <li><a href="/adcom/styles.html#buttons">Buttons</a></li>
 </ul>
 
-<p>It also includes a <a href="/adcom/whitelabel.html">boilerplate scaffold</a> of the overall structure we use for admins at The New York Times.</p>
+<p>It also includes a <a href="/adcom/boilerplate.html">boilerplate scaffold</a> of the overall structure we use for admins at The New York Times.</p>
 
 <h3 id="styles-usage">Styles usage</h3>
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- load adcom.css in your head tag --&gt;</span>
@@ -249,21 +253,24 @@
 
 <h2 id="development">Development</h2>
 
-<p>Make sure you have <code>npm</code> installed on your system. Then, run <code>npm install</code> within the project&#39;s home directory to install dependencies.</p>
+<p>To make changes to the plugins or styles, make sure you have <a href="https://www.npmjs.com/">npm</a> installed on your system. Then, run <code>npm install</code> within the project&#39;s home directory to install dependencies.</p>
 
 <p>You also need to have <code>bower</code> installed to load Bootstrap as a dependency. Run <code>bower install</code>.</p>
 
 <h3 id="grunt">Grunt</h3>
 
-<p>Several <a href="http://gruntjs.com/getting-started"><code>grunt</code></a> tasks are provided to make development easier.</p>
+<p>Several <a href="http://gruntjs.com/getting-started">grunt</a> tasks are provided to make development easier:</p>
 
-<p>Run <code>grunt</code> to compile the CSS and JavaScript, update the docs, and watch for new changes to the source files to re-run itself.</p>
-
-<p>Run <code>grunt jekyll:server</code> to boot up this documentation on <code>localhost:8000</code>.</p>
+<ul>
+<li><code>grunt</code> compiles the CSS and JavaScript, updates the docs, and watches for new changes to the source files, triggering a re-run</li>
+<li><code>grunt jekyll:server</code> boots up this documentation on <a href="http://localhost:8000/adcom">localhost:8000/adcom</a></li>
+</ul>
 
 <h3 id="contributing">Contributing</h3>
 
-<p>This repo is hosted on <a href="https://github.com/newsdev/adcom">GitHub</a>. Please use the Issues page to comment on the project and report any bugs or concerns you have.</p>
+<p>This repo is hosted on <a href="https://github.com/newsdev/adcom">GitHub</a>. Please use the <a href="https://github.com/newsdev/adcom/issues">Issues</a> page to comment on the project and report any bugs or concerns you have.</p>
+
+<p>To contribute pull requests, please fork the repository and create a pull-request against the <code>develop</code> branch.</p>
 
 <h3 id="license">License</h3>
 

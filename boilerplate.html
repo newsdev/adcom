@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-  <title>White label</title>
+  <title>Adcom Boilerplate</title>
 
   <link rel="stylesheet" href="/adcom/public/css/adcom.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -15,7 +15,7 @@
   <div class="navbar navbar-default navbar-primary">
     <div class="container">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">My App</a>
+        <a class="navbar-brand" href="#">My App</a>
       </div>
       <ul class="nav navbar-nav navbar-left">
         <li class="navbar-summary"><span>An app to visualize what Adcom Styles look like.</span></li>
@@ -54,27 +54,27 @@
   <div class="navbar navbar-default navbar-application">
     <div class="container">
       <ul class='nav navbar-nav navbar-left'>
-        <li><span class='navbar-resource navbar-text' id='list-count'></span></li>
+        <li><h5 id='list-count'></h5></li>
       </ul>
       <div class='btn btn-sm btn-success navbar-btn navbar-left' data-toggle="modal" data-target="#modal">
         Button
       </div>
       <form class='navbar-form navbar-left form-inline'>
         <div class='form-group form-group-sm glyphicon-input'>
-          <input class='form-control input-sm' data-filter='headline,author' data-target='#myList' data-trigger='keyup' placeholder='Search' style='min-width: 190px'>
+          <input class='form-control input-sm' data-filter='headline,created_by' data-target='#myList' data-trigger='keyup' placeholder='Search' style='min-width: 190px'>
           <i class='glyphicon glyphicon-search'></i>
         </div>
       </form>
       <ul class='nav navbar-nav navbar-right navbar-sort'>
-        <li class='navbar-text'><span>Sort by:</span></li>
-        <li>
-          <a class='sort-control sort-descending' data-sort='updated_at' data-target='#myList' href='#'>Date Updated</a>
+        <li><span>Sort by:</span></li>
+        <li class='sort-control'>
+          <a class='sort-descending' data-sort='updated_at' data-target='#myList' href='#'>Date Updated</a>
         </li>
-        <li>
-          <a class='sort-control' data-sort='headline' data-target='#myList' href='#'>Headline</a>
+        <li class='sort-control'>
+          <a data-sort='headline' data-target='#myList' href='#'>Headline</a>
         </li>
-        <li>
-          <a class='sort-control' data-sort='author' data-target='#myList' href='#'>Creator</a>
+        <li class='sort-control'>
+          <a data-sort='created_by' data-target='#myList' href='#'>Creator</a>
         </li>
       </ul>
     </div>
@@ -103,11 +103,11 @@
     </div>
   </div>
 
-  <footer>
-    <div class="container">
-      Copyright 2015, The New York Times.
-    </div>
-  </footer>
+  <div class="container">
+    <footer>
+      <p>Copyright 2015, The New York Times.</p>
+    </footer>
+  </div>
 
   <div id="modal" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
@@ -152,7 +152,7 @@
           </div>
 
           <div class="modal-footer">
-            <input type="button" class="btn btn-link btn-lg" value="Cancel">
+            <input type="button" class="btn btn-link btn-lg" value="Cancel" data-dismiss="modal">
             <input type="button" class="btn btn-primary btn-lg" value="Create List" data-loading-text="Submitting...">
           </div>
         </form>

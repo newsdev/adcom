@@ -6830,7 +6830,7 @@ footer {
   border-color: #999;
   border-width: 0 0.20em 0.20em 0;
   border-style: solid;
-  margin-top: 2px;
+  margin-top: 0.4em;
   height: 0.8em;
   width: 0.8em;
   -webkit-transform-origin: 70% 70%;
@@ -6863,23 +6863,17 @@ footer {
 .navbar-default .navbar-brand:hover {
   color: #222;
   line-height: 24px;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-}
-.navbar-default .navbar-text {
-  font-size: 12px;
-  margin-left: 15px;
-  margin-right: 15px;
-  line-height: 20px;
 }
 .navbar-default .navbar-nav > li > a,
 .navbar-default .navbar-nav > li:hover > a {
   color: #333;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 300;
 }
 .navbar-default .navbar-nav .navbar-summary {
-  font-size: 16px;
+  font-size: 15.6px;
   font-weight: 400;
   font-family: Georgia, "Times New Roman", Times, serif;
   border-left: 1px solid #e5e5e5;
@@ -6893,38 +6887,35 @@ footer {
 .navbar-default .navbar-nav.navbar-sort > li {
   font-size: 13px;
 }
-.navbar-default .navbar-nav.navbar-sort > li a.sort-control {
+.navbar-default .navbar-nav.navbar-sort > li.sort-control a {
   font-weight: 400;
   letter-spacing: 0.5px;
   padding-right: 30px;
   padding-left: 0;
 }
-.navbar-default .navbar-nav.navbar-sort > li a.sort-control::before {
+.navbar-default .navbar-nav.navbar-sort > li.sort-control a::after {
+  font-weight: 300;
+}
+.navbar-default .navbar-nav.navbar-sort > li.sort-control a:not(.sort-ascending):not(.sort-descending) {
+  color: #31708f;
+}
+.navbar-default .navbar-nav.navbar-sort > li.sort-control a:not(.sort-ascending):not(.sort-descending):hover {
+  color: #666666;
+}
+.navbar-default .navbar-nav.navbar-sort > li.sort-control a .sort-ascending.sort-descending {
+  color: #222;
+}
+.navbar-default .navbar-nav.navbar-sort > li.sort-control + .sort-control a::before {
   content: '';
   border-left: 1px solid #ccc;
   padding-right: 15px;
   color: #31708f;
 }
-.navbar-default .navbar-nav.navbar-sort > li a.sort-control::after {
-  font-weight: 300;
-}
-.navbar-default .navbar-nav.navbar-sort > li a.sort-control:not(.sort-ascending):not(.sort-descending) {
-  color: #31708f;
-}
-.navbar-default .navbar-nav.navbar-sort > li a.sort-control:not(.sort-ascending):not(.sort-descending):hover {
-  color: #666666;
-}
-.navbar-default .navbar-nav.navbar-sort > li a.sort-control .sort-ascending.sort-descending {
-  color: #222;
-}
-.navbar-default .navbar-nav.navbar-sort > li.navbar-text {
-  font-size: 12px;
-}
-.navbar-default .navbar-nav.navbar-sort > li.navbar-text + li a {
-  padding-left: 0;
-}
-.navbar-default .navbar-nav.navbar-sort > li.navbar-text + li a::before {
-  display: none;
+.navbar-default .navbar-nav.navbar-sort > li:not(.sort-control) {
+  line-height: 18.57142858px;
+  padding: 15px 0;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .navbar-default .navbar-nav > li.open a,
 .navbar-default .navbar-nav > li.open a:focus,
@@ -6937,17 +6928,20 @@ footer {
 .navbar-default .navbar-left ~ .navbar-left {
   margin-left: 0;
 }
+.navbar-default .navbar-left.navbar-form ~ .navbar-form.navbar-left {
+  padding-left: 0;
+}
 .navbar-default .navbar-header + .navbar-left {
   margin-left: 0;
 }
 .navbar-default .navbar-bits {
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 500;
 }
 .navbar-default .navbar-bits li > a {
-  font-size: 11px;
+  font-size: 12px;
   color: #31708f;
   border-color: #e2e2e2;
 }
@@ -6960,7 +6954,7 @@ footer {
   padding-bottom: 3px;
 }
 .navbar-default .navbar-bits li:hover > a {
-  font-size: 11px;
+  font-size: 12px;
 }
 .navbar-default .navbar-bits li.navbar-form {
   margin-top: 0px;
@@ -6972,28 +6966,46 @@ footer {
   margin-top: 12px;
   margin-bottom: 12px;
 }
+.navbar-default h1,
+.navbar-default h2,
+.navbar-default h3,
+.navbar-default h4,
+.navbar-default h5,
+.navbar-default h6 {
+  margin: 0;
+  padding: 15px;
+  font-weight: 300;
+  line-height: 18.57142858px;
+}
+.navbar-default h1:hover,
+.navbar-default h2:hover,
+.navbar-default h3:hover,
+.navbar-default h4:hover,
+.navbar-default h5:hover,
+.navbar-default h6:hover {
+  text-decoration: none;
+}
+.navbar-default h1 {
+  font-size: 26px;
+}
+.navbar-default h2 {
+  font-size: 23.4px;
+}
+.navbar-default h3 {
+  font-size: 20.8px;
+}
+.navbar-default h4 {
+  font-size: 18.2px;
+}
+.navbar-default h5 {
+  font-size: 15.6px;
+}
+.navbar-default h6 {
+  font-size: 13px;
+}
 .navbar-primary {
   background-color: #f6f6f6;
   border-bottom: 1px solid #e5e5e5;
-}
-.navbar-application .navbar-nav > li > a:not(.sort-control):hover,
-.navbar-application .navbar-nav > li:hover > a:not(.sort-control):hover {
-  text-decoration: underline;
-}
-.navbar-application .navbar-nav > li > a.navbar-resource,
-.navbar-application .navbar-nav > li:hover > a.navbar-resource,
-.navbar-application .navbar-nav > li > .navbar-resource,
-.navbar-application .navbar-nav > li:hover > .navbar-resource {
-  margin: 0;
-  padding: 15px 15px;
-  font-size: 17px;
-  font-weight: 300;
-}
-.navbar-application .navbar-nav > li > a.navbar-resource:hover,
-.navbar-application .navbar-nav > li:hover > a.navbar-resource:hover,
-.navbar-application .navbar-nav > li > .navbar-resource:hover,
-.navbar-application .navbar-nav > li:hover > .navbar-resource:hover {
-  text-decoration: none;
 }
 .navbar-bordered {
   border-top: none;
@@ -7135,28 +7147,28 @@ input[data-filter]:not(:focus)::-moz-placeholder {
 input[data-filter]:not(:focus):-ms-input-placeholder {
   opacity: 0.5;
 }
-.sort-control,
-a.sort-control {
+.sort-control a {
   font-weight: 500;
   color: #999;
   font-size: 0.9em;
 }
-.sort-control:hover,
-a.sort-control:hover {
+.sort-control a:hover {
   cursor: pointer;
 }
-.sort-control.sort-control::after,
-a.sort-control.sort-control::after,
-.sort-control.sort-descending::after,
-a.sort-control.sort-descending::after,
-.sort-control.sort-ascending::after,
-a.sort-control.sort-ascending::after {
+.sort-control a::after {
+  font-size: 0.8em;
+  border-color: #999;
+  margin: 0 0 0 4px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+.sort-control a::after {
   position: absolute;
   content: '';
   border-color: #999;
   border-width: 0 0.20em 0.20em 0;
   border-style: solid;
-  margin-top: 2px;
+  margin-top: 0.4em;
   height: 0.8em;
   width: 0.8em;
   -webkit-transform-origin: 70% 70%;
@@ -7168,12 +7180,7 @@ a.sort-control.sort-ascending::after {
   -ms-transition: -ms-transform 0.4s ease;
   transition: transform 0.4s ease;
 }
-.sort-control.sort-control::after,
-a.sort-control.sort-control::after,
-.sort-control.sort-descending::after,
-a.sort-control.sort-descending::after,
-.sort-control.sort-ascending::after,
-a.sort-control.sort-ascending::after {
+.sort-control a::after {
   content: '';
   border-style: solid;
   -webkit-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
@@ -7181,61 +7188,16 @@ a.sort-control.sort-ascending::after {
   -ms-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
   transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
 }
-.sort-control.sort-control::after,
-a.sort-control.sort-control::after,
-.sort-control.sort-descending::after,
-a.sort-control.sort-descending::after,
-.sort-control.sort-ascending::after,
-a.sort-control.sort-ascending::after {
-  font-size: 0.8em;
-  border-color: #999;
-  margin: 4px 0 0 4px;
-}
-.sort-control.sort-control.sort-descending,
-a.sort-control.sort-control.sort-descending,
-.sort-control.sort-descending.sort-descending,
-a.sort-control.sort-descending.sort-descending,
-.sort-control.sort-ascending.sort-descending,
-a.sort-control.sort-ascending.sort-descending {
+.sort-control a.sort-descending {
   color: #000;
 }
-.sort-control.sort-control.sort-descending::after,
-a.sort-control.sort-control.sort-descending::after,
-.sort-control.sort-descending.sort-descending::after,
-a.sort-control.sort-descending.sort-descending::after,
-.sort-control.sort-ascending.sort-descending::after,
-a.sort-control.sort-ascending.sort-descending::after {
-  content: '';
-  border-style: solid;
-  -webkit-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
-  -moz-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
-  -ms-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
-  transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
-}
-.sort-control.sort-control.sort-descending::after,
-a.sort-control.sort-control.sort-descending::after,
-.sort-control.sort-descending.sort-descending::after,
-a.sort-control.sort-descending.sort-descending::after,
-.sort-control.sort-ascending.sort-descending::after,
-a.sort-control.sort-ascending.sort-descending::after {
+.sort-control a.sort-descending::after {
   border-color: #444;
-  border-right-width: 2px;
-  border-bottom-width: 2px;
 }
-.sort-control.sort-control.sort-ascending,
-a.sort-control.sort-control.sort-ascending,
-.sort-control.sort-descending.sort-ascending,
-a.sort-control.sort-descending.sort-ascending,
-.sort-control.sort-ascending.sort-ascending,
-a.sort-control.sort-ascending.sort-ascending {
+.sort-control a.sort-ascending {
   color: #000;
 }
-.sort-control.sort-control.sort-ascending::after,
-a.sort-control.sort-control.sort-ascending::after,
-.sort-control.sort-descending.sort-ascending::after,
-a.sort-control.sort-descending.sort-ascending::after,
-.sort-control.sort-ascending.sort-ascending::after,
-a.sort-control.sort-ascending.sort-ascending::after {
+.sort-control a.sort-ascending::after {
   content: '';
   border-style: solid;
   -webkit-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
@@ -7243,19 +7205,11 @@ a.sort-control.sort-ascending.sort-ascending::after {
   -ms-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
   transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
 }
-.sort-control.sort-control.sort-ascending::after,
-a.sort-control.sort-control.sort-ascending::after,
-.sort-control.sort-descending.sort-ascending::after,
-a.sort-control.sort-descending.sort-ascending::after,
-.sort-control.sort-ascending.sort-ascending::after,
-a.sort-control.sort-ascending.sort-ascending::after {
+.sort-control a.sort-ascending::after {
   border-color: #444;
-  border-right-width: 2px;
-  border-bottom-width: 2px;
 }
 @media (max-width: 767px) {
-  .sort-control,
-  a.sort-control {
+  .sort-control a {
     float: left;
     padding-right: 30px;
   }
@@ -7385,9 +7339,10 @@ ul.list > .list-item .counter::before,
 }
 .list[data-loading-text].loading {
   position: relative;
+  min-height: 150px;
 }
 .list[data-loading-text].loading .list-item {
-  visibility: hidden;
+  display: none;
 }
 .list[data-loading-text].loading:before {
   content: "";
@@ -7397,7 +7352,7 @@ ul.list > .list-item .counter::before,
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 110px;
+  top: 45px;
   left: 50%;
   margin-top: 30px;
   margin-left: -15px;
@@ -7409,14 +7364,14 @@ ul.list > .list-item .counter::before,
 .list[data-loading-text].loading:after {
   content: attr(data-loading-text);
   display: block;
-  font-family: "nyt-franklin", helvetica, arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: 100;
   text-align: center;
   color: #999;
   position: absolute;
   width: 200px;
-  top: 140px;
+  top: 75px;
   left: 50%;
   margin-top: 50px;
   margin-left: -100px;

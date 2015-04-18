@@ -48,13 +48,14 @@
   <nav class="sidebar-nav">
     <a class="sidebar-nav-item " href="/adcom/">Home</a>
     <hr>
-    <a class="sidebar-nav-item " href="list-js.html">List.js</a>
-    <a class="sidebar-nav-item " href="form-js.html">Form.js</a>
-    <a class="sidebar-nav-item " href="session-js.html">Session.js</a>
-    <a class="sidebar-nav-item " href="persist-js.html">Persist.js</a>
-    <a class="sidebar-nav-item " href="message-js.html">Message.js</a>
+    <a class="sidebar-nav-item " href="/adcom/list-js.html">List.js</a>
+    <a class="sidebar-nav-item " href="/adcom/form-js.html">Form.js</a>
+    <a class="sidebar-nav-item " href="/adcom/session-js.html">Session.js</a>
+    <a class="sidebar-nav-item " href="/adcom/persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item " href="/adcom/message-js.html">Message.js</a>
     <hr>
-    <a class="sidebar-nav-item active" href="styles.html">Styles</a>
+    <a class="sidebar-nav-item active" href="/adcom/styles.html">Styles</a>
+    <a class="sidebar-nav-item" href="/adcom/boilerplate.html">Boilerplate</a>
     <hr>
 
     <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a>
@@ -81,7 +82,6 @@
         <div class="container">
           <h3 class="masthead-title">
             <a href="/adcom/" title="Home">Adcom</a>
-            <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
           </h3>
         </div>
       </div>
@@ -92,6 +92,8 @@
 <blockquote>
 <p>A custom flavor of Bootstrap that serves as the scaffolding for admins at The New York Times.</p>
 </blockquote>
+
+<hr>
 
 <ul>
 <li><a href="#usage">Usage</a></li>
@@ -119,7 +121,7 @@
 
 <h2 id="scaffolding">Scaffolding</h2>
 
-<p>The best introduction we can give to the Adcom styles is simply to see it in action. View an example index page <a href="/adcom/whitelabel.html">here</a>.</p>
+<p>The best introduction we can give to the Adcom styles is simply to see it in action. View an example <a href="/adcom/boilerplate.html">boilerplate index page here</a>.</p>
 
 <p>Several of the componets, such as the navbars, instructions drawer, and styles for rendering items in a central list, are opinionated in their design, to be consistent, intuitive, and minimalistic in the complexity of actions they encourage.</p>
 
@@ -147,11 +149,10 @@
 <p>We&#39;ve tried to encourage several things in our designs:</p>
 
 <ul>
-<li>Use Bootstrap (or any other framework) wherever possible</li>
-<li>TKTKTKTKTKTKTK</li>
+<li>Use Bootstrap (or another framework) wherever possible</li>
+<li>Dynamic state should be reflected with the HTML</li>
+<li>Keep styles portable</li>
 </ul>
-
-<p>The specific styles we&#39;re using are included here in case they help others. But they are by no means canonical, which is why we&#39;ve also included the concepts behind our designs above.</p>
 
 <hr>
 
@@ -181,8 +182,8 @@
   &lt;/div&gt;
 &lt;/div&gt;
 </code></pre></div>
-<h5 id="app-navigation">App Navigation</h5>
-<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="navbar navbar-default navbar-application"&gt;
+<h5 id="standard-navigation">Standard navigation</h5>
+<div class="highlight"><pre><code class="language-example-html-bs" data-lang="example-html-bs">&lt;div class="navbar navbar-default"&gt;
   &lt;div class="container"&gt;
     &lt;div class='btn btn-sm btn-success navbar-btn navbar-left'&gt;
       Button
@@ -194,12 +195,12 @@
       &lt;/div&gt;
     &lt;/form&gt;
     &lt;ul class='nav navbar-nav navbar-right navbar-sort'&gt;
-      &lt;li class='navbar-text'&gt;&lt;span&gt;Sort by:&lt;/span&gt;&lt;/li&gt;
-      &lt;li&gt;
-        &lt;a class='sort-control sort-descending' data-sort='updated_at' data-target='#myList' href='#'&gt;Date Updated&lt;/a&gt;
+      &lt;li&gt;&lt;span&gt;Sort by:&lt;/span&gt;&lt;/li&gt;
+      &lt;li class='sort-control'&gt;
+        &lt;a class='sort-descending' data-sort='updated_at' data-target='#myList' href='#'&gt;Date Updated&lt;/a&gt;
       &lt;/li&gt;
-      &lt;li&gt;
-        &lt;a class='sort-control' data-sort='headline' data-target='#myList' href='#'&gt;Headline&lt;/a&gt;
+      &lt;li class='sort-control'&gt;
+        &lt;a data-sort='headline' data-target='#myList' href='#'&gt;Headline&lt;/a&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/div&gt;

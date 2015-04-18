@@ -342,13 +342,13 @@
 
     // Create a comparator function that defaults to localCompare, and upgrades
     // to Intl.Collator in browsers that support it.
-    var comparator = function(a, b) { a.localeCompare(b) }
+    var comparator = function(a, b) { return a.localeCompare(b) }
     if (typeof Intl != 'undefined') {
       comparator = Intl.Collator(this.options.locale, {
         sensitivity: 'base',
         numeric: true,
         ignorePunctuation: true
-      })
+      }).compare
     }
 
     // default sort function based on one or more attributes and direction
@@ -588,7 +588,7 @@
 
       // Cycle between sorted, reversed, and not sorted.
       // Clear all other sorts on this list.
-      var state = ($el.attr('class').match(/[\^\s]sort-(ascending|descending)/) || [])[1]
+      var state = (($el.attr('class') || '').match(/(?:^|\s)sort-(ascending|descending)/) || [])[1]
       var stateIdx = states.indexOf(state)
       var nextState = states[(stateIdx + 1) % states.length]
 
@@ -615,7 +615,9 @@
       // Use first value of `pattern` or .val() of input elements
       // that are not unselected checkboxes.
       var value = $el.attr('data-pattern')
-      if (!value && $el.is(':input') && $el.is(':checkbox:checked, :not(:checkbox)')) {
+      if ($el.is(':checkbox') && $el.is(':not(:checked)')) {
+        value = undefined
+      } else if (!value && $el.is(':input') && $el.is(':checkbox:checked, :not(:checkbox)')) {
         value = $el.val()
       }
       if (!value) value = undefined

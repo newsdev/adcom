@@ -48,13 +48,14 @@
   <nav class="sidebar-nav">
     <a class="sidebar-nav-item " href="/adcom/">Home</a>
     <hr>
-    <a class="sidebar-nav-item active" href="list-js.html">List.js</a>
-    <a class="sidebar-nav-item " href="form-js.html">Form.js</a>
-    <a class="sidebar-nav-item " href="session-js.html">Session.js</a>
-    <a class="sidebar-nav-item " href="persist-js.html">Persist.js</a>
-    <a class="sidebar-nav-item " href="message-js.html">Message.js</a>
+    <a class="sidebar-nav-item active" href="/adcom/list-js.html">List.js</a>
+    <a class="sidebar-nav-item " href="/adcom/form-js.html">Form.js</a>
+    <a class="sidebar-nav-item " href="/adcom/session-js.html">Session.js</a>
+    <a class="sidebar-nav-item " href="/adcom/persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item " href="/adcom/message-js.html">Message.js</a>
     <hr>
-    <a class="sidebar-nav-item " href="styles.html">Styles</a>
+    <a class="sidebar-nav-item " href="/adcom/styles.html">Styles</a>
+    <a class="sidebar-nav-item" href="/adcom/boilerplate.html">Boilerplate</a>
     <hr>
 
     <a class="sidebar-nav-item" href="https://github.com/newsdev/adcom/archive/v0.1.0.zip">Download</a>
@@ -81,7 +82,6 @@
         <div class="container">
           <h3 class="masthead-title">
             <a href="/adcom/" title="Home">Adcom</a>
-            <small>mo<span style="font-size: 88%;">ↄ</span>bA</small>
           </h3>
         </div>
       </div>
@@ -98,18 +98,20 @@
 <ul>
 <li>Inline as a JSON-serialized <code>data-attribute</code></li>
 <li>Provided as an array to a JavaScript initializer</li>
-<li>Ajaxed in from a remote url</li>
+<li>Loaded from a remote url</li>
 </ul>
 
 <p>As well as the template:</p>
 
 <ul>
+<li>Written as the inner HTML of the container element</li>
 <li>Inline as a <code>data-attribute</code></li>
 <li>As a text or compiled template to a JavaScript initializer</li>
-<li>Written as the inner HTML of the container element</li>
 </ul>
 
 <p>Any way you configure it, the list is rendered using the same jQuery plugin, and has access to the same set of rendering helpers: pagination, sorting and filtering. This lets your list evolve from a simple hard-coded test set to your final database-driven, searchable, sortable table, without swapping in different plugins as your requirements expand.</p>
+
+<hr>
 
 <ul>
 <li><a href="/adcom/#javascript-usage">Usage</a></li>
