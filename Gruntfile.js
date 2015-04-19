@@ -117,5 +117,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dist-js', ['concat:js', 'uglify:core']);
   grunt.registerTask('dist-css', ['less:compile', 'less:compileDocs', 'cssmin:minify']);
-  grunt.registerTask('default', ['dist-js', 'dist-css', 'copy:docs', 'watch']);
+  grunt.registerTask('default', ['dist-js', 'dist-css', 'copy:docs']);
 }

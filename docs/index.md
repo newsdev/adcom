@@ -11,6 +11,8 @@ The plugins serve common use cases on the internal sites we create day-to-day: r
 
 The styles are a custom flavor of <a href="https://getbootstrap.com">Bootstrap</a>, and establish guidelines for what to include on each page, and where. A consistent visual language helps people feel more comfortable using our tools, and makes them easiser for our developers to maintain.
 
+Currently v{{ site.version }}. Last updated {{ site.last_updated }}.
+
 ---
 
 * [Why?](#why)
@@ -178,7 +180,8 @@ You also need to have `bower` installed to load Bootstrap as a dependency. Run `
 
 Several [grunt](http://gruntjs.com/getting-started) tasks are provided to make development easier:
 
-* `grunt` compiles the CSS and JavaScript, updates the docs, and watches for new changes to the source files, triggering a re-run
+* `grunt` compiles the CSS and JavaScript, and updates the docs with the latest code
+* `grunt watch` listens for changes to the source files, recompiling the CSS or JavaScript when necessary
 * `grunt jekyll:server` boots up this documentation on [localhost:8000/adcom/](http://localhost:8000/adcom/)
 
 ### Contributing

@@ -9,6 +9,7 @@ tagline: Admin Components
 description: <strong>Ad</strong>min <strong>com</strong>ponents
 version: 0.1.0
 bootstrap_version: 3.3.4
+last_updated: April 19, 2015
 baseurl: /adcom/
 github:
   repo: https://github.com/newsdev/adcom
