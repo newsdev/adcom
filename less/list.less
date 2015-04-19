@@ -1,0 +1,197 @@
+//
+// List
+// --------------------------------------------------
+
+.list-control {
+  margin-bottom: 15px;
+}
+
+// Experimental: Styling for search bars.
+// Uses data selectors, which is a no-no in CSS.
+
+input[data-filter] {
+  .input-placeholder-transition();
+}
+
+// Sort buttons
+
+.sort-control {
+  font-weight: 500;
+  color: #999;
+  font-size: 0.9em;
+
+  &:hover { cursor: pointer; }
+  &::after {
+    font-size: 0.8em;
+    border-color: #999;
+    margin: 0 0 0 4px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+  }
+  .vee-base();
+  .vee-down();
+
+  &.sort-descending {
+    color: #000;
+    &::after {
+      border-color: #444;
+    }
+  }
+
+  &.sort-ascending {
+    color: #000;
+    .vee-up();
+    &::after {
+      border-color: #444;
+    }
+  }
+
+  // Force sort controls to be inline in xs. Ideally this would go on the
+  // container li, not the link, so this is a hack.
+  @media (max-width: @screen-xs-max) {
+    float: left;
+    padding-right: 30px;
+  }
+}
+
+// Primary list styles.
+
+.list {
+  > .list-item {
+    padding: 10px 0 0;
+    .clearfix();
+    .make-row();
+  }
+}
+
+// Top-level mixins
+
+.list-bordered {
+  > .list-item {
+    &:after {
+      margin: 0 15px;
+      display: block;
+    }
+    &:not(:last-child):after { border-bottom: 1px solid @list-border-color; }
+  }
+}
+
+.list-hover {
+  > :not(.active):not(tr).list-item:hover,
+  > tr:not(.active).list-item:hover > td {
+    background: #f4f7f9;
+  }
+}
+
+// Reset ol-based lists to act normally.
+// .counter class can be dropped in to display current number.
+
+ol.list, ul.list,
+.list-counter {
+  counter-reset: section;
+  padding: 0;
+
+  & > .list-item {
+    display: list-item;
+    list-style: none;
+
+    .counter {
+      &::before {
+        counter-increment: section;
+        content: counter(section) "" !important;
+      }
+    }
+  }
+}
+
+.content-labels {
+  .btn.btn-xs {
+    margin-bottom: 4px;
+  }
+}
+
+// Helper classes for contextual content
+// Designed for within a list-item, but usable elsewhere
+// Provides default layout and styles
+
+.content-metadata {
+  color: #999;
+  font-size: 13px;
+}
+
+// Default grid settings.
+// Applies for divs without a col-* class set explicitly.
+.content-primary {
+  .default-col(xs, 12);
+  .default-col(sm, 7);
+}
+.content-labels {
+  .default-col(xs, 12);
+  .default-col(sm, 2);
+}
+.content-actions {
+  .default-col(xs, 12);
+  .default-col(sm, 3);
+}
+
+@media (max-width: @grid-float-breakpoint) {
+  .content-labels, .content-primary { margin-bottom: 4px; }
+}
+
+// Loading indicator for lists
+// Applies to loading lists with an existing data-loading-text attribute
+.list[data-loading-text].loading {
+  position: relative;
+  min-height: @list-loading-well-height;
+
+  .list-item {
+    display: none;
+  }
+
+  &:before{
+    content: "";
+    display: block;
+    border: 8px dashed rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    width: @list-loading-spinner-size;
+    height: @list-loading-spinner-size;
+    position: absolute;
+    top: (@list-loading-well-height / 2) - @list-loading-spinner-size;
+    left: 50%;
+    margin-top: @list-loading-spinner-size;
+    margin-left: -15px;
+    -webkit-animation: spin 0.5s linear infinite;
+    -moz-animation: spin 0.5s linear infinite;
+    -o-animation: spin 0.5s linear infinite;
+    animation: spin 0.5s linear infinite;
+  }
+
+  &:after {
+    content: attr(data-loading-text);
+    display: block;
+    font-family: @font-family-sans-serif;
+    font-size: 12px;
+    font-weight: 100;
+    text-align: center;
+    color: #999;
+    position: absolute;
+    width: 200px;
+    top: (@list-loading-well-height / 2);
+    left: 50%;
+    margin-top: 50px;
+    margin-left: -100px;
+  }
+}
+
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@keyframes spin {
+  from {transform:rotate(0deg); }
+    to {transform:rotate(360deg); }
+}

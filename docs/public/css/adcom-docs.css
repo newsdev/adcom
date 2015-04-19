@@ -1,0 +1,169 @@
+html {
+  font-family: "nyt-franklin", arial, helvetica, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "nyt-stymie", serif;
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+  color: #888;
+  margin-left: 5px;
+}
+
+li > ul, li > ol { margin-bottom: 0; }
+
+.content { font-size: 16px; }
+.content > table th:first-child {
+  min-width: 175px;
+}
+
+.sidebar-nav hr { margin: 0; }
+.sidebar-item strong {
+  color: #fff;
+  font-weight: normal;
+}
+.sidebar-img {
+  padding-top: 10px;
+  padding-right: 45px;
+}
+
+/* Examples */
+.source-html, .source-js {
+  display: inline-block;
+  float: left;
+  clear: both;
+}
+.source-html { width: 100%; }
+
+.rendered-native > div {
+  font-size: 16px;
+}
+
+.source-html textarea, .source-js textarea { color: #777; }
+
+.source-html:before, .source-js:before {
+  margin: -27px 0 5px 0;
+  font-size: 16px;
+  color: #888;
+  font-weight: normal;
+  display: inline-block;
+  font-family: "nyt-stymie", serif;
+}
+.source-html:before { content: "Source"; }
+
+.clearfix:before,
+.clearfix:after {
+  content: " "; /* 1 */
+  display: table; /* 2 */
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+pre, textarea {
+  padding: 0;
+  transition:         border-color 0.2s linear;
+  -webkit-transition: border-color 0.2s linear;
+}
+
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-break: break-word;
+  word-wrap: break-word;
+}
+pre code {
+  font-size: 14px;
+  outline: none;
+  margin: 1rem;
+  display: inline-block;
+}
+textarea {
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  padding: 1rem;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  word-wrap: break-word;
+  background-color: #f9f9f9;
+  display: block;
+  width: 100%;
+  resize: vertical;
+  border-color: #eee;
+}
+textarea[readonly] {
+  border: none !important;
+  min-height: 150px;
+}
+textarea:hover { border-color: coral; }
+textarea:focus {
+  border-color: black;
+  outline: none;
+  color: #000;
+}
+.source-html textarea { border-radius: 5px 5px 0 0; }
+
+.view-source {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.hidden { display: none; }
+
+.tabs.error, .panes.error { opacity: 0.4; }
+
+.tabs .tab {
+  font-family: "nyt-stymie", serif;
+  font-size: 16px;
+  color: #888;
+  margin-right: 15px;
+}
+.tabs .tab:hover { cursor: pointer; color: #666; }
+.tabs .tab.active { color: #444; }
+
+.panes {
+  clear: both;
+  padding: 15px;
+  border-radius: 0 0 5px 5px;
+  border: 1px solid #e3e3e3;
+  border-top-width: 0;
+  position: relative;
+  margin: 0 0 20px 0;
+}
+.panes .pane {
+  display: none;
+  margin-top: 10px;
+}
+.panes .pane.active { display: block; }
+.panes pre code { margin: 0; }
+.panes pre, .panes textarea { background: transparent; padding: 0; }
+
+/* Bootstrap fixes */
+.bs .container {
+  width: 100%;
+}
+
+/* Adcom fixes */
+.bs .message {
+  margin-bottom: 0;
+}
+.messages-static .bs .message {
+  display: inline-block;
+  position: relative;
+  bottom: auto;
+  left: auto;
+  top: auto;
+  right: auto;
+}
+.messages-static .bs .message.message-dialog {
+  left: 50%;
+}
+
+.bs {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.bs h1, .bs h2, .bs h3, .bs h4, .bs h5, .bs h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

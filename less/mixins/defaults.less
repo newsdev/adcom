@@ -1,0 +1,44 @@
+// Defaults
+// --------------------------------------------------
+
+@import "bootstrap/less/mixins/grid-framework.less";
+@import "bootstrap/less/mixins/buttons.less";
+
+// Grid layout
+
+.default-col(@class, @index, @type: width) {
+  .set-min-width(@class);
+  @media (min-width: @min-width) {
+    &:not([class^='col']):not([class*=' col']) {
+      .calc-default-grid-column(@index, @class, @type);
+    }
+  }
+}
+
+.default-border(@direction) {
+  &:not([class^='border']):not([class*=' border']) {
+    border-@{direction}: 1px solid @border-color;
+  }
+}
+
+.default-text(@direction) {
+  &:not([class^='text']):not([class*=' text']) {
+    text-align: @direction;
+  }
+}
+
+// .default-btn-status(@status) when not (@status = muted) {
+//   &:not(.btn-default):not(.btn-muted):not(.btn-primary):not(.btn-success):not(.btn-info):not(.btn-warning):not(.btn-danger):not(.btn-link) {
+//     @color: "btn-@{status}-color";
+//     @bg: "btn-@{status}-bg";
+//     @border: "btn-@{status}-border";
+//     .button-variant(@@color, @@bg, @@border);    // From Bootstrap
+//   }
+// }
+// .default-btn-status(@status) when (@status = muted) {
+//   &:not(.btn-default):not(.btn-muted):not(.btn-primary):not(.btn-success):not(.btn-info):not(.btn-warning):not(.btn-danger):not(.btn-link) {
+//     @color: "btn-@{status}-color";
+//     @bg: "btn-@{status}-bg";
+//     @border: "btn-@{status}-border";
+//   }
+// }

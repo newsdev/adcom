@@ -1,0 +1,38 @@
+{
+  "name": "adcom",
+  "authors": [
+    { "name": "Michael Strickland", "email": "michael.strickland@nytimes.com" }
+  ],
+  "keywords": [
+    "js",
+    "front-end",
+    "framework",
+    "components",
+    "web",
+    "admin",
+    "nyt",
+    "nytimes",
+    "new",
+    "york",
+    "times"
+  ],
+  "license": "Apache 2.0",
+  "private": true,
+  "homepage": "https://newsdev.github.io/adcom/",
+  "dependencies": {
+    "jquery": ">= 1.9.0"
+  },
+  "devDependencies": {
+    "bootstrap": "3.3.4",
+    "js-beautify": "1.5.5"
+  },
+  "main": [
+    "dist/js/adcom.js",
+    "dist/css/adcom.css"
+  ],
+  "ignore": [
+    "/.*",
+    ".bowerrc",
+    "Gruntfile.js"
+  ]
+}

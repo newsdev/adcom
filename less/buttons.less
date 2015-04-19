@@ -1,0 +1,20 @@
+//
+// Buttons
+// --------------------------------------------------
+
+.input-group-btn .btn { z-index: 10; }
+
+.btn-muted {
+  .button-variant(@btn-muted-color; @btn-muted-bg; @btn-muted-border);
+}
+
+// Button Sizes
+// --------------------------------------------------
+
+.btn-xs {
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-xs; @line-height-base; @border-radius-small);
+}

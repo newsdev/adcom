@@ -1,0 +1,164 @@
+//
+// Navbars
+// --------------------------------------------------
+
+.navbar-default {
+  margin-bottom: 0;
+  border-radius: 0;
+  background-color: #fff;
+  border: none;
+
+  .navbar-brand, .navbar-brand:hover {
+    color: #222;
+    line-height: 24px;
+    font-size: @font-size-default * 2;
+    font-weight: 700;
+  }
+
+  .navbar-nav {
+    & > li > a, & > li:hover > a {
+      color: #333;
+      font-size: @font-size-default;
+      font-weight: 300;
+    }
+
+    .navbar-summary {
+      font-size: @font-size-default * 1.2;
+      font-weight: 400;
+      font-family: @font-family-serif;
+      border-left: 1px solid @border-color;
+      padding: 0px 15px 0 15px;
+      margin: 14px 0 0;
+
+      & > span {
+        margin: 4px 0 0 0;
+        display: inline-block;
+      }
+    }
+
+    &.navbar-sort > li {
+      font-size: @font-size-default;
+
+      & > .sort-control {
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        padding-right: @navbar-padding-horizontal * 2;
+        padding-left: 0;
+
+        &::after {
+          font-weight: 300;
+        }
+        &:not(.sort-ascending):not(.sort-descending) {
+          color: #31708f;
+
+          &:hover {
+            color: #666
+          }
+        }
+        .sort-ascending.sort-descending {
+          color: #222;
+        }
+      }
+
+      & + li > a::before {
+        content: '';
+        border-left: 1px solid #ccc;
+        padding-right: @navbar-padding-horizontal;
+        color: #31708f;
+      }
+
+      & > :not(.sort-control) {
+        line-height: @font-size-default * @line-height-base;
+        padding: 15px 0;
+        margin-left: 15px;
+        margin-right: 15px;
+        display: inline-block;
+        color: #999;
+      }
+    }
+
+    & > li.open {
+      a, a:focus, a:hover {
+        background-color: initial;
+      }
+    }
+  }
+
+  .navbar-left {
+    margin-left: -@navbar-padding-horizontal;
+
+    ~ .navbar-left {
+      margin-left: 0;
+    }
+
+    &.navbar-form ~ .navbar-form.navbar-left { padding-left: 0; }
+  }
+  .navbar-header + .navbar-left {
+    margin-left: 0;
+  }
+
+  .navbar-bits {
+    font-size: @font-size-small;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+
+    li {
+      > a {
+        font-size: @font-size-small;
+        color: #31708f;
+        border-color: #e2e2e2;
+
+        &.active {
+          background-color: #f0f8fc;
+          border-color: #e2e2e2;
+        }
+
+        &:not(.btn) {
+          padding-top: 4px;
+          padding-bottom: 3px;
+        }
+      }
+      &:hover > a {
+        font-size: @font-size-small;
+      }
+
+      &.navbar-form {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
+      &:not(.navbar-form) a {
+        margin-top: 12px;
+        margin-bottom: 12px;
+      }
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 15px;
+    font-weight: 300;
+    line-height: @font-size-default * @line-height-base;
+    &:hover { text-decoration: none; }
+  }
+  h1 { font-size: @font-size-default * 2; }
+  h2 { font-size: @font-size-default * 1.8; }
+  h3 { font-size: @font-size-default * 1.6; }
+  h4 { font-size: @font-size-default * 1.4; }
+  h5 { font-size: @font-size-default * 1.2; }
+  h6 { font-size: @font-size-default * 1.0; }
+}
+
+.navbar-primary {
+  background-color: @nav-background-color;
+  border-bottom: 1px solid @border-color;
+}
+
+.navbar-bordered {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid @border-color;
+}

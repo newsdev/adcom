@@ -1,0 +1,32 @@
+// Defaults Framework
+// --------------------------------------------------
+
+.set-min-width(@class) when (@class = xs) { @min-width: 0; }
+.set-min-width(@class) when (@class = sm) { @min-width: @screen-sm-min; }
+.set-min-width(@class) when (@class = md) { @min-width: @screen-md-min; }
+.set-min-width(@class) when (@class = lg) { @min-width: @screen-lg-min; }
+
+.calc-default-grid-column(@index, @class, @type) when (@type = width) and (@index > 0) {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  float: left;
+  width: percentage((@index / @grid-columns));
+}
+
+.calc-default-grid-column(@index, @class, @type) when (@type = push) and (@index > 0) {
+  left: percentage((@index / @grid-columns));
+}
+.calc-default-grid-column(@index, @class, @type) when (@type = push) and (@index = 0) {
+  left: auto;
+}
+.calc-default-grid-column(@index, @class, @type) when (@type = pull) and (@index > 0) {
+  right: percentage((@index / @grid-columns));
+}
+.calc-default-grid-column(@index, @class, @type) when (@type = pull) and (@index = 0) {
+  right: auto;
+}
+.calc-default-grid-column(@index, @class, @type) when (@type = offset) {
+  margin-left: percentage((@index / @grid-columns));
+}

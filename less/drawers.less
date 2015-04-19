@@ -1,0 +1,118 @@
+//
+// Drawers
+// --------------------------------------------------
+
+.drawer {
+  & > .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .drawer-toggle {
+    p {
+      margin: 0;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+    &:focus, &:active {
+      outline: none;
+      text-decoration: none;
+    }
+
+    &:hover .vee::after { border-color: #555; }
+    &:not(.collapsed) .vee { .vee-up(); }
+
+    &:not(.collapsed) .drawer-visible-on-out { display: none; }
+    &.collapsed .drawer-visible-on-in { display: none; }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    max-width: 680px;
+    margin-top: 0;
+
+    // Ever-so-slight increase from Bootstrap standard
+    line-height: 1.2em;
+    margin-bottom: 12px;
+  }
+
+  ol, ul {
+    padding-left: 25px;
+  }
+}
+
+// Version of a drawer with stylistic, not layout-driven, changes
+.drawer-default {
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  background-color: @nav-background-color;
+
+  .drawer-toggle {
+    color: #999;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    &:hover {
+      color: #555;
+    }
+  }
+
+  .collapse, .collapsing {
+    & > :first-child { padding-bottom: 00px; }
+  }
+
+  em {
+    font-size: 0.9em;
+  }
+
+  ol, ul {
+    line-height: 1.33em;
+    margin-top: 0.67em;
+    overflow: auto;
+
+    li {
+      margin-bottom: 0.67em;
+    }
+  }
+}
+
+.drawer-instructions {
+  color: #333;
+  font-weight: 300;
+  font-size: 17px;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 300;
+    color: black;
+  }
+
+  > .container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}
+
+// Position of drawer at the top-level in an NYT Admin layout
+.navbar ~ .drawer {
+  border-top: none;
+}
+form .drawer {
+  padding: 8px 0 8px 0;
+}
+
+// Position of drawer within a modal
+.modal-content .modal-body,
+.modal-content .modal-footer {
+  .drawer-default:last-child {
+    margin-bottom: -15px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+}

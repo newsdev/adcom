@@ -1,0 +1,35 @@
+//
+// Dropdown menus
+// --------------------------------------------------
+
+
+.caret {
+  border-top-width: 8px;
+  border-left-width: 6px;
+  border-right-width: 6px;
+}
+.btn-default, .btn-muted {
+  .caret {
+    color: #b3b3b3;
+  }
+}
+.dropup,
+.navbar-fixed-bottom .dropdown {
+  // Reverse the caret
+  .caret {
+    border-bottom-width: 8px;
+  }
+}
+
+// The dropdown menu (ul)
+.dropdown-menu {
+  padding: 0;
+  width: auto;
+  min-width: 100%;
+  font-size: 13px;
+
+  > li > a {
+    padding: 7px 20px 8px;
+    text-align: center;
+  }
+}

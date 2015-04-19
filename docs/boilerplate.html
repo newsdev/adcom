@@ -1,0 +1,196 @@
+---
+title: Home
+---
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <title>Adcom Boilerplate</title>
+
+  <link rel="stylesheet" href="{{ site.baseurl }}public/css/adcom.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+</head>
+<body>
+
+  <div class="navbar navbar-default navbar-primary">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">My App</a>
+      </div>
+      <ul class="nav navbar-nav navbar-left">
+        <li class="navbar-summary"><span>An app to visualize what Adcom Styles look like.</span></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right navbar-bits">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Support</a></li>
+        <li><a href="#">Log in</a></li>
+      </ul>
+      <button type="button" class="btn btn-sm btn-muted navbar-btn navbar-right" data-toggle="button">
+        <span data-toggle="collapse" href="#page-instructions">Instructions</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="drawer drawer-default drawer-instructions collapse" id="page-instructions">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-1 col-md-8 col-sm-12 col-sm-offset-0">
+          <h3>Instructions</h3>
+          <p>Describe how to use this application, and this page in particular.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus et diam urna. Aliquam ligula metus, fermentum sed nisi quis, consequat rutrum felis. Nunc nibh ligula, pharetra vitae erat et, semper venenatis enim. In est lectus, viverra posuere dictum vel, dapibus quis ligula.</p>
+
+          <ol>
+            <li>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</li>
+            <li>Nulla tempus orci vel justo feugiat cursus. Praesent rhoncus nunc eget varius hendrerit.</li>
+            <li>Proin arcu ligula, lacinia ac consectetur et, lacinia dictum nunc. Vivamus vitae aliquet libero. Donec pharetra volutpat ornare. Etiam eget mi luctus, semper nunc eget, ultricies justo. Vestibulum vel lobortis purus. Proin semper at mauris quis iaculis.</li>
+
+          </ol>
+          <p>Duis pharetra fermentum urna, et bibendum massa lobortis quis.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="navbar navbar-default navbar-application">
+    <div class="container">
+      <ul class='nav navbar-nav navbar-left'>
+        <li><h5 id='list-count'></h5></li>
+      </ul>
+      <div class='btn btn-sm btn-default navbar-btn navbar-left' data-toggle="modal" data-target="#modal">
+        Button
+      </div>
+      <form class='navbar-form navbar-left form-inline'>
+        <div class='form-group form-group-sm glyphicon-input'>
+          <input class='form-control input-sm' data-filter='headline,created_by' data-target='#myList' data-trigger='keyup' placeholder='Search' style='min-width: 190px'>
+          <i class='glyphicon glyphicon-search'></i>
+        </div>
+      </form>
+      <ul class='nav navbar-nav navbar-right navbar-sort'>
+        <li><span>Sort by</span></li>
+        <li>
+          <a href='#' class='sort-control sort-descending' data-sort='updated_at' data-target='#myList'>Date Updated</a>
+        </li>
+        <li>
+          <a href='#' class='sort-control' data-sort='headline' data-target='#myList'>Headline</a>
+        </li>
+        <li>
+          <a href='#' class='sort-control' data-sort='created_by' data-target='#myList'>Creator</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class='container'>
+    <div class='list list-bordered border-top'
+        data-loading-msg='Loading lists'
+        id='myList'>
+      <div class='list-item'>
+        <div class='content-labels'>
+          <span class="btn btn-sm btn-block btn-muted disabled" data-field="status"></span>
+        </div>
+        <div class='content-primary'>
+          <h4 data-field="headline"></h4>
+          <p data-field="description"></p>
+          <p class="content-metadata">
+            Updated <span data-field="updated_at"></span>
+            by <span data-field="created_by"></span>
+          </p>
+        </div>
+        <div class='content-actions text-right'>
+          <button class="btn btn-sm btn-primary">Button</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <footer>
+      <p>Copyright 2015, The New York Times.</p>
+    </footer>
+  </div>
+
+  <div id="modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-horizontal">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            <h2 class="modal-title">Create New List</h2>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="control-label">Headline</label>
+              <div class="control-input">
+                <input class="form-control" placeholder="Headline">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Leadin</label>
+              <div class="control-input">
+                <textarea class="form-control" placeholder="Leadin"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Tone</label>
+              <div class="control-input">
+                <select class="form-control">
+                  <option selected value="default">Default</option>
+                  <option value="feature">Feature</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Creator</label>
+              <div class="control-input">
+                <input class="form-control" placeholder="Creator">
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <input type="button" class="btn btn-link btn-lg" value="Cancel" data-dismiss="modal">
+            <input type="button" class="btn btn-primary btn-lg" value="Create List" data-loading-text="Submitting...">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="{{ site.baseurl }}public/js/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ site.baseurl }}public/js/bootstrap.js"></script>
+  <script type="text/javascript" src="{{ site.baseurl }}public/js/adcom.js"></script>
+
+  <script type="text/javascript">
+    $('#myList')
+      .on('paginated.ac.list', function(e) {
+        $('#list-count').html(e.count + ' projects');
+      })
+      .list({
+        items: [
+          {
+            headline: "Headline 1",
+            created_by: "Amanda Larson",
+            description: "Lorem ipsum",
+            updated_at: "2015-01-01",
+            status: "Published"
+          },
+          {
+            headline: "Headline 2",
+            created_by: "Tessa Goodman",
+            description: "Lorem ipsum",
+            updated_at: "2015-01-02",
+            status: "Draft"
+          },
+        ]
+      });
+  </script>
+
+</body>
+</html>

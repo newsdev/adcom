@@ -1,0 +1,96 @@
+//
+// Message
+// --------------------------------------------------
+
+.message {
+  display: none;
+  background: #323232;
+  color: #ffffff;
+  min-width: 288px;
+  max-width: 568px;
+  border-radius: 2px;
+  padding: 16px 24px;
+  font-weight: 300;
+  overflow: hidden;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1060;
+
+  outline: 0;
+
+  &.fade {
+    opacity: 0;
+    transform: translate(0, -25%);
+    transition: transform 0.3s ease-out, opacity .15s linear;
+
+    &.in {
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+
+    &.out {
+      transform: translate(0, 25%);
+    }
+  }
+
+  a {
+    text-transform: uppercase;
+    font-size: 0.9em;
+    line-height: 20px;
+    float: right;
+    margin-left: 15px;
+    letter-spacing: 1px;
+  }
+  &:not(.message-dialog) a {
+    color: #edf43f;
+  }
+
+  &.message-lg {
+    min-width: 568px;
+    max-width: 848px;
+  }
+  &.message-sm {
+    min-width: 140px;
+    max-width: 288px;
+  }
+}
+
+.message.message-dialog {
+  background: white;
+  color: #222;
+  width: 428px;
+  border: 1px solid #eee;
+  box-shadow: 0 3px 9px rgba(0,0,0,.3);
+  bottom: auto;
+  top: 20%;
+  left: 50%;
+  margin-left: -214px;
+  padding: 24px 24px 8px 24px;
+  text-align: right;
+
+  :not(a) {
+    text-align: left;
+  }
+
+  a {
+    margin: 6px 4px;
+    padding: 0px 8px;
+    float: none;
+    display: inline-block;
+    font-weight: 400;
+
+    &:last-child {
+      margin-right: -8px;
+    }
+  }
+
+  &.message-lg {
+    width: 568px;
+    margin-left: -284px;
+  }
+  &.message-sm {
+    width: 288px;
+    margin-left: -144px;
+  }
+}

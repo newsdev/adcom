@@ -1,0 +1,38 @@
+<!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>{{ site.description }}</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item {% if page.path == 'index.md' %}active{% endif %}" href="{{ site.baseurl }}">Home</a>
+    <hr>
+    <a class="sidebar-nav-item {% if page.path == 'list-js.md' %}active{% endif %}" href="{{ site.baseurl }}list-js.html">List.js</a>
+    <a class="sidebar-nav-item {% if page.path == 'form-js.md' %}active{% endif %}" href="{{ site.baseurl }}form-js.html">Form.js</a>
+    <a class="sidebar-nav-item {% if page.path == 'session-js.md' %}active{% endif %}" href="{{ site.baseurl }}session-js.html">Session.js</a>
+    <a class="sidebar-nav-item {% if page.path == 'persist-js.md' %}active{% endif %}" href="{{ site.baseurl }}persist-js.html">Persist.js</a>
+    <a class="sidebar-nav-item {% if page.path == 'message-js.md' %}active{% endif %}" href="{{ site.baseurl }}message-js.html">Message.js</a>
+    <hr>
+    <a class="sidebar-nav-item {% if page.path == 'styles.md' %}active{% endif %}" href="{{ site.baseurl }}styles.html">Styles</a>
+    <a class="sidebar-nav-item" href="{{ site.baseurl }}boilerplate.html">Boilerplate</a>
+    <hr>
+
+    <a class="sidebar-nav-item" href="{{ site.github.repo }}/archive/v{{ site.version }}.zip">Download</a>
+    <a class="sidebar-nav-item" href="{{ site.github.repo }}">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v{{ site.version }}</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; {{ site.time | date: '%Y' }} The New York Times Company.
+    </p>
+  </div>
+
+  <div class="sidebar-item sidebar-img">
+    <img src="{{ site.baseurl }}public/images/logo.png">
+  </div>
+</div>

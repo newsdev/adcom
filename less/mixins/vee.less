@@ -1,0 +1,42 @@
+.vee-base() {
+  &::after {
+    position: absolute;
+    content: '';
+    border-color: #999;
+    border-width: 0 0.20em 0.20em 0;
+    border-style: solid;
+    margin-top: 0.4em;
+    height: 0.8em;
+    width: 0.8em;
+
+    -webkit-transform-origin: 70% 70%;
+    -moz-transform-origin: 70% 70%;
+    -ms-transform-origin: 70% 70%;
+    transform-origin: 70% 70%;
+
+    -webkit-transition: -web-transform 0.4s ease;
+    -moz-transition: -moz-transform 0.4s ease;
+    -ms-transition: -ms-transform 0.4s ease;
+    transition: transform 0.4s ease;
+  }
+}
+.vee-down() {
+  &::after {
+    content: '';
+    border-style: solid;
+    -webkit-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
+    -moz-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
+    -ms-transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
+    transform: rotate(45deg) rotate3d(1, 1, 0, 55deg);
+  }
+}
+.vee-up() {
+  &::after {
+    content: '';
+    border-style: solid;
+    -webkit-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+    -moz-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+    -ms-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+    transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+  }
+}

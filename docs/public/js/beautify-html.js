@@ -1,0 +1,1 @@
+../../../bower_components/js-beautify/js/lib/beautify-html.js

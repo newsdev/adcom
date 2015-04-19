@@ -1,0 +1,42 @@
+@import "bootstrap/less/mixins/grid-framework.less";
+
+// @class = xs, sm, md, lg
+// @index = the column size that this element should default to
+// Note: It's important to call these mixins in order from xs > lg so that
+// rules fall back correctly.
+.grid-default-col(@class, @index) {
+  // TK - need to do this with regexes, this looks horrible
+  &:not(.col-xs-1):not(.col-sm-1):not(.col-md-1):not(.col-lg-1):not(.col-xs-2):not(.col-sm-2):not(.col-md-2):not(.col-lg-2):not(.col-xs-3):not(.col-sm-3):not(.col-md-3):not(.col-lg-3):not(.col-xs-4):not(.col-sm-4):not(.col-md-4):not(.col-lg-4):not(.col-xs-5):not(.col-sm-5):not(.col-md-5):not(.col-lg-5):not(.col-xs-6):not(.col-sm-6):not(.col-md-6):not(.col-lg-6):not(.col-xs-7):not(.col-sm-7):not(.col-md-7):not(.col-lg-7):not(.col-xs-8):not(.col-sm-8):not(.col-md-8):not(.col-lg-8):not(.col-xs-9):not(.col-sm-9):not(.col-md-9):not(.col-lg-9):not(.col-xs-10):not(.col-sm-10):not(.col-md-10):not(.col-lg-10):not(.col-xs-11):not(.col-sm-11):not(.col-md-11):not(.col-lg-11):not(.col-xs-12):not(.col-sm-12):not(.col-md-12):not(.col-lg-12) {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    float: left;
+
+    & when (@class = xs) {
+      // No media query; this is the default state
+      width: percentage((@index / @grid-columns));
+    }
+    & when (@class = sm) {
+      @media (min-width: @screen-sm-min) {
+        width: percentage((@index / @grid-columns));
+      }
+    }
+    & when (@class = md) {
+      @media (min-width: @screen-md-min) {
+        width: percentage((@index / @grid-columns));
+      }
+    }
+    & when (@class = lg) {
+      @media (min-width: @screen-lg-min) {
+        width: percentage((@index / @grid-columns));
+      }
+    }
+  }
+}
+
+.grid-default-border(@direction) {
+  &:not(.border-left):not(.border-right):not(.border-top):not(.border-bottom):not(.border-none) {
+    border-@{direction}: 1px solid @border-color;
+  }
+}
