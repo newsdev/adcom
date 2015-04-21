@@ -145,4 +145,4 @@ Adcom is released under the [Apache 2.0 License](https://github.com/newsdev/adco
 
 ## Author
 
-Created by the [Interactive News](https://github.com/newsdev) team at The New York Times.
+Created by [Michael Strickland](https://twitter.com/moriogawa) for the [Interactive News](https://github.com/newsdev) team at The New York Times.
