@@ -17,7 +17,6 @@
     "times"
   ],
   "license": "Apache 2.0",
-  "private": true,
   "homepage": "https://newsdev.github.io/adcom/",
   "dependencies": {
     "jquery": ">= 1.9.0"
