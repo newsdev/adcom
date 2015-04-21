@@ -9,7 +9,7 @@ title: Home
 
 The plugins serve common use cases on the internal sites we create day-to-day: rendering **dynamic lists**, standardizing **form validation**, **maintaining state** across page loads, persisting **settings**, and others.
 
-The styles are a custom flavor of <a href="https://getbootstrap.com">Bootstrap</a>, and establish guidelines for what to include on each page, and where. A consistent visual language helps people feel more comfortable using our tools, and makes them easiser for our developers to maintain.
+The styles ([view an example here]({{ site.baseurl }}boilerplate.html)) are a custom flavor of <a href="https://getbootstrap.com">Bootstrap</a>, and establish guidelines for what to include on each page, and where. A consistent visual language helps people feel more comfortable using our tools, and makes them easier for our developers to maintain.
 
 Currently v{{ site.version }}. Last updated {{ site.last_updated }}.
 
@@ -31,7 +31,7 @@ Adcom was built for our specific needs at The New York Times, but is based on a 
 
 Our internal websites are used by copy editors, reporters, web producers, developers and others, and we feel it's important for them to have a consistent workflow and visual framework. These tools should **feel familiar and predictable**, not dangerous. This is especially important when creating tools by developers using separate frameworks and codebases.
 
-Adcom contains a boilerplate layout for how to structure our sites, with Bootstrap-based components and [best practices]({{ site.baseurl }}styles.html) for when and how to use them.
+Adcom contains a [boilerplate layout]({{ site.baseurl }}boilerplate.html) for how to structure our sites, with Bootstrap-based components and [best practices]({{ site.baseurl }}styles.html) for when and how to use them.
 
 #### Living with feature creep
 
