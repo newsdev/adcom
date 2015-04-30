@@ -38,7 +38,9 @@
   }
 
   Form.prototype.show = function (data, meta, _relatedTarget) {
-    var e = $.Event('show.ac.form', { serialized: data, relatedTarget: _relatedTarget })
+    meta = meta || {}
+
+    var e = $.Event('show.ac.form', { serialized: data, sourceData: this.sourceData, sourceElement: this.sourceElement, relatedTarget: _relatedTarget })
     this.$element.trigger(e)
     if (e.isDefaultPrevented()) return
 
@@ -56,7 +58,6 @@
       }
     })
 
-    meta = meta || {}
     this.sourceElement = meta.sourceElement
     this.sourceData    = meta.sourceData
     $(this.$element[0]).one('reset', $.proxy(function () {
@@ -64,7 +65,7 @@
       this.sourceData    = null
     }, this))
 
-    this.$element.trigger($.Event('shown.ac.form', { serialized: data, relatedTarget: _relatedTarget }))
+    this.$element.trigger($.Event('shown.ac.form', { serialized: data, sourceData: this.sourceData, sourceElement: this.sourceElement, relatedTarget: _relatedTarget }))
   }
 
   Form.prototype.serialize = function () {
