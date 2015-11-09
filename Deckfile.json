@@ -1,0 +1,14 @@
+{
+    "deckfile_version": 2,
+    "name": "Adcom",
+    "description": "Adcom is a set of JavaScript plugins and frontend styles that serve as the foundation for admins at The New York Times.",
+    "message": "",
+    "readme": "https://github.com/newsdev/adcom/blob/develop/README.md",
+    "docs": "http://newsdev.github.io/adcom/",
+    "contact_email": "newstools@nytimes.com",
+    "contact_name": "Newstools Teamm",
+    "contact_slack": "#newstools",
+    "has_icon": true, 
+    "tags_json": ["dev"],
+    "examples_json": []
+}
