@@ -19,7 +19,7 @@
     this.filters = {}
   }
 
-  Persist.VERSION = '0.1.0'
+  Persist.VERSION = '0.1.1'
 
   // These are meant to mirror MutationObserver options, plus some extras
   Persist.DEFAULTS = {

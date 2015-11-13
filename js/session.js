@@ -20,7 +20,7 @@
     this.data = this.fetchSession()
   }
 
-  Session.VERSION = '0.1.0'
+  Session.VERSION = '0.1.1'
 
   Session.DEFAULTS = {
     persistent: false,
@@ -28,14 +28,14 @@
   }
 
   Session.prototype.set = function (key, value) {
-    if (this.options.namespace) key = this.options.namespace + '.' + value
+    if (this.options.namespace) key = this.options.namespace + '.' + key
 
-    this.data[key] = value
+    this.data[key] = key
     this.saveSession()
   }
 
   Session.prototype.get = function (key) {
-    if (this.options.namespace) key = this.options.namespace + '.' + value
+    if (this.options.namespace) key = this.options.namespace + '.' + key
 
     return this.data[key]
   }
