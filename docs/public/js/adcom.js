@@ -183,7 +183,7 @@
     }
   }
 
-  List.VERSION = '0.1.0'
+  List.VERSION = '0.1.1'
 
   List.TRIGGER_EVENTS  = $.map('click keydown keypress keyup focus blur focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.list.data-api" }).join(' ')
 
@@ -768,7 +768,7 @@
     this.$element.append(this.$displayNativeValidation)
   }
 
-  Form.VERSION = '0.1.0'
+  Form.VERSION = '0.1.1'
 
   Form.DEFAULTS = {
     show: true,
@@ -1037,7 +1037,7 @@
     this.data = this.fetchSession()
   }
 
-  Session.VERSION = '0.1.0'
+  Session.VERSION = '0.1.1'
 
   Session.DEFAULTS = {
     persistent: false,
@@ -1045,14 +1045,14 @@
   }
 
   Session.prototype.set = function (key, value) {
-    if (this.options.namespace) key = this.options.namespace + '.' + value
+    if (this.options.namespace) key = this.options.namespace + '.' + key
 
-    this.data[key] = value
+    this.data[key] = key
     this.saveSession()
   }
 
   Session.prototype.get = function (key) {
-    if (this.options.namespace) key = this.options.namespace + '.' + value
+    if (this.options.namespace) key = this.options.namespace + '.' + key
 
     return this.data[key]
   }
@@ -1102,7 +1102,7 @@
     this.filters = {}
   }
 
-  Persist.VERSION = '0.1.0'
+  Persist.VERSION = '0.1.1'
 
   // These are meant to mirror MutationObserver options, plus some extras
   Persist.DEFAULTS = {
@@ -1296,7 +1296,7 @@
     this.$element.on('click.dismiss.ac.message', '[data-dismiss="message"]', $.proxy(this.hide, this))
   }
 
-  Message.VERSION = '0.1.0'
+  Message.VERSION = '0.1.1'
 
   Message.TRANSITION_DURATION = 300
 

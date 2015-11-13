@@ -7,9 +7,9 @@ path: http://github.com/newsdev/adcom
 title: Adcom
 tagline: Admin Components
 description: <strong>Ad</strong>min <strong>com</strong>ponents
-version: 0.1.0
+version: 0.1.1
 bootstrap_version: 3.3.4
-last_updated: April 21, 2015
+last_updated: November 13, 2015
 baseurl: /adcom/
 github:
   repo: https://github.com/newsdev/adcom

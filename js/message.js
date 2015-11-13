@@ -23,7 +23,7 @@
     this.$element.on('click.dismiss.ac.message', '[data-dismiss="message"]', $.proxy(this.hide, this))
   }
 
-  Message.VERSION = '0.1.0'
+  Message.VERSION = '0.1.1'
 
   Message.TRANSITION_DURATION = 300
 

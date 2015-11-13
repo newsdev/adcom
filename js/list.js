@@ -43,7 +43,7 @@
     }
   }
 
-  List.VERSION = '0.1.0'
+  List.VERSION = '0.1.1'
 
   List.TRIGGER_EVENTS  = $.map('click keydown keypress keyup focus blur focusin focusout change select submit'.split(' '), function (e) { return e + ".ac.list.data-api" }).join(' ')
 

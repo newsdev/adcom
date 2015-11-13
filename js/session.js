@@ -20,7 +20,7 @@
     this.data = this.fetchSession()
   }
 
-  Session.VERSION = '0.1.0'
+  Session.VERSION = '0.1.1'
 
   Session.DEFAULTS = {
     persistent: false,

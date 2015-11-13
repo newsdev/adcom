@@ -30,7 +30,7 @@
     this.$element.append(this.$displayNativeValidation)
   }
 
-  Form.VERSION = '0.1.0'
+  Form.VERSION = '0.1.1'
 
   Form.DEFAULTS = {
     show: true,
