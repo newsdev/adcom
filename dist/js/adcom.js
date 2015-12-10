@@ -1047,7 +1047,7 @@
   Session.prototype.set = function (key, value) {
     if (this.options.namespace) key = this.options.namespace + '.' + key
 
-    this.data[key] = key
+    this.data[key] = value
     this.saveSession()
   }
 
