@@ -1347,8 +1347,9 @@
       }
 
       if (that.options.dismiss) {
-        that.$body.one('click.dismiss.ac.message', function (e) { that.hide() })
-        that.$element.on('click.ac.message', function (e) { e.stopPropagation() })
+        that.$body.on('click.dismiss.ac.message', function (e) {
+          if (that.$element[0] !== e.target && !$.contains(that.$element[0], e.target)) that.hide()
+        })
       }
 
       var e = $.Event('shown.ac.message', { relatedTarget: _relatedTarget })
