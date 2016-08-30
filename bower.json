@@ -32,6 +32,11 @@
   "ignore": [
     "/.*",
     ".bowerrc",
-    "Gruntfile.js"
+    "logo.xcf",
+    "Gruntfile.js",
+    "Deckfile.json",
+    "node_modules",
+    "bower_components",
+    "docs"
   ]
 }
