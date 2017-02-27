@@ -274,7 +274,9 @@
       var idx    = target.data('ac.list.index')
     }
 
-    this.$element.trigger($.Event('toggle.ac.list', { item: item, target: target, index: idx, state: state }))
+    var ev = $.Event('toggle.ac.list', { item: item, target: target, index: idx, state: state })
+    this.$element.trigger(ev)
+    if (ev.isDefaultPrevented()) return
 
     this.$states[idx] = state
     if (target) target[state ? 'addClass' : 'removeClass'](this.options.selectedClass)

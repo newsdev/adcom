@@ -6919,11 +6919,6 @@ footer {
   display: inline-block;
   color: #999;
 }
-.navbar-default .navbar-nav > li.open a,
-.navbar-default .navbar-nav > li.open a:focus,
-.navbar-default .navbar-nav > li.open a:hover {
-  background-color: initial;
-}
 .navbar-default .navbar-left {
   margin-left: -15px;
 }
@@ -7430,7 +7425,7 @@ ul.list > .list-item .counter::before,
 .message.fade.out {
   transform: translate(0, 25%);
 }
-.message a {
+.message > a {
   text-transform: uppercase;
   font-size: 0.9em;
   line-height: 20px;
@@ -7438,7 +7433,7 @@ ul.list > .list-item .counter::before,
   margin-left: 15px;
   letter-spacing: 1px;
 }
-.message:not(.message-dialog) a {
+.message:not(.message-dialog) > a {
   color: #edf43f;
 }
 .message.message-lg {
@@ -7465,14 +7460,14 @@ ul.list > .list-item .counter::before,
 .message.message-dialog :not(a) {
   text-align: left;
 }
-.message.message-dialog a {
+.message.message-dialog > a {
   margin: 6px 4px;
   padding: 0px 8px;
   float: none;
   display: inline-block;
   font-weight: 400;
 }
-.message.message-dialog a:last-child {
+.message.message-dialog > a:last-child {
   margin-right: -8px;
 }
 .message.message-dialog.message-lg {
